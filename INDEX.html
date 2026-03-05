@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOGÓN — Investor Relations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --fire: #FF4D00;
+    --ember: #FF8C42;
+    --gold: #F5C842;
+    --dark: #0A0A08;
+    --charcoal: #141410;
+    --ash: #1E1E18;
+    --smoke: #2E2E26;
+    --cream: #F5F0E8;
+    --muted: #8A8A7A;
+    --white: #FAFAF5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Instrument Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--fire);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,77,0,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transition: transform 0.15s ease, width 0.2s, height 0.2s;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%;
+    padding: 20px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--fire); }
+  .nav-links { display: flex; gap: 40px; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--fire); }
+  .nav-cta {
+    background: var(--fire);
+    color: var(--dark) !important;
+    padding: 10px 24px;
+    font-weight: 600 !important;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,77,0,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255,140,66,0.08) 0%, transparent 50%),
+      var(--dark);
+  }
+
+  .hero-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fire);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 14vw, 13rem);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title .accent { color: var(--fire); }
+
+  .hero-sub {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    color: var(--muted);
+    margin-top: 20px;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-metrics {
+    display: flex; gap: 60px;
+    margin-top: 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .metric-item { display: flex; flex-direction: column; }
+  .metric-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--white);
+    line-height: 1;
+  }
+  .metric-value span { color: var(--fire); }
+  .metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 30px; right: 60px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0; animation: fadeUp 1s 1.2s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--fire), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; } 50% { opacity: 1; }
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 60px; }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fire);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 40px;
+  }
+
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(to right, var(--fire), transparent);
+    margin-bottom: 80px;
+    opacity: 0.3;
+  }
+
+  /* PROBLEM & SOLUTION */
+  #problema {
+    background: var(--charcoal);
+  }
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: start;
+  }
+  .problem-card {
+    border: 1px solid rgba(255,77,0,0.2);
+    padding: 40px;
+    position: relative;
+    background: rgba(255,77,0,0.03);
+  }
+  .problem-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 60px; height: 2px;
+    background: var(--fire);
+  }
+  .problem-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .problem-card p {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+  .stat-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: var(--fire);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* MODELO DE NEGOCIO */
+  .revenue-streams {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    margin-top: 40px;
+  }
+  .stream {
+    background: var(--ash);
+    padding: 40px 32px;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .stream:hover { background: var(--smoke); }
+  .stream-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--fire);
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .stream h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .stream p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+  .stream-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-top: 20px;
+  }
+
+  /* MERCADO */
+  #mercado { background: var(--charcoal); }
+  .market-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
+    align-items: center;
+  }
+  .market-numbers { display: flex; flex-direction: column; gap: 32px; }
+  .market-item {
+    display: flex; align-items: baseline; gap: 16px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .market-item:last-child { border-bottom: none; }
+  .market-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--white);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .market-val em { color: var(--fire); font-style: normal; }
+  .market-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+  .market-desc strong { color: var(--cream); display: block; margin-bottom: 4px; }
+
+  .chart-container {
+    background: var(--ash);
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .chart-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  /* FINANCIALS */
+  .financials-grid {
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px;
+  }
+  .fin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .fin-table th {
+    text-align: right; padding: 10px 16px;
+    color: var(--fire);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    border-bottom: 1px solid rgba(255,77,0,0.2);
+  }
+  .fin-table th:first-child { text-align: left; }
+  .fin-table td {
+    text-align: right; padding: 12px 16px;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .fin-table td:first-child { text-align: left; color: var(--cream); }
+  .fin-table tr.highlight td { color: var(--white); background: rgba(255,77,0,0.06); }
+  .fin-table tr.highlight td:first-child { color: var(--gold); font-weight: 500; }
+  .fin-table .positive { color: #4ADE80; }
+  .fin-table .negative { color: #F87171; }
+
+  .kpi-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi {
+    background: var(--ash);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 24px;
+  }
+  .kpi-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .kpi-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--white);
+    line-height: 1;
+  }
+  .kpi-val.good { color: var(--gold); }
+  .kpi-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* INVERSIÓN */
+  #inversion { background: var(--charcoal); }
+  .investment-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: start;
+  }
+  .inv-ask {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 8vw, 7rem);
+    line-height: 0.9;
+    color: var(--white);
+  }
+  .inv-ask span { color: var(--fire); display: block; }
+  .inv-ask em {
+    font-style: normal;
+    color: var(--muted);
+    font-size: 0.25em;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-top: 16px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+  }
+  .use-of-funds { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; }
+  .fund-row { display: flex; align-items: center; gap: 16px; }
+  .fund-bar-wrap { flex: 1; height: 3px; background: rgba(255,255,255,0.08); }
+  .fund-bar { height: 100%; background: var(--fire); transition: width 1s ease; }
+  .fund-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--fire);
+    width: 36px;
+    text-align: right;
+  }
+  .fund-name { font-size: 0.85rem; color: var(--cream); width: 200px; }
+
+  /* EQUIPO */
+  .team-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+  }
+  .team-card {
+    background: var(--ash);
+    padding: 32px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .team-card:hover { background: var(--smoke); }
+  .team-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fire), var(--ember));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+  .team-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .team-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fire);
+    margin-bottom: 12px;
+  }
+  .team-bio { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* ROADMAP */
+  #roadmap { background: var(--charcoal); }
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    margin-top: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--fire), rgba(255,77,0,0.1));
+  }
+  .timeline-item {
+    position: relative;
+    padding: 0 0 60px 48px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: -5px; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--fire);
+    box-shadow: 0 0 12px var(--fire);
+  }
+  .tl-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--fire);
+    margin-bottom: 8px;
+  }
+  .tl-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .tl-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; max-width: 600px; }
+  .tl-tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .tl-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,77,0,0.3);
+    color: var(--ember);
+    letter-spacing: 0.1em;
+  }
+
+  /* CHATBOT */
+  #chatbot { background: var(--dark); }
+  .chat-wrapper {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: start;
+  }
+  .chat-intro p {
+    color: var(--muted); font-size: 1rem; line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .chat-box {
+    background: var(--ash);
+    border: 1px solid rgba(255,77,0,0.2);
+    display: flex; flex-direction: column;
+    height: 480px;
+  }
+  .chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chat-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--fire);
+    box-shadow: 0 0 8px var(--fire);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .chat-header-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .chat-messages {
+    flex: 1; overflow-y: auto;
+    padding: 20px; display: flex; flex-direction: column; gap: 12px;
+    scrollbar-width: thin; scrollbar-color: var(--smoke) transparent;
+  }
+  .msg {
+    max-width: 80%;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .msg.bot {
+    background: var(--smoke);
+    color: var(--cream);
+    align-self: flex-start;
+    border-left: 2px solid var(--fire);
+  }
+  .msg.user {
+    background: rgba(255,77,0,0.12);
+    color: var(--cream);
+    align-self: flex-end;
+    border-right: 2px solid var(--ember);
+  }
+  .msg.loading { color: var(--muted); font-style: italic; }
+  .chat-input-area {
+    padding: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; gap: 12px;
+  }
+  .chat-input {
+    flex: 1;
+    background: var(--smoke);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--cream);
+    padding: 10px 16px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input:focus { border-color: rgba(255,77,0,0.4); }
+  .chat-input::placeholder { color: var(--muted); }
+  .chat-send {
+    background: var(--fire);
+    border: none;
+    color: var(--dark);
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.2s;
+    font-weight: 600;
+  }
+  .chat-send:hover { background: var(--ember); }
+  .quick-qs { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
+  .quick-q {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    padding: 10px 16px;
+    text-align: left;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.82rem;
+    cursor: none;
+    transition: all 0.2s;
+  }
+  .quick-q:hover {
+    border-color: rgba(255,77,0,0.4);
+    color: var(--cream);
+    background: rgba(255,77,0,0.05);
+  }
+
+  /* CTA FINAL */
+  #contacto {
+    background: var(--fire);
+    padding: 120px 60px;
+    text-align: center;
+  }
+  #contacto .section-tag { color: rgba(0,0,0,0.5); }
+  #contacto .section-title { color: var(--dark); margin-bottom: 20px; }
+  #contacto p { color: rgba(0,0,0,0.7); font-size: 1.1rem; margin-bottom: 48px; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .cta-btn {
+    display: inline-block;
+    background: var(--dark);
+    color: var(--white);
+    padding: 18px 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .cta-btn:hover { background: var(--charcoal); }
+  .contact-details {
+    margin-top: 48px;
+    display: flex; justify-content: center; gap: 60px;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    color: rgba(0,0,0,0.6);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 40px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; color: var(--white);
+  }
+  .footer-logo span { color: var(--fire); }
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* SIMULADOR DE INVERSIÓN */
+  #simulador { padding: 120px 60px; }
+  #simulador .section-title { margin-bottom: 60px; }
+  .sim-container { max-width: 900px; margin: 0 auto; display: grid; gap: 40px; }
+  .sim-slider-section { text-align: center; }
+  .sim-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+  }
+  .sim-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: var(--fire); line-height: 1;
+    margin-bottom: 28px; letter-spacing: 0.02em; transition: color 0.2s;
+  }
+  #investSlider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px;
+    border-radius: 2px; outline: none; cursor: pointer;
+  }
+  #investSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--fire); cursor: pointer;
+    box-shadow: 0 0 14px rgba(255,77,0,0.7);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  #investSlider::-webkit-slider-thumb:hover {
+    transform: scale(1.25); box-shadow: 0 0 22px rgba(255,77,0,0.9);
+  }
+  #investSlider::-moz-range-thumb {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--fire); border: none; cursor: pointer;
+    box-shadow: 0 0 14px rgba(255,77,0,0.7);
+  }
+  .sim-range-labels {
+    display: flex; justify-content: space-between;
+    margin-top: 14px; font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+  }
+  .sim-metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .sim-metric-card {
+    background: var(--ash);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 28px 16px; text-align: center;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .sim-metric-card:hover { border-color: rgba(255,77,0,0.3); transform: translateY(-2px); }
+  .sim-metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .sim-metric-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; line-height: 1; margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .sim-metric-value.fire { color: var(--fire); }
+  .sim-metric-value.gold { color: var(--gold); }
+  .sim-metric-sub { font-size: 0.68rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .sim-returns {
+    background: var(--ash);
+    border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+  }
+  .sim-returns-header {
+    display: grid; grid-template-columns: 1fr 2fr 1fr;
+    padding: 14px 24px;
+    background: var(--smoke);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .sim-return-row {
+    display: grid; grid-template-columns: 1fr 2fr 1fr;
+    padding: 18px 24px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    font-family: 'DM Mono', monospace; font-size: 0.85rem;
+    transition: background 0.2s;
+  }
+  .sim-return-row:hover { background: rgba(255,77,0,0.05); }
+  .sim-return-row span:first-child { color: var(--muted); }
+  .sim-return-row span:nth-child(2) { color: var(--cream); }
+  .sim-return-row span:last-child { color: var(--gold); }
+  .sim-return-row.highlight {
+    background: rgba(245,200,66,0.05);
+    border-top: 1px solid rgba(245,200,66,0.2);
+  }
+  .sim-return-row.highlight span:nth-child(2) { color: var(--gold); font-weight: 600; }
+  .sim-chart-wrapper {
+    background: var(--ash);
+    border: 1px solid rgba(255,255,255,0.05); padding: 32px;
+  }
+  @media (max-width: 768px) {
+    .sim-metrics { grid-template-columns: repeat(2, 1fr); }
+    .sim-amount { font-size: 2.8rem; }
+    #simulador { padding: 80px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">FOG<span>Ó</span>N</div>
+  <div class="nav-links">
+    <a href="#problema">Oportunidad</a>
+    <a href="#modelo">Modelo</a>
+    <a href="#mercado">Mercado</a>
+    <a href="#financials">Financials</a>
+    <a href="#inversion">Inversión</a>
+    <a href="#chatbot">CFO AI</a>
+    <a href="#simulador">Simulador</a>
+    <a href="#contacto" class="nav-cta">Invertir</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="hero-tag">Ronda de Inversión Serie A · 2025</div>
+    <h1 class="hero-title">
+      LA COCINA<br>QUE NUNCA<br><span class="accent">DUERME.</span>
+    </h1>
+    <p class="hero-sub">Red de dark kitchens premium operando 16 marcas virtuales desde 4 centros de producción en CDMX.</p>
+    <div class="hero-metrics">
+      <div class="metric-item">
+        <div class="metric-value">$42<span>M</span></div>
+        <div class="metric-label">Valuación pre-money</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">4<span>X</span></div>
+        <div class="metric-label">ROI proyectado año 3</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">38<span>%</span></div>
+        <div class="metric-label">EBITDA margin</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">67<span>%</span></div>
+        <div class="metric-label">TIR estimada</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- PROBLEMA & SOLUCIÓN -->
+<section id="problema">
+  <div class="section-tag">01 — La Oportunidad</div>
+  <h2 class="section-title">El Problema<br>Es Enorme.</h2>
+  <div class="divider"></div>
+  <div class="two-col reveal">
+    <div>
+      <div class="problem-card" style="margin-bottom:24px;">
+        <h3>Renta destruye margenes</h3>
+        <p>Los restaurantes tradicionales en CDMX destinan entre el 25% y 35% de sus ingresos al pago de renta en ubicaciones prime. Una dark kitchen opera con rentas 4x menores en zonas industriales.</p>
+        <span class="stat-big">$180K</span>
+        <span style="font-size:0.8rem;color:var(--muted)">Renta promedio mensual, local Polanco vs $42K dark kitchen misma capacidad</span>
+      </div>
+      <div class="problem-card">
+        <h3>Delivery crece sin parar</h3>
+        <p>El mercado de food delivery en México creció 31% en 2024. Los consumidores no quieren ir al restaurante — quieren la comida en casa en 25 minutos.</p>
+        <span class="stat-big">+31%</span>
+        <span style="font-size:0.8rem;color:var(--muted)">Crecimiento anual delivery México, Statista 2024</span>
+      </div>
+    </div>
+    <div>
+      <div class="problem-card" style="height:calc(100% - 0px);">
+        <h3>Nuestra solución: FOGÓN</h3>
+        <p style="margin-bottom:20px;">Operamos múltiples marcas de comida desde cocinas centralizadas hiper-eficientes. Una sola cocina produce órdenes para 4–6 marcas diferentes simultáneamente, maximizando el uso de cada metro cuadrado, cada cocinero y cada minuto de operación.</p>
+        <p style="margin-bottom:20px;color:var(--muted)">No competimos con restaurantes. <strong style="color:var(--cream)">Los hacemos obsoletos.</strong></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;">
+          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
+            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">16</span>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Marcas Virtuales</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
+            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">4</span>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Cocinas Activas</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
+            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">25min</span>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Entrega Promedio</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
+            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">4.8★</span>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Rating Promedio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELO DE NEGOCIO -->
+<section id="modelo">
+  <div class="section-tag">02 — Modelo de Negocio</div>
+  <h2 class="section-title">Tres Fuentes<br>de Ingreso.</h2>
+  <div class="divider"></div>
+  <div class="revenue-streams reveal">
+    <div class="stream">
+      <div class="stream-num">01</div>
+      <h3>Marcas Propias</h3>
+      <p>Operamos nuestras propias marcas virtuales: KUMA Ramen, El Carnal Birria, Madre Pasta, Nikkei Box y 12 más. Control total de producto, precio y experiencia.</p>
+      <div class="stream-amount">↑ 65% del revenue total</div>
+    </div>
+    <div class="stream">
+      <div class="stream-num">02</div>
+      <h3>Kitchen-as-a-Service</h3>
+      <p>Rentamos espacio y capacidad productiva a marcas externas que quieren operar sin invertir en infraestructura. Revenue fijo + % de ventas.</p>
+      <div class="stream-amount">↑ 25% del revenue total</div>
+    </div>
+    <div class="stream">
+      <div class="stream-num">03</div>
+      <h3>Licencias de Marca</h3>
+      <p>Licenciamos nuestras marcas más exitosas a operadores en otras ciudades. Royalty del 6% sobre ventas brutas sin costo operativo para FOGÓN.</p>
+      <div class="stream-amount">↑ 10% del revenue total · alto margen</div>
+    </div>
+  </div>
+  <div style="margin-top:60px;" class="reveal reveal-delay-1">
+    <div class="chart-container">
+      <div class="chart-title">Ingresos por canal — proyección mensual año 1 (MXN)</div>
+      <canvas id="revenueChart" height="80"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- MERCADO -->
+<section id="mercado">
+  <div class="section-tag">03 — Tamaño de Mercado</div>
+  <h2 class="section-title">Mercado de<br>Billones.</h2>
+  <div class="divider"></div>
+  <div class="market-grid reveal">
+    <div class="market-numbers">
+      <div class="market-item">
+        <div class="market-val">$<em>8.2</em>B</div>
+        <div class="market-desc">
+          <strong>TAM — Mercado Total</strong>
+          Industria de food delivery en México. Crece al 28% anual proyectado hasta 2028.
+        </div>
+      </div>
+      <div class="market-item">
+        <div class="market-val">$<em>1.4</em>B</div>
+        <div class="market-desc">
+          <strong>SAM — Mercado Disponible</strong>
+          Segmento dark kitchens + delivery en CDMX, Guadalajara y Monterrey donde operaremos.
+        </div>
+      </div>
+      <div class="market-item">
+        <div class="market-val">$<em>68</em>M</div>
+        <div class="market-desc">
+          <strong>SOM — Mercado Objetivo (Año 3)</strong>
+          Captura realista basada en 12 cocinas operativas y 40+ marcas virtuales.
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="chart-container">
+        <div class="chart-title">Crecimiento del mercado dark kitchens México (MXN Billones)</div>
+        <canvas id="marketChart" height="200"></canvas>
+      </div>
+      <div class="chart-container" style="margin-top:16px;">
+        <div class="chart-title">Mix de revenue por marca (año 2)</div>
+        <canvas id="brandChart" height="160"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCIALS -->
+<section id="financials">
+  <div class="section-tag">04 — Proyecciones Financieras</div>
+  <h2 class="section-title">Los Números<br>No Mienten.</h2>
+  <div class="divider"></div>
+  <div class="financials-grid reveal">
+    <div>
+      <div style="background:var(--ash);padding:32px;border:1px solid rgba(255,255,255,0.06);">
+        <div class="chart-title">P&L Proyectado — 5 años (MXN millones)</div>
+        <table class="fin-table">
+          <thead>
+            <tr>
+              <th>Concepto</th>
+              <th>Año 1</th>
+              <th>Año 2</th>
+              <th>Año 3</th>
+              <th>Año 4</th>
+              <th>Año 5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ingresos</td>
+              <td>$8.4M</td>
+              <td>$18.2M</td>
+              <td>$34.6M</td>
+              <td>$52.1M</td>
+              <td>$68.0M</td>
+            </tr>
+            <tr>
+              <td>Costo de ventas</td>
+              <td class="negative">($3.2M)</td>
+              <td class="negative">($6.5M)</td>
+              <td class="negative">($11.8M)</td>
+              <td class="negative">($17.2M)</td>
+              <td class="negative">($21.8M)</td>
+            </tr>
+            <tr class="highlight">
+              <td>Utilidad Bruta</td>
+              <td>$5.2M</td>
+              <td>$11.7M</td>
+              <td>$22.8M</td>
+              <td>$34.9M</td>
+              <td>$46.2M</td>
+            </tr>
+            <tr>
+              <td>Margen Bruto</td>
+              <td>62%</td>
+              <td>64%</td>
+              <td>66%</td>
+              <td>67%</td>
+              <td>68%</td>
+            </tr>
+            <tr>
+              <td>OPEX</td>
+              <td class="negative">($4.8M)</td>
+              <td class="negative">($8.9M)</td>
+              <td class="negative">($14.7M)</td>
+              <td class="negative">($20.1M)</td>
+              <td class="negative">($25.2M)</td>
+            </tr>
+            <tr class="highlight">
+              <td>EBITDA</td>
+              <td class="negative">($0.4M)</td>
+              <td class="positive">$2.8M</td>
+              <td class="positive">$8.1M</td>
+              <td class="positive">$14.8M</td>
+              <td class="positive">$21.0M</td>
+            </tr>
+            <tr>
+              <td>EBITDA Margin</td>
+              <td class="negative">-4.8%</td>
+              <td class="positive">15.4%</td>
+              <td class="positive">23.4%</td>
+              <td class="positive">28.4%</td>
+              <td class="positive">30.9%</td>
+            </tr>
+            <tr>
+              <td>Impuestos (30%)</td>
+              <td>—</td>
+              <td class="negative">($0.84M)</td>
+              <td class="negative">($2.43M)</td>
+              <td class="negative">($4.44M)</td>
+              <td class="negative">($6.30M)</td>
+            </tr>
+            <tr class="highlight">
+              <td>Utilidad Neta</td>
+              <td class="negative">($0.4M)</td>
+              <td class="positive">$1.96M</td>
+              <td class="positive">$5.67M</td>
+              <td class="positive">$10.36M</td>
+              <td class="positive">$14.70M</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="chart-container">
+          <div class="chart-title">Evolución EBITDA vs Ingresos (MXN millones)</div>
+          <canvas id="plChart" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="kpi-cards">
+        <div class="kpi">
+          <div class="kpi-label">TIR (IRR)</div>
+          <div class="kpi-val good">67%</div>
+          <div class="kpi-sub">Sobre inversión inicial</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">VPN (NPV)</div>
+          <div class="kpi-val good">$28.4M</div>
+          <div class="kpi-sub">WACC del 12%</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Payback Period</div>
+          <div class="kpi-val">2.4 años</div>
+          <div class="kpi-sub">Retorno de capital</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Multiple of Money</div>
+          <div class="kpi-val good">4.1x</div>
+          <div class="kpi-sub">En 5 años</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Break-even</div>
+          <div class="kpi-val">Mes 18</div>
+          <div class="kpi-sub">A nivel consolidado</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Ticket Promedio</div>
+          <div class="kpi-val">$285</div>
+          <div class="kpi-sub">MXN por orden</div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">Punto de equilibrio — año 1 (órdenes/mes)</div>
+        <canvas id="breakChart" height="180"></canvas>
+      </div>
+      <div style="margin-top:16px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.2);padding:24px;">
+        <div class="section-tag" style="margin-bottom:8px;">Supuestos Clave</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:0.8rem;color:var(--muted);">→ 280 órdenes/día por cocina en estado estable</li>
+          <li style="font-size:0.8rem;color:var(--muted);">→ Crecimiento de 2 cocinas/año a partir del año 2</li>
+          <li style="font-size:0.8rem;color:var(--muted);">→ Comisión Rappi/UBER Eats: 18% promedio negociado</li>
+          <li style="font-size:0.8rem;color:var(--muted);">→ Food cost: 28% sobre precio de venta</li>
+          <li style="font-size:0.8rem;color:var(--muted);">→ Labor: 22% del revenue en año 1, optimiza a 18%</li>
+          <li style="font-size:0.8rem;color:var(--muted);">→ Inflación: 4.5% anual en costos de insumos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVERSIÓN -->
+<section id="inversion">
+  <div class="section-tag">05 — La Inversión</div>
+  <h2 class="section-title">Buscamos<br>Socios.</h2>
+  <div class="divider"></div>
+  <div class="investment-layout reveal">
+    <div>
+      <div class="inv-ask">
+        LEVANTAMOS
+        <span>$18M</span>
+        <em>MXN · Serie A · 2025</em>
+      </div>
+      <div style="margin-top:48px;">
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:24px;">
+          Valuación pre-money de $42M MXN. Los inversionistas de esta ronda adquieren un <strong style="color:var(--cream);">30% de participación accionaria</strong> con derechos de board seat proporcional para tickets mayores a $3M.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="padding:20px;border:1px solid rgba(255,255,255,0.08);">
+            <div style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--fire);letter-spacing:0.15em;margin-bottom:8px;">TICKET MÍNIMO</div>
+            <div style="font-family:'Bebas Neue';font-size:2rem;color:var(--white);">$500K MXN</div>
+          </div>
+          <div style="padding:20px;border:1px solid rgba(255,255,255,0.08);">
+            <div style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--fire);letter-spacing:0.15em;margin-bottom:8px;">VALUACIÓN POST</div>
+            <div style="font-family:'Bebas Neue';font-size:2rem;color:var(--white);">$60M MXN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;">Uso de los Fondos</div>
+      <div class="use-of-funds">
+        <div class="fund-row">
+          <div class="fund-name">Apertura 2 cocinas nuevas</div>
+          <div class="fund-bar-wrap"><div class="fund-bar" data-width="40" style="width:0%"></div></div>
+          <div class="fund-pct">40%</div>
+        </div>
+        <div class="fund-row">
+          <div class="fund-name">Equipamiento & Tecnología</div>
+          <div class="fund-bar-wrap"><div class="fund-bar" data-width="25" style="width:0%"></div></div>
+          <div class="fund-pct">25%</div>
+        </div>
+        <div class="fund-row">
+          <div class="fund-name">Marketing & Lanzamiento</div>
+          <div class="fund-bar-wrap"><div class="fund-bar" data-width="18" style="width:0%"></div></div>
+          <div class="fund-pct">18%</div>
+        </div>
+        <div class="fund-row">
+          <div class="fund-name">Capital de trabajo</div>
+          <div class="fund-bar-wrap"><div class="fund-bar" data-width="12" style="width:0%"></div></div>
+          <div class="fund-pct">12%</div>
+        </div>
+        <div class="fund-row">
+          <div class="fund-name">Legal & Constitución</div>
+          <div class="fund-bar-wrap"><div class="fund-bar" data-width="5" style="width:0%"></div></div>
+          <div class="fund-pct">5%</div>
+        </div>
+      </div>
+      <div style="margin-top:40px;">
+        <div class="chart-container">
+          <div class="chart-title">Retorno proyectado vs inversión inicial (MXN)</div>
+          <canvas id="roiChart" height="140"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPO -->
+<section id="equipo" style="background:var(--charcoal);">
+  <div class="section-tag">06 — El Equipo</div>
+  <h2 class="section-title">Gente Que<br>Ya Lo Hizo.</h2>
+  <div class="divider"></div>
+  <div class="team-grid reveal">
+    <div class="team-card">
+      <div class="team-avatar">DM</div>
+      <div class="team-name">Diego Montoya</div>
+      <div class="team-role">CEO & Co-Founder</div>
+      <div class="team-bio">Ex-Director de Expansión en Grupo KFC México. Abrió 40+ unidades en 3 años. MBA ITAM. Obsesionado con operaciones de alto volumen.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">SV</div>
+      <div class="team-name">Sofía Vargas</div>
+      <div class="team-role">CFO & Co-Founder</div>
+      <div class="team-bio">Ex-VP Finance en Cornershop (adquirida por Uber). Estructuró due diligence de $250M USD. CPA + Maestría en Finanzas, UP.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">RA</div>
+      <div class="team-name">Rodrigo Alvarado</div>
+      <div class="team-role">CTO</div>
+      <div class="team-bio">Construyó la plataforma de logística de Jüsto desde cero. 12 años en tech de foodtech. Especialista en sistemas de gestión de cocinas y rutas de entrega.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">LC</div>
+      <div class="team-name">Lucía Campos</div>
+      <div class="team-role">Chief Culinary Officer</div>
+      <div class="team-bio">Ex-Ejecutiva Culinaria de Grupo Alsea. Desarrolló +200 recetas para escala industrial manteniendo calidad. Le Cordon Bleu México.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-tag">07 — Plan de Ejecución</div>
+  <h2 class="section-title">De Hoy<br>Al Liderazgo.</h2>
+  <div class="divider"></div>
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="tl-date">Q1–Q2 2025 · HOY</div>
+      <div class="tl-title">Fundaciones</div>
+      <div class="tl-desc">Constitución de la empresa (S.A. de C.V.), ronda de inversión Serie A, firma de contratos con primeras 2 ubicaciones en CDMX (Iztapalapa y Vallejo). Lanzamiento de 4 marcas piloto en Rappi y Uber Eats.</div>
+      <div class="tl-tags"><span class="tl-tag">Constitución Legal</span><span class="tl-tag">Ronda Serie A</span><span class="tl-tag">2 cocinas</span><span class="tl-tag">4 marcas</span></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Q3–Q4 2025</div>
+      <div class="tl-title">Tracción Comprobada</div>
+      <div class="tl-desc">Alcanzar 200 órdenes/día por cocina. Lanzar 8 marcas adicionales. Implementar sistema propio de gestión de cocina. Negociar comisiones preferenciales con plataformas por volumen.</div>
+      <div class="tl-tags"><span class="tl-tag">200 órdenes/día</span><span class="tl-tag">12 marcas activas</span><span class="tl-tag">Break-even por cocina</span></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Q1–Q2 2026</div>
+      <div class="tl-title">Expansión CDMX</div>
+      <div class="tl-desc">Apertura de cocinas 3 y 4 en zonas norte y sur de CDMX. Lanzamiento de modelo Kitchen-as-a-Service con primeros 3 clientes B2B. EBITDA positivo a nivel consolidado.</div>
+      <div class="tl-tags"><span class="tl-tag">4 cocinas</span><span class="tl-tag">KaaS live</span><span class="tl-tag">EBITDA+</span></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">2027</div>
+      <div class="tl-title">Expansión Nacional</div>
+      <div class="tl-desc">Entrada a Guadalajara y Monterrey con 2 cocinas cada ciudad. Ronda Serie B para financiar expansión. Lanzamiento del programa de licencias para operadores regionales.</div>
+      <div class="tl-tags"><span class="tl-tag">3 ciudades</span><span class="tl-tag">8 cocinas</span><span class="tl-tag">Serie B</span><span class="tl-tag">Licencias</span></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">2028–2029</div>
+      <div class="tl-title">Liderazgo de Mercado</div>
+      <div class="tl-desc">Posicionamiento como la red de dark kitchens más grande de México. Exploración de mercados LATAM (Colombia, Chile). Preparación para IPO o venta estratégica.</div>
+      <div class="tl-tags"><span class="tl-tag">#1 México</span><span class="tl-tag">LATAM</span><span class="tl-tag">Exit Strategy</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHATBOT CFO -->
+<section id="chatbot">
+  <div class="section-tag">08 — Due Diligence</div>
+  <h2 class="section-title">Pregúntale<br>Al CFO.</h2>
+  <div class="divider"></div>
+  <div class="chat-wrapper reveal">
+    <div class="chat-intro">
+      <p>Tenemos un CFO virtual entrenado con toda la información financiera, operativa y estratégica de FOGÓN. Hazle cualquier pregunta que le harías a un equipo de management antes de invertir.</p>
+      <p style="font-size:0.85rem;">Pregunta sobre proyecciones, supuestos, competencia, riesgos, estructura legal, o cualquier aspecto del negocio.</p>
+      <div class="quick-qs">
+        <div class="section-tag" style="margin-bottom:8px;">Preguntas sugeridas</div>
+        <button class="quick-q" onclick="sendQuickQ(this)">¿Cuál es el principal riesgo de inversión?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)">¿Cómo calcularon la TIR del 67%?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)">¿Qué pasa si Rappi sube sus comisiones?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)">¿Cuál es la estrategia de salida (exit) para el inversor?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)">¿Cómo se constituye legalmente la empresa?</button>
+      </div>
+    </div>
+    <div class="chat-box">
+      <div class="chat-header">
+        <div class="chat-dot"></div>
+        <div class="chat-header-text">CFO Virtual · FOGÓN — Powered by Gemini</div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg bot">Hola, soy el CFO virtual de FOGÓN. Puedo responder cualquier pregunta sobre nuestras finanzas, modelo de negocio, supuestos o estrategia de inversión. ¿Qué quieres saber?</div>
+      </div>
+      <div class="chat-input-area">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Pregunta lo que quieras como inversor..." onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="chat-send" onclick="sendMsg()">Enviar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULADOR DE INVERSIÓN -->
+<section id="simulador">
+  <div class="section-tag reveal">09 — Simulador de Inversión</div>
+  <h2 class="section-title reveal">Calcula Tu<br>Retorno.</h2>
+  <div class="sim-container">
+    <div class="sim-slider-section reveal">
+      <div class="sim-label">¿Cuánto deseas invertir?</div>
+      <div class="sim-amount" id="simAmount">$1,000,000</div>
+      <input type="range" id="investSlider" min="500000" max="18000000" step="50000" value="1000000">
+      <div class="sim-range-labels">
+        <span>$500,000 MXN mín.</span>
+        <span>$18,000,000 MXN máx.</span>
+      </div>
+    </div>
+    <div class="sim-metrics reveal reveal-delay-1">
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">% en la Ronda</div>
+        <div class="sim-metric-value fire" id="simParticipation">—</div>
+        <div class="sim-metric-sub">de los $18M levantados</div>
+      </div>
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">% Equity Empresa</div>
+        <div class="sim-metric-value gold" id="simEquity">—</div>
+        <div class="sim-metric-sub">del cap table</div>
+      </div>
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">TIR Proyectada</div>
+        <div class="sim-metric-value fire" id="simTIR">—</div>
+        <div class="sim-metric-sub">retorno anualizado</div>
+      </div>
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">Múltiplo de Dinero</div>
+        <div class="sim-metric-value gold" id="simMoM">—</div>
+        <div class="sim-metric-sub">en 5 años</div>
+      </div>
+    </div>
+    <div class="sim-returns reveal reveal-delay-2">
+      <div class="sim-returns-header">
+        <span>Año</span>
+        <span>Valor Proyectado (MXN)</span>
+        <span>Múltiplo</span>
+      </div>
+      <div class="sim-return-row"><span>Año 1</span><span id="yr1v">—</span><span id="yr1m">—</span></div>
+      <div class="sim-return-row"><span>Año 2</span><span id="yr2v">—</span><span id="yr2m">—</span></div>
+      <div class="sim-return-row"><span>Año 3</span><span id="yr3v">—</span><span id="yr3m">—</span></div>
+      <div class="sim-return-row"><span>Año 4</span><span id="yr4v">—</span><span id="yr4m">—</span></div>
+      <div class="sim-return-row highlight"><span>Año 5 — Salida</span><span id="yr5v">—</span><span id="yr5m">—</span></div>
+    </div>
+    <div class="sim-chart-wrapper reveal reveal-delay-3">
+      <canvas id="simChart" height="80"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-tag">10 — Siguiente Paso</div>
+  <h2 class="section-title">¿Listo Para<br>Invertir?</h2>
+  <p>Agenda una sesión de 30 minutos con nuestro equipo directivo. Te enviamos el data room completo previo a la llamada.</p>
+  <a href="mailto:investors@fogon.mx" class="cta-btn">Agendar Reunión →</a>
+  <div class="contact-details">
+    <span>investors@fogon.mx</span>
+    <span>+52 55 4321 0000</span>
+    <span>CDMX, México</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">FOG<span>Ó</span>N</div>
+  <p>© 2025 FOGÓN Dark Kitchens S.A. de C.V. · Documento confidencial para inversores</p>
+  <p style="color:rgba(255,77,0,0.5);">Serie A · $18M MXN</p>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// FUND BARS ANIMATION
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.fund-bar').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelector('.use-of-funds') && barObserver.observe(document.querySelector('.use-of-funds'));
+
+// COUNTER ANIMATION
+function animateCounter(el, target, suffix = '') {
+  let start = 0;
+  const dur = 1800;
+  const step = timestamp => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// CHARTS
+Chart.defaults.color = '#8A8A7A';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+
+// Revenue Chart
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    datasets: [
+      { label: 'Marcas Propias', data: [380,410,450,490,530,590,640,700,760,820,890,960], backgroundColor: 'rgba(255,77,0,0.7)' },
+      { label: 'KaaS', data: [60,65,70,80,90,100,115,130,145,160,175,190], backgroundColor: 'rgba(255,140,66,0.5)' },
+      { label: 'Licencias', data: [0,0,0,20,25,30,35,40,45,50,55,60], backgroundColor: 'rgba(245,200,66,0.4)' }
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '$' + v + 'K' } } } }
+});
+
+// Market Growth Chart
+new Chart(document.getElementById('marketChart'), {
+  type: 'line',
+  data: {
+    labels: ['2022','2023','2024','2025E','2026E','2027E','2028E'],
+    datasets: [{
+      label: 'Mercado MX Dark Kitchens',
+      data: [0.4, 0.7, 1.1, 1.6, 2.3, 3.2, 4.4],
+      borderColor: '#FF4D00',
+      backgroundColor: 'rgba(255,77,0,0.1)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#FF4D00'
+    }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + v + 'B' } } } }
+});
+
+// Brand Mix
+new Chart(document.getElementById('brandChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['KUMA Ramen','El Carnal Birria','Madre Pasta','Nikkei Box','Otras 12'],
+    datasets: [{ data: [22,18,15,12,33], backgroundColor: ['#FF4D00','#FF8C42','#F5C842','#FF6B35','#2E2E26'], borderWidth: 0 }]
+  },
+  options: { responsive: true, cutout: '65%', plugins: { legend: { position: 'right' } } }
+});
+
+// P&L Chart
+new Chart(document.getElementById('plChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Año 1','Año 2','Año 3','Año 4','Año 5'],
+    datasets: [
+      { label: 'Ingresos', data: [8.4,18.2,34.6,52.1,68.0], backgroundColor: 'rgba(255,77,0,0.3)', borderColor: '#FF4D00', borderWidth: 1 },
+      { label: 'EBITDA', type: 'line', data: [-0.4,2.8,8.1,14.8,21.0], borderColor: '#F5C842', backgroundColor: 'rgba(245,200,66,0.1)', fill: true, tension: 0.4, pointBackgroundColor: '#F5C842' }
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { ticks: { callback: v => '$' + v + 'M' } } } }
+});
+
+// Breakeven
+new Chart(document.getElementById('breakChart'), {
+  type: 'line',
+  data: {
+    labels: ['Mes 1','Mes 3','Mes 6','Mes 9','Mes 12','Mes 15','Mes 18'],
+    datasets: [
+      { label: 'Ingresos', data: [320,450,620,780,920,1050,1200], borderColor: '#4ADE80', tension: 0.4, pointBackgroundColor: '#4ADE80' },
+      { label: 'Costos Fijos + Variables', data: [1100,1050,980,940,1020,1080,1100], borderColor: '#F87171', tension: 0.4, borderDash: [5,5], pointBackgroundColor: '#F87171' }
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { ticks: { callback: v => '$' + v + 'K' } } } }
+});
+
+// ROI Chart
+new Chart(document.getElementById('roiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Inversión','Año 1','Año 2','Año 3','Año 4','Año 5'],
+    datasets: [{
+      label: 'Valor acumulado (MXN)',
+      data: [-18, -16, -12.4, -6.4, 4.8, 21.8],
+      backgroundColor: d => d.raw < 0 ? 'rgba(248,113,113,0.6)' : 'rgba(74,222,128,0.6)',
+      borderColor: d => d.raw < 0 ? '#F87171' : '#4ADE80',
+      borderWidth: 1
+    }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + v + 'M' } } } }
+});
+
+// ============ SIMULADOR DE INVERSIÓN ============
+(function() {
+  const TOTAL_RAISE = 18000000;
+  const INVESTOR_EQUITY = 0.30; // 30% equity for $18M at $42M pre-money / $60M post-money
+  // Company valuation trajectory (MXN millions) giving 4.1x MoM at year 5 exit
+  // Investor share at year 5 = 0.30 * 246M = $73.8M = 4.1 * $18M ✓
+  const CO_VALS = [65, 100, 155, 205, 246];
+
+  function fmtMXN(n) {
+    if (n >= 1e6) return '$' + (n / 1e6).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + 'M';
+    return '$' + Math.round(n).toLocaleString('es-MX');
+  }
+
+  function updateSliderTrack(slider) {
+    const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = `linear-gradient(to right, #FF4D00 ${pct}%, #2E2E26 ${pct}%)`;
+  }
+
+  const simChartInstance = new Chart(document.getElementById('simChart'), {
+    type: 'line',
+    data: {
+      labels: ['Inversión', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+      datasets: [
+        {
+          label: 'Valor proyectado',
+          data: Array(6).fill(0),
+          borderColor: '#FF4D00',
+          backgroundColor: 'rgba(255,77,0,0.1)',
+          fill: true, tension: 0.4,
+          pointBackgroundColor: '#FF4D00',
+          pointRadius: 5, pointHoverRadius: 8
+        },
+        {
+          label: 'Capital invertido',
+          data: Array(6).fill(0),
+          borderColor: 'rgba(245,200,66,0.45)',
+          backgroundColor: 'transparent',
+          borderDash: [6, 4], tension: 0, pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + fmtMXN(ctx.raw) + ' MXN'
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: v => v >= 1e6 ? '$' + (v / 1e6).toFixed(1) + 'M' : '$' + (v / 1000).toFixed(0) + 'K'
+          }
+        }
+      }
+    }
+  });
+
+  function updateSimulator() {
+    const slider = document.getElementById('investSlider');
+    const inv = parseInt(slider.value);
+    updateSliderTrack(slider);
+
+    document.getElementById('simAmount').textContent = '$' + inv.toLocaleString('es-MX');
+
+    const participationPct = (inv / TOTAL_RAISE) * 100;
+    const equityPct = participationPct * INVESTOR_EQUITY;
+    document.getElementById('simParticipation').textContent = participationPct.toFixed(2) + '%';
+    document.getElementById('simEquity').textContent = equityPct.toFixed(2) + '%';
+    document.getElementById('simTIR').textContent = '67%';
+    document.getElementById('simMoM').textContent = '4.1x';
+
+    const eqFraction = (inv / TOTAL_RAISE) * INVESTOR_EQUITY;
+    const yearVals = CO_VALS.map(v => eqFraction * v * 1e6);
+    const ids = ['yr1v','yr2v','yr3v','yr4v','yr5v'];
+    const mids = ['yr1m','yr2m','yr3m','yr4m','yr5m'];
+    yearVals.forEach((val, i) => {
+      document.getElementById(ids[i]).textContent = fmtMXN(val);
+      document.getElementById(mids[i]).textContent = (val / inv).toFixed(2) + 'x';
+    });
+
+    simChartInstance.data.datasets[0].data = [inv, ...yearVals];
+    simChartInstance.data.datasets[1].data = Array(6).fill(inv);
+    simChartInstance.update('none');
+  }
+
+  const slider = document.getElementById('investSlider');
+  slider.addEventListener('input', updateSimulator);
+  updateSliderTrack(slider);
+  updateSimulator();
+})();
+
+// ============ GEMINI CHATBOT ============
+const API_KEY = 'AIzaSyDm23xBLp-7gH6wtvbXVwEOlvbvxQ1g54Q';
+const SYSTEM_CONTEXT = `Eres el CFO virtual de FOGÓN, una red de dark kitchens premium en México. 
+Responde SIEMPRE en español, de forma profesional pero accesible, como un CFO hablando con un potencial inversor.
+Sé directo, concreto y usa los datos reales de la empresa cuando sea relevante.
+
+DATOS CLAVE DE FOGÓN:
+- Empresa: FOGÓN Dark Kitchens S.A. de C.V
+- Modelo: Red de dark kitchens con marcas propias + Kitchen-as-a-Service + Licencias
+- Cocinas actuales: 4 en CDMX (Iztapalapa, Vallejo, Azcapotzalco, Xochimilco)
+- Marcas: 16 marcas virtuales (KUMA Ramen, El Carnal Birria, Madre Pasta, Nikkei Box y 12 más)
+- Ticket promedio: $285 MXN
+- Órdenes diarias meta: 280/cocina en estado estable
+- Proyección ingresos: $8.4M (A1), $18.2M (A2), $34.6M (A3), $52.1M (A4), $68M (A5)
+- EBITDA: -4.8% (A1), 15.4% (A2), 23.4% (A3), 28.4% (A4), 30.9% (A5)
+- TIR: 67%
+- VPN: $28.4M MXN al 12% WACC
+- Payback: 2.4 años
+- Multiple of Money: 4.1x en 5 años
+- Break-even: Mes 18 consolidado
+- Ronda actual: $18M MXN Serie A, valuación pre-money $42M, post-money $60M
+- Ticket mínimo inversor: $500K MXN
+- Equipo: Diego Montoya (CEO, ex-KFC), Sofía Vargas (CFO, ex-Cornershop), Rodrigo Alvarado (CTO, ex-Jüsto), Lucía Campos (CCO, ex-Alsea)
+- Comisión plataformas: 18% promedio negociado
+- Food cost: 28% sobre precio de venta
+- Labor cost: 22% año 1, optimiza a 18%
+- Estrategia de salida: Venta estratégica a fondo de PE o grupo de restaurantes a partir del año 4-5, o IPO en BMV
+
+CONSTITUCIÓN LEGAL:
+- Tipo: S.A. de C.V. (Sociedad Anónima de Capital Variable)
+- Registro: SAT, IMSS, INFONAVIT
+- Licencias: Uso de suelo comercial/industrial, licencia sanitaria COFEPRIS
+- Capital mínimo: $50,000 MXN
+- Notario: Escritura constitutiva ante notario público
+- SAPI de C.V. considerada para rondas futuras por mayor flexibilidad accionaria
+
+Responde de forma concisa (máximo 3-4 párrafos). Si no sabes algo específico, dilo con honestidad y ofrece lo que sí sabes.`;
+
+let chatHistory = [];
+
+async function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  addMsg(msg, 'user');
+  addMsg('Analizando tu pregunta...', 'bot loading');
+  chatHistory.push({ role: 'user', parts: [{ text: msg }] });
+
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM_CONTEXT }] },
+        contents: chatHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude generar una respuesta en este momento.';
+    removeLoading();
+    addMsg(reply, 'bot');
+    chatHistory.push({ role: 'model', parts: [{ text: reply }] });
+  } catch (e) {
+    removeLoading();
+    addMsg('Error de conexión. Verifica que la API key esté configurada correctamente.', 'bot');
+  }
+}
+
+function addMsg(text, type) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + type;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeLoading() {
+  const loading = document.querySelector('.msg.loading');
+  if (loading) loading.remove();
+}
+
+function sendQuickQ(btn) {
+  document.getElementById('chatInput').value = btn.textContent;
+  sendMsg();
+}
+</script>
+</body>
+</html>
