@@ -778,6 +778,23 @@
     .sim-amount { font-size: 2.8rem; }
     #simulador { padding: 80px 24px; }
   }
+
+  /* LANG TOGGLE */
+  .lang-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--muted);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .lang-btn:hover { border-color: var(--fire); color: var(--cream); }
+  .lang-btn .lang-active { color: var(--fire); font-weight: 600; }
+  .lang-btn .lang-sep { color: rgba(255,255,255,0.2); }
 </style>
 </head>
 <body>
@@ -789,15 +806,20 @@
 <nav>
   <div class="nav-logo">FOG<span>Ó</span>N</div>
   <div class="nav-links">
-    <a href="#problema">Oportunidad</a>
-    <a href="#modelo">Modelo</a>
-    <a href="#mercado">Mercado</a>
+    <a href="#problema" data-i18n="nav.oportunidad">Oportunidad</a>
+    <a href="#modelo" data-i18n="nav.modelo">Modelo</a>
+    <a href="#mercado" data-i18n="nav.mercado">Mercado</a>
     <a href="#financials">Financials</a>
-    <a href="#inversion">Inversión</a>
+    <a href="#inversion" data-i18n="nav.inversion">Inversión</a>
+    <a href="#simulador" data-i18n="nav.simulador">Simulador</a>
     <a href="#chatbot">CFO AI</a>
-    <a href="#simulador">Simulador</a>
-    <a href="#contacto" class="nav-cta">Invertir</a>
+    <a href="#contacto" class="nav-cta" data-i18n="nav.invertir">Invertir</a>
   </div>
+  <button class="lang-btn" id="langBtn" onclick="toggleLang()">
+    <span class="lang-active" id="langEs">ESP</span>
+    <span class="lang-sep">|</span>
+    <span id="langEn">ENG</span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -805,27 +827,27 @@
   <div class="hero-bg"></div>
   <div class="hero-noise"></div>
   <div style="position:relative;z-index:1;">
-    <div class="hero-tag">Ronda de Inversión Serie A · 2025</div>
-    <h1 class="hero-title">
+    <div class="hero-tag" data-i18n="hero.tag">Ronda de Inversión Serie A · 2025</div>
+    <h1 class="hero-title" data-i18n="hero.title">
       LA COCINA<br>QUE NUNCA<br><span class="accent">DUERME.</span>
     </h1>
-    <p class="hero-sub">Red de dark kitchens premium operando 16 marcas virtuales desde 4 centros de producción en CDMX.</p>
+    <p class="hero-sub" data-i18n="hero.sub">Red de dark kitchens premium operando 16 marcas virtuales desde 4 centros de producción en CDMX.</p>
     <div class="hero-metrics">
       <div class="metric-item">
         <div class="metric-value">$42<span>M</span></div>
-        <div class="metric-label">Valuación pre-money</div>
+        <div class="metric-label" data-i18n="hero.m1">Valuación pre-money</div>
       </div>
       <div class="metric-item">
         <div class="metric-value">4<span>X</span></div>
-        <div class="metric-label">ROI proyectado año 3</div>
+        <div class="metric-label" data-i18n="hero.m2">ROI proyectado año 3</div>
       </div>
       <div class="metric-item">
         <div class="metric-value">38<span>%</span></div>
-        <div class="metric-label">EBITDA margin</div>
+        <div class="metric-label" data-i18n="hero.m3">EBITDA margin</div>
       </div>
       <div class="metric-item">
         <div class="metric-value">67<span>%</span></div>
-        <div class="metric-label">TIR estimada</div>
+        <div class="metric-label" data-i18n="hero.m4">TIR estimada</div>
       </div>
     </div>
   </div>
@@ -837,8 +859,8 @@
 
 <!-- PROBLEMA & SOLUCIÓN -->
 <section id="problema">
-  <div class="section-tag">01 — La Oportunidad</div>
-  <h2 class="section-title">El Problema<br>Es Enorme.</h2>
+  <div class="section-tag" data-i18n="s01.tag">01 — La Oportunidad</div>
+  <h2 class="section-title" data-i18n="s01.title">El Problema<br>Es Enorme.</h2>
   <div class="divider"></div>
   <div class="two-col reveal">
     <div>
@@ -885,8 +907,8 @@
 
 <!-- MODELO DE NEGOCIO -->
 <section id="modelo">
-  <div class="section-tag">02 — Modelo de Negocio</div>
-  <h2 class="section-title">Tres Fuentes<br>de Ingreso.</h2>
+  <div class="section-tag" data-i18n="s02.tag">02 — Modelo de Negocio</div>
+  <h2 class="section-title" data-i18n="s02.title">Tres Fuentes<br>de Ingreso.</h2>
   <div class="divider"></div>
   <div class="revenue-streams reveal">
     <div class="stream">
@@ -918,8 +940,8 @@
 
 <!-- MERCADO -->
 <section id="mercado">
-  <div class="section-tag">03 — Tamaño de Mercado</div>
-  <h2 class="section-title">Mercado de<br>Billones.</h2>
+  <div class="section-tag" data-i18n="s03.tag">03 — Tamaño de Mercado</div>
+  <h2 class="section-title" data-i18n="s03.title">Mercado de<br>Billones.</h2>
   <div class="divider"></div>
   <div class="market-grid reveal">
     <div class="market-numbers">
@@ -960,8 +982,8 @@
 
 <!-- FINANCIALS -->
 <section id="financials">
-  <div class="section-tag">04 — Proyecciones Financieras</div>
-  <h2 class="section-title">Los Números<br>No Mienten.</h2>
+  <div class="section-tag" data-i18n="s04.tag">04 — Proyecciones Financieras</div>
+  <h2 class="section-title" data-i18n="s04.title">Los Números<br>No Mienten.</h2>
   <div class="divider"></div>
   <div class="financials-grid reveal">
     <div>
@@ -1115,8 +1137,8 @@
 
 <!-- INVERSIÓN -->
 <section id="inversion">
-  <div class="section-tag">05 — La Inversión</div>
-  <h2 class="section-title">Buscamos<br>Socios.</h2>
+  <div class="section-tag" data-i18n="s05.tag">05 — La Inversión</div>
+  <h2 class="section-title" data-i18n="s05.title">Buscamos<br>Socios.</h2>
   <div class="divider"></div>
   <div class="investment-layout reveal">
     <div>
@@ -1182,8 +1204,8 @@
 
 <!-- EQUIPO -->
 <section id="equipo" style="background:var(--charcoal);">
-  <div class="section-tag">06 — El Equipo</div>
-  <h2 class="section-title">Gente Que<br>Ya Lo Hizo.</h2>
+  <div class="section-tag" data-i18n="s06.tag">06 — El Equipo</div>
+  <h2 class="section-title" data-i18n="s06.title">Gente Que<br>Ya Lo Hizo.</h2>
   <div class="divider"></div>
   <div class="team-grid reveal">
     <div class="team-card">
@@ -1215,8 +1237,8 @@
 
 <!-- ROADMAP -->
 <section id="roadmap">
-  <div class="section-tag">07 — Plan de Ejecución</div>
-  <h2 class="section-title">De Hoy<br>Al Liderazgo.</h2>
+  <div class="section-tag" data-i18n="s07.tag">07 — Plan de Ejecución</div>
+  <h2 class="section-title" data-i18n="s07.title">De Hoy<br>Al Liderazgo.</h2>
   <div class="divider"></div>
   <div class="timeline reveal">
     <div class="timeline-item">
@@ -1252,47 +1274,13 @@
   </div>
 </section>
 
-<!-- CHATBOT CFO -->
-<section id="chatbot">
-  <div class="section-tag">08 — Due Diligence</div>
-  <h2 class="section-title">Pregúntale<br>Al CFO.</h2>
-  <div class="divider"></div>
-  <div class="chat-wrapper reveal">
-    <div class="chat-intro">
-      <p>Tenemos un CFO virtual entrenado con toda la información financiera, operativa y estratégica de FOGÓN. Hazle cualquier pregunta que le harías a un equipo de management antes de invertir.</p>
-      <p style="font-size:0.85rem;">Pregunta sobre proyecciones, supuestos, competencia, riesgos, estructura legal, o cualquier aspecto del negocio.</p>
-      <div class="quick-qs">
-        <div class="section-tag" style="margin-bottom:8px;">Preguntas sugeridas</div>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cuál es el principal riesgo de inversión?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cómo calcularon la TIR del 67%?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Qué pasa si Rappi sube sus comisiones?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cuál es la estrategia de salida (exit) para el inversor?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cómo se constituye legalmente la empresa?</button>
-      </div>
-    </div>
-    <div class="chat-box">
-      <div class="chat-header">
-        <div class="chat-dot"></div>
-        <div class="chat-header-text">CFO Virtual · FOGÓN — Powered by Gemini</div>
-      </div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="msg bot">Hola, soy el CFO virtual de FOGÓN. Puedo responder cualquier pregunta sobre nuestras finanzas, modelo de negocio, supuestos o estrategia de inversión. ¿Qué quieres saber?</div>
-      </div>
-      <div class="chat-input-area">
-        <input class="chat-input" id="chatInput" type="text" placeholder="Pregunta lo que quieras como inversor..." onkeydown="if(event.key==='Enter')sendMsg()">
-        <button class="chat-send" onclick="sendMsg()">Enviar</button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- SIMULADOR DE INVERSIÓN -->
 <section id="simulador">
-  <div class="section-tag reveal">09 — Simulador de Inversión</div>
-  <h2 class="section-title reveal">Calcula Tu<br>Retorno.</h2>
+  <div class="section-tag reveal" data-i18n="sim.tag">08 — Simulador de Inversión</div>
+  <h2 class="section-title reveal" data-i18n="sim.title">Calcula Tu<br>Retorno.</h2>
   <div class="sim-container">
     <div class="sim-slider-section reveal">
-      <div class="sim-label">¿Cuánto deseas invertir?</div>
+      <div class="sim-label" data-i18n="sim.label">¿Cuánto deseas invertir?</div>
       <div class="sim-amount" id="simAmount">$1,000,000</div>
       <input type="range" id="investSlider" min="500000" max="18000000" step="50000" value="1000000">
       <div class="sim-range-labels">
@@ -1302,31 +1290,31 @@
     </div>
     <div class="sim-metrics reveal reveal-delay-1">
       <div class="sim-metric-card">
-        <div class="sim-metric-label">% en la Ronda</div>
+        <div class="sim-metric-label" data-i18n="sim.l1">% en la Ronda</div>
         <div class="sim-metric-value fire" id="simParticipation">—</div>
-        <div class="sim-metric-sub">de los $18M levantados</div>
+        <div class="sim-metric-sub" data-i18n="sim.s1">de los $18M levantados</div>
       </div>
       <div class="sim-metric-card">
-        <div class="sim-metric-label">% Equity Empresa</div>
+        <div class="sim-metric-label" data-i18n="sim.l2">% Equity Empresa</div>
         <div class="sim-metric-value gold" id="simEquity">—</div>
-        <div class="sim-metric-sub">del cap table</div>
+        <div class="sim-metric-sub" data-i18n="sim.s2">del cap table</div>
       </div>
       <div class="sim-metric-card">
-        <div class="sim-metric-label">TIR Proyectada</div>
+        <div class="sim-metric-label" data-i18n="sim.l3">TIR Proyectada</div>
         <div class="sim-metric-value fire" id="simTIR">—</div>
-        <div class="sim-metric-sub">retorno anualizado</div>
+        <div class="sim-metric-sub" data-i18n="sim.s3">retorno anualizado</div>
       </div>
       <div class="sim-metric-card">
-        <div class="sim-metric-label">Múltiplo de Dinero</div>
+        <div class="sim-metric-label" data-i18n="sim.l4">Múltiplo de Dinero</div>
         <div class="sim-metric-value gold" id="simMoM">—</div>
-        <div class="sim-metric-sub">en 5 años</div>
+        <div class="sim-metric-sub" data-i18n="sim.s4">en 5 años</div>
       </div>
     </div>
     <div class="sim-returns reveal reveal-delay-2">
       <div class="sim-returns-header">
-        <span>Año</span>
-        <span>Valor Proyectado (MXN)</span>
-        <span>Múltiplo</span>
+        <span data-i18n="sim.th1">Año</span>
+        <span data-i18n="sim.th2">Valor Proyectado (MXN)</span>
+        <span data-i18n="sim.th3">Múltiplo</span>
       </div>
       <div class="sim-return-row"><span>Año 1</span><span id="yr1v">—</span><span id="yr1m">—</span></div>
       <div class="sim-return-row"><span>Año 2</span><span id="yr2v">—</span><span id="yr2m">—</span></div>
@@ -1340,12 +1328,46 @@
   </div>
 </section>
 
+<!-- CHATBOT CFO -->
+<section id="chatbot" style="background:var(--charcoal);">
+  <div class="section-tag" data-i18n="chat.tag">09 — Due Diligence</div>
+  <h2 class="section-title" data-i18n="chat.title">Pregúntale<br>Al CFO.</h2>
+  <div class="divider"></div>
+  <div class="chat-wrapper reveal">
+    <div class="chat-intro">
+      <p data-i18n="chat.intro1">Tenemos un CFO virtual entrenado con toda la información financiera, operativa y estratégica de FOGÓN. Hazle cualquier pregunta que le harías a un equipo de management antes de invertir.</p>
+      <p style="font-size:0.85rem;" data-i18n="chat.intro2">Pregunta sobre proyecciones, supuestos, competencia, riesgos, estructura legal, o cualquier aspecto del negocio.</p>
+      <div class="quick-qs">
+        <div class="section-tag" style="margin-bottom:8px;" data-i18n="chat.suggested">Preguntas sugeridas</div>
+        <button class="quick-q" onclick="sendQuickQ(this)" data-i18n="chat.q1">¿Cuál es el principal riesgo de inversión?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)" data-i18n="chat.q2">¿Cómo calcularon la TIR del 67%?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)" data-i18n="chat.q3">¿Qué pasa si Rappi sube sus comisiones?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)" data-i18n="chat.q4">¿Cuál es la estrategia de salida (exit) para el inversor?</button>
+        <button class="quick-q" onclick="sendQuickQ(this)" data-i18n="chat.q5">¿Cómo se constituye legalmente la empresa?</button>
+      </div>
+    </div>
+    <div class="chat-box">
+      <div class="chat-header">
+        <div class="chat-dot"></div>
+        <div class="chat-header-text">CFO Virtual · FOGÓN — Powered by Gemini</div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg bot" data-i18n="chat.welcome">Hola, soy el CFO virtual de FOGÓN. Puedo responder cualquier pregunta sobre nuestras finanzas, modelo de negocio, supuestos o estrategia de inversión. ¿Qué quieres saber?</div>
+      </div>
+      <div class="chat-input-area">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Pregunta lo que quieras como inversor..." data-i18n-placeholder="chat.placeholder" onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="chat-send" onclick="sendMsg()" data-i18n="chat.send">Enviar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACTO -->
 <section id="contacto">
-  <div class="section-tag">10 — Siguiente Paso</div>
-  <h2 class="section-title">¿Listo Para<br>Invertir?</h2>
-  <p>Agenda una sesión de 30 minutos con nuestro equipo directivo. Te enviamos el data room completo previo a la llamada.</p>
-  <a href="mailto:investors@fogon.mx" class="cta-btn">Agendar Reunión →</a>
+  <div class="section-tag" data-i18n="contact.tag">10 — Siguiente Paso</div>
+  <h2 class="section-title" data-i18n="contact.title">¿Listo Para<br>Invertir?</h2>
+  <p data-i18n="contact.desc">Agenda una sesión de 30 minutos con nuestro equipo directivo. Te enviamos el data room completo previo a la llamada.</p>
+  <a href="mailto:investors@fogon.mx" class="cta-btn" data-i18n="contact.cta">Agendar Reunión →</a>
   <div class="contact-details">
     <span>investors@fogon.mx</span>
     <span>+52 55 4321 0000</span>
@@ -1496,6 +1518,104 @@ new Chart(document.getElementById('roiChart'), {
   },
   options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + v + 'M' } } } }
 });
+
+// ============ IDIOMA ============
+const T = {
+  es: {
+    'nav.oportunidad':'Oportunidad','nav.modelo':'Modelo','nav.mercado':'Mercado',
+    'nav.inversion':'Inversión','nav.simulador':'Simulador','nav.invertir':'Invertir',
+    'hero.tag':'Ronda de Inversión Serie A · 2025',
+    'hero.title':'LA COCINA<br>QUE NUNCA<br><span class="accent">DUERME.</span>',
+    'hero.sub':'Red de dark kitchens premium operando 16 marcas virtuales desde 4 centros de producción en CDMX.',
+    'hero.m1':'Valuación pre-money','hero.m2':'ROI proyectado año 3','hero.m3':'EBITDA margin','hero.m4':'TIR estimada',
+    's01.tag':'01 — La Oportunidad','s01.title':'El Problema<br>Es Enorme.',
+    's02.tag':'02 — Modelo de Negocio','s02.title':'Tres Fuentes<br>de Ingreso.',
+    's03.tag':'03 — Tamaño de Mercado','s03.title':'Mercado de<br>Billones.',
+    's04.tag':'04 — Proyecciones Financieras','s04.title':'Los Números<br>No Mienten.',
+    's05.tag':'05 — La Inversión','s05.title':'Buscamos<br>Socios.',
+    's06.tag':'06 — El Equipo','s06.title':'Gente Que<br>Ya Lo Hizo.',
+    's07.tag':'07 — Plan de Ejecución','s07.title':'De Hoy<br>Al Liderazgo.',
+    'sim.tag':'08 — Simulador de Inversión','sim.title':'Calcula Tu<br>Retorno.',
+    'sim.label':'¿Cuánto deseas invertir?',
+    'sim.l1':'% en la Ronda','sim.s1':'de los $18M levantados',
+    'sim.l2':'% Equity Empresa','sim.s2':'del cap table',
+    'sim.l3':'TIR Proyectada','sim.s3':'retorno anualizado',
+    'sim.l4':'Múltiplo de Dinero','sim.s4':'en 5 años',
+    'sim.th1':'Año','sim.th2':'Valor Proyectado (MXN)','sim.th3':'Múltiplo',
+    'chat.tag':'09 — Due Diligence','chat.title':'Pregúntale<br>Al CFO.',
+    'chat.intro1':'Tenemos un CFO virtual entrenado con toda la información financiera, operativa y estratégica de FOGÓN. Hazle cualquier pregunta que le harías a un equipo de management antes de invertir.',
+    'chat.intro2':'Pregunta sobre proyecciones, supuestos, competencia, riesgos, estructura legal, o cualquier aspecto del negocio.',
+    'chat.suggested':'Preguntas sugeridas',
+    'chat.q1':'¿Cuál es el principal riesgo de inversión?','chat.q2':'¿Cómo calcularon la TIR del 67%?',
+    'chat.q3':'¿Qué pasa si Rappi sube sus comisiones?','chat.q4':'¿Cuál es la estrategia de salida (exit) para el inversor?',
+    'chat.q5':'¿Cómo se constituye legalmente la empresa?',
+    'chat.welcome':'Hola, soy el CFO virtual de FOGÓN. Puedo responder cualquier pregunta sobre nuestras finanzas, modelo de negocio, supuestos o estrategia de inversión. ¿Qué quieres saber?',
+    'chat.placeholder':'Pregunta lo que quieras como inversor...','chat.send':'Enviar',
+    'contact.tag':'10 — Siguiente Paso','contact.title':'¿Listo Para<br>Invertir?',
+    'contact.desc':'Agenda una sesión de 30 minutos con nuestro equipo directivo. Te enviamos el data room completo previo a la llamada.',
+    'contact.cta':'Agendar Reunión →',
+  },
+  en: {
+    'nav.oportunidad':'Opportunity','nav.modelo':'Model','nav.mercado':'Market',
+    'nav.inversion':'Investment','nav.simulador':'Simulator','nav.invertir':'Invest',
+    'hero.tag':'Series A Investment Round · 2025',
+    'hero.title':'THE KITCHEN<br>THAT NEVER<br><span class="accent">SLEEPS.</span>',
+    'hero.sub':'Premium dark kitchen network operating 16 virtual brands from 4 production hubs in Mexico City.',
+    'hero.m1':'Pre-money valuation','hero.m2':'Projected ROI year 3','hero.m3':'EBITDA margin','hero.m4':'Estimated IRR',
+    's01.tag':'01 — The Opportunity','s01.title':'The Problem<br>Is Massive.',
+    's02.tag':'02 — Business Model','s02.title':'Three Revenue<br>Streams.',
+    's03.tag':'03 — Market Size','s03.title':'A Billion-Dollar<br>Market.',
+    's04.tag':'04 — Financial Projections','s04.title':'The Numbers<br>Don\'t Lie.',
+    's05.tag':'05 — The Investment','s05.title':'We Seek<br>Partners.',
+    's06.tag':'06 — The Team','s06.title':'People Who<br>Did It Before.',
+    's07.tag':'07 — Execution Plan','s07.title':'From Today<br>To Market Lead.',
+    'sim.tag':'08 — Investment Simulator','sim.title':'Calculate Your<br>Return.',
+    'sim.label':'How much do you want to invest?',
+    'sim.l1':'% of Round','sim.s1':'of the $18M raised',
+    'sim.l2':'% Company Equity','sim.s2':'of cap table',
+    'sim.l3':'Projected IRR','sim.s3':'annualized return',
+    'sim.l4':'Money Multiple','sim.s4':'over 5 years',
+    'sim.th1':'Year','sim.th2':'Projected Value (MXN)','sim.th3':'Multiple',
+    'chat.tag':'09 — Due Diligence','chat.title':'Ask The<br>CFO.',
+    'chat.intro1':'We have a virtual CFO trained on all of FOGÓN\'s financial, operational and strategic data. Ask it anything you\'d ask a management team before investing.',
+    'chat.intro2':'Ask about projections, assumptions, competition, risks, legal structure, or any aspect of the business.',
+    'chat.suggested':'Suggested questions',
+    'chat.q1':'What is the main investment risk?','chat.q2':'How did you calculate the 67% IRR?',
+    'chat.q3':'What if Rappi raises its commissions?','chat.q4':'What is the exit strategy for investors?',
+    'chat.q5':'What is the legal structure of the company?',
+    'chat.welcome':'Hi, I\'m FOGÓN\'s virtual CFO. I can answer any question about our financials, business model, assumptions or investment strategy. What would you like to know?',
+    'chat.placeholder':'Ask anything as an investor...','chat.send':'Send',
+    'contact.tag':'10 — Next Step','contact.title':'Ready To<br>Invest?',
+    'contact.desc':'Schedule a 30-minute session with our leadership team. We\'ll send you the complete data room before the call.',
+    'contact.cta':'Schedule a Meeting →',
+  }
+};
+
+let currentLang = 'es';
+
+function toggleLang() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  const dict = T[currentLang];
+
+  // Update text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (dict[key] !== undefined) el.placeholder = dict[key];
+  });
+
+  // Toggle active indicator
+  document.getElementById('langEs').classList.toggle('lang-active', currentLang === 'es');
+  document.getElementById('langEn').classList.toggle('lang-active', currentLang === 'en');
+
+  // Update html lang attribute
+  document.documentElement.lang = currentLang;
+}
 
 // ============ SIMULADOR DE INVERSIÓN ============
 (function() {
