@@ -677,6 +677,107 @@
   .reveal-delay-1 { transition-delay: 0.1s; }
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* SIMULADOR DE INVERSIÓN */
+  #simulador { padding: 120px 60px; }
+  #simulador .section-title { margin-bottom: 60px; }
+  .sim-container { max-width: 900px; margin: 0 auto; display: grid; gap: 40px; }
+  .sim-slider-section { text-align: center; }
+  .sim-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+  }
+  .sim-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: var(--fire); line-height: 1;
+    margin-bottom: 28px; letter-spacing: 0.02em; transition: color 0.2s;
+  }
+  #investSlider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px;
+    border-radius: 2px; outline: none; cursor: pointer;
+  }
+  #investSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--fire); cursor: pointer;
+    box-shadow: 0 0 14px rgba(255,77,0,0.7);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  #investSlider::-webkit-slider-thumb:hover {
+    transform: scale(1.25); box-shadow: 0 0 22px rgba(255,77,0,0.9);
+  }
+  #investSlider::-moz-range-thumb {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--fire); border: none; cursor: pointer;
+    box-shadow: 0 0 14px rgba(255,77,0,0.7);
+  }
+  .sim-range-labels {
+    display: flex; justify-content: space-between;
+    margin-top: 14px; font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+  }
+  .sim-metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .sim-metric-card {
+    background: var(--ash);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 28px 16px; text-align: center;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .sim-metric-card:hover { border-color: rgba(255,77,0,0.3); transform: translateY(-2px); }
+  .sim-metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .sim-metric-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; line-height: 1; margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .sim-metric-value.fire { color: var(--fire); }
+  .sim-metric-value.gold { color: var(--gold); }
+  .sim-metric-sub { font-size: 0.68rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .sim-returns {
+    background: var(--ash);
+    border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+  }
+  .sim-returns-header {
+    display: grid; grid-template-columns: 1fr 2fr 1fr;
+    padding: 14px 24px;
+    background: var(--smoke);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .sim-return-row {
+    display: grid; grid-template-columns: 1fr 2fr 1fr;
+    padding: 18px 24px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    font-family: 'DM Mono', monospace; font-size: 0.85rem;
+    transition: background 0.2s;
+  }
+  .sim-return-row:hover { background: rgba(255,77,0,0.05); }
+  .sim-return-row span:first-child { color: var(--muted); }
+  .sim-return-row span:nth-child(2) { color: var(--cream); }
+  .sim-return-row span:last-child { color: var(--gold); }
+  .sim-return-row.highlight {
+    background: rgba(245,200,66,0.05);
+    border-top: 1px solid rgba(245,200,66,0.2);
+  }
+  .sim-return-row.highlight span:nth-child(2) { color: var(--gold); font-weight: 600; }
+  .sim-chart-wrapper {
+    background: var(--ash);
+    border: 1px solid rgba(255,255,255,0.05); padding: 32px;
+  }
+  @media (max-width: 768px) {
+    .sim-metrics { grid-template-columns: repeat(2, 1fr); }
+    .sim-amount { font-size: 2.8rem; }
+    #simulador { padding: 80px 24px; }
+  }
 </style>
 </head>
 <body>
@@ -694,6 +795,7 @@
     <a href="#financials">Financials</a>
     <a href="#inversion">Inversión</a>
     <a href="#chatbot">CFO AI</a>
+    <a href="#simulador">Simulador</a>
     <a href="#contacto" class="nav-cta">Invertir</a>
   </div>
 </nav>
@@ -1184,9 +1286,63 @@
   </div>
 </section>
 
+<!-- SIMULADOR DE INVERSIÓN -->
+<section id="simulador">
+  <div class="section-tag reveal">09 — Simulador de Inversión</div>
+  <h2 class="section-title reveal">Calcula Tu<br>Retorno.</h2>
+  <div class="sim-container">
+    <div class="sim-slider-section reveal">
+      <div class="sim-label">¿Cuánto deseas invertir?</div>
+      <div class="sim-amount" id="simAmount">$1,000,000</div>
+      <input type="range" id="investSlider" min="500000" max="18000000" step="50000" value="1000000">
+      <div class="sim-range-labels">
+        <span>$500,000 MXN mín.</span>
+        <span>$18,000,000 MXN máx.</span>
+      </div>
+    </div>
+    <div class="sim-metrics reveal reveal-delay-1">
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">% en la Ronda</div>
+        <div class="sim-metric-value fire" id="simParticipation">—</div>
+        <div class="sim-metric-sub">de los $18M levantados</div>
+      </div>
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">% Equity Empresa</div>
+        <div class="sim-metric-value gold" id="simEquity">—</div>
+        <div class="sim-metric-sub">del cap table</div>
+      </div>
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">TIR Proyectada</div>
+        <div class="sim-metric-value fire" id="simTIR">—</div>
+        <div class="sim-metric-sub">retorno anualizado</div>
+      </div>
+      <div class="sim-metric-card">
+        <div class="sim-metric-label">Múltiplo de Dinero</div>
+        <div class="sim-metric-value gold" id="simMoM">—</div>
+        <div class="sim-metric-sub">en 5 años</div>
+      </div>
+    </div>
+    <div class="sim-returns reveal reveal-delay-2">
+      <div class="sim-returns-header">
+        <span>Año</span>
+        <span>Valor Proyectado (MXN)</span>
+        <span>Múltiplo</span>
+      </div>
+      <div class="sim-return-row"><span>Año 1</span><span id="yr1v">—</span><span id="yr1m">—</span></div>
+      <div class="sim-return-row"><span>Año 2</span><span id="yr2v">—</span><span id="yr2m">—</span></div>
+      <div class="sim-return-row"><span>Año 3</span><span id="yr3v">—</span><span id="yr3m">—</span></div>
+      <div class="sim-return-row"><span>Año 4</span><span id="yr4v">—</span><span id="yr4m">—</span></div>
+      <div class="sim-return-row highlight"><span>Año 5 — Salida</span><span id="yr5v">—</span><span id="yr5m">—</span></div>
+    </div>
+    <div class="sim-chart-wrapper reveal reveal-delay-3">
+      <canvas id="simChart" height="80"></canvas>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACTO -->
 <section id="contacto">
-  <div class="section-tag">09 — Siguiente Paso</div>
+  <div class="section-tag">10 — Siguiente Paso</div>
   <h2 class="section-title">¿Listo Para<br>Invertir?</h2>
   <p>Agenda una sesión de 30 minutos con nuestro equipo directivo. Te enviamos el data room completo previo a la llamada.</p>
   <a href="mailto:investors@fogon.mx" class="cta-btn">Agendar Reunión →</a>
@@ -1340,6 +1496,101 @@ new Chart(document.getElementById('roiChart'), {
   },
   options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + v + 'M' } } } }
 });
+
+// ============ SIMULADOR DE INVERSIÓN ============
+(function() {
+  const TOTAL_RAISE = 18000000;
+  const INVESTOR_EQUITY = 0.30; // 30% equity for $18M at $42M pre-money / $60M post-money
+  // Company valuation trajectory (MXN millions) giving 4.1x MoM at year 5 exit
+  // Investor share at year 5 = 0.30 * 246M = $73.8M = 4.1 * $18M ✓
+  const CO_VALS = [65, 100, 155, 205, 246];
+
+  function fmtMXN(n) {
+    if (n >= 1e6) return '$' + (n / 1e6).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + 'M';
+    return '$' + Math.round(n).toLocaleString('es-MX');
+  }
+
+  function updateSliderTrack(slider) {
+    const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = `linear-gradient(to right, #FF4D00 ${pct}%, #2E2E26 ${pct}%)`;
+  }
+
+  const simChartInstance = new Chart(document.getElementById('simChart'), {
+    type: 'line',
+    data: {
+      labels: ['Inversión', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+      datasets: [
+        {
+          label: 'Valor proyectado',
+          data: Array(6).fill(0),
+          borderColor: '#FF4D00',
+          backgroundColor: 'rgba(255,77,0,0.1)',
+          fill: true, tension: 0.4,
+          pointBackgroundColor: '#FF4D00',
+          pointRadius: 5, pointHoverRadius: 8
+        },
+        {
+          label: 'Capital invertido',
+          data: Array(6).fill(0),
+          borderColor: 'rgba(245,200,66,0.45)',
+          backgroundColor: 'transparent',
+          borderDash: [6, 4], tension: 0, pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + fmtMXN(ctx.raw) + ' MXN'
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: v => v >= 1e6 ? '$' + (v / 1e6).toFixed(1) + 'M' : '$' + (v / 1000).toFixed(0) + 'K'
+          }
+        }
+      }
+    }
+  });
+
+  function updateSimulator() {
+    const slider = document.getElementById('investSlider');
+    const inv = parseInt(slider.value);
+    updateSliderTrack(slider);
+
+    document.getElementById('simAmount').textContent = '$' + inv.toLocaleString('es-MX');
+
+    const participationPct = (inv / TOTAL_RAISE) * 100;
+    const equityPct = participationPct * INVESTOR_EQUITY;
+    document.getElementById('simParticipation').textContent = participationPct.toFixed(2) + '%';
+    document.getElementById('simEquity').textContent = equityPct.toFixed(2) + '%';
+    document.getElementById('simTIR').textContent = '67%';
+    document.getElementById('simMoM').textContent = '4.1x';
+
+    const eqFraction = (inv / TOTAL_RAISE) * INVESTOR_EQUITY;
+    const yearVals = CO_VALS.map(v => eqFraction * v * 1e6);
+    const ids = ['yr1v','yr2v','yr3v','yr4v','yr5v'];
+    const mids = ['yr1m','yr2m','yr3m','yr4m','yr5m'];
+    yearVals.forEach((val, i) => {
+      document.getElementById(ids[i]).textContent = fmtMXN(val);
+      document.getElementById(mids[i]).textContent = (val / inv).toFixed(2) + 'x';
+    });
+
+    simChartInstance.data.datasets[0].data = [inv, ...yearVals];
+    simChartInstance.data.datasets[1].data = Array(6).fill(inv);
+    simChartInstance.update('none');
+  }
+
+  const slider = document.getElementById('investSlider');
+  slider.addEventListener('input', updateSimulator);
+  updateSliderTrack(slider);
+  updateSimulator();
+})();
 
 // ============ GEMINI CHATBOT ============
 const API_KEY = 'AIzaSyDm23xBLp-7gH6wtvbXVwEOlvbvxQ1g54Q';
