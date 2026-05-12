@@ -716,19 +716,17 @@
 <!-- CURSOR -->
 <!-- MB Star Cursor — hotspot at center -->
 <div id="mbCursor">
-  <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Outer ring — stroke only, transparent fill -->
-    <circle cx="19" cy="19" r="16.5" stroke="#C0C0C0" stroke-width="2"/>
-    <!-- Inner ring line -->
-    <circle cx="19" cy="19" r="14" stroke="#C0C0C0" stroke-width="0.6" opacity="0.5"/>
-    <!-- Top arm -->
-    <path d="M19 4 L20.5 17.5 L19 19 L17.5 17.5 Z" fill="#C0C0C0"/>
-    <!-- Bottom-right arm -->
-    <path d="M19 19 L32.5 29 L21.5 20.5 Z" fill="#C0C0C0"/>
-    <!-- Bottom-left arm -->
-    <path d="M19 19 L5.5 29 L16.5 20.5 Z" fill="#C0C0C0"/>
+  <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer ring -->
+    <circle cx="19" cy="19" r="16.5" stroke="#C0C0C0" stroke-width="2" fill="none"/>
+    <!-- Inner ring -->
+    <circle cx="19" cy="19" r="13.8" stroke="#C0C0C0" stroke-width="0.7" fill="none" opacity="0.5"/>
+    <!-- Three arms as stroked lines — guaranteed silver -->
+    <line x1="19" y1="19" x2="19"   y2="3.5"  stroke="#C0C0C0" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="19" y1="19" x2="33.2" y2="28.5" stroke="#C0C0C0" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="19" y1="19" x2="4.8"  y2="28.5" stroke="#C0C0C0" stroke-width="3.5" stroke-linecap="round"/>
     <!-- Center hub -->
-    <circle cx="19" cy="19" r="2.2" fill="#C0C0C0"/>
+    <circle cx="19" cy="19" r="2.5" fill="#C0C0C0"/>
   </svg>
 </div>
 
