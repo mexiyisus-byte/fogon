@@ -567,6 +567,8 @@
   body.lang-en [data-en] { display: block; }
   body.lang-es span[data-es], body.lang-en span[data-en] { display: inline; }
   body.lang-es div[data-es], body.lang-en div[data-en] { display: flex; }
+  /* section-title needs block (has <br> inside) */
+  body.lang-es .section-title[data-es], body.lang-en .section-title[data-en] { display: block; }
 
   /* RESPONSIVE */
   @media (max-width: 900px) {
@@ -608,12 +610,12 @@
     </div>
   </div>
   <div class="nav-links">
-    <a href="#proyecto">Proyecto</a>
-    <a href="#financiero">Financiero</a>
-    <a href="#analisis">Análisis</a>
-    <a href="#riesgos">Riesgos</a>
-    <a href="#mapa">Mapa Conceptual</a>
-    <a href="#conclusion" class="nav-cta">Conclusión</a>
+    <a href="#proyecto"><span data-es>Proyecto</span><span data-en>Project</span></a>
+    <a href="#financiero"><span data-es>Financiero</span><span data-en>Financial</span></a>
+    <a href="#analisis"><span data-es>Análisis</span><span data-en>Analysis</span></a>
+    <a href="#riesgos"><span data-es>Riesgos</span><span data-en>Risks</span></a>
+    <a href="#mapa"><span data-es>Mapa Conceptual</span><span data-en>Concept Map</span></a>
+    <a href="#conclusion" class="nav-cta"><span data-es>Conclusión</span><span data-en>Conclusion</span></a>
   </div>
   <div class="lang-toggle">
     <button class="lang-btn" onclick="setLang('es')">ESP</button>
