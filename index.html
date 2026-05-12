@@ -717,19 +717,47 @@
 <!-- MB Star Cursor — hotspot at center -->
 <div id="mbCursor">
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Outer ring -->
-    <circle cx="19" cy="19" r="17.5" stroke="#C8C8C8" stroke-width="1.8"/>
-    <!-- Inner ring (subtle) -->
-    <circle cx="19" cy="19" r="14.5" stroke="#C8C8C8" stroke-width="0.5" opacity="0.35"/>
-    <!-- Three-pointed star -->
+    <defs>
+      <!-- Metallic silver radial gradient for the ring fill -->
+      <radialGradient id="ringGrad" cx="38%" cy="32%" r="65%">
+        <stop offset="0%"   stop-color="#F0F0F0"/>
+        <stop offset="40%"  stop-color="#C0C0C0"/>
+        <stop offset="100%" stop-color="#787878"/>
+      </radialGradient>
+      <!-- Metallic silver linear gradient for star arms -->
+      <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="#EFEFEF"/>
+        <stop offset="45%"  stop-color="#BEBEBE"/>
+        <stop offset="100%" stop-color="#888888"/>
+      </linearGradient>
+      <!-- Lighter highlight gradient -->
+      <linearGradient id="highlightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Outer ring — filled silver disc as base -->
+    <circle cx="19" cy="19" r="18" fill="url(#ringGrad)"/>
+    <!-- Outer ring border -->
+    <circle cx="19" cy="19" r="17.5" stroke="#A0A0A0" stroke-width="0.6"/>
+    <!-- Inner ring cut (dark background shows through) -->
+    <circle cx="19" cy="19" r="15.5" fill="#0E0E0E"/>
+
+    <!-- Three-pointed star arms — solid silver -->
     <!-- Top arm -->
-    <path d="M19 2 L20.6 17 L19 19 L17.4 17 Z" fill="#D0D0D0"/>
+    <path d="M19 3.5 L20.8 17.2 L19 19 L17.2 17.2 Z" fill="url(#starGrad)"/>
     <!-- Bottom-right arm -->
-    <path d="M19 19 L34 30 L22.2 20.8 Z" fill="#D0D0D0"/>
+    <path d="M19 19 L33.5 29.5 L21.8 21 Z" fill="url(#starGrad)"/>
     <!-- Bottom-left arm -->
-    <path d="M19 19 L4 30 L15.8 20.8 Z" fill="#D0D0D0"/>
+    <path d="M19 19 L4.5 29.5 L16.2 21 Z" fill="url(#starGrad)"/>
+
     <!-- Center hub -->
-    <circle cx="19" cy="19" r="2.6" fill="#D8D8D8"/>
+    <circle cx="19" cy="19" r="2.8" fill="url(#starGrad)"/>
+    <circle cx="19" cy="19" r="1.2" fill="#EEEEEE"/>
+
+    <!-- Specular highlight on the ring -->
+    <circle cx="19" cy="19" r="15.5" fill="url(#highlightGrad)" opacity="0.25"/>
   </svg>
 </div>
 
