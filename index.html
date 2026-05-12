@@ -718,46 +718,47 @@
 <div id="mbCursor">
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <!-- Metallic silver radial gradient for the ring fill -->
-      <radialGradient id="ringGrad" cx="38%" cy="32%" r="65%">
-        <stop offset="0%"   stop-color="#F0F0F0"/>
-        <stop offset="40%"  stop-color="#C0C0C0"/>
-        <stop offset="100%" stop-color="#787878"/>
+      <!-- Full chrome disc gradient -->
+      <radialGradient id="discGrad" cx="35%" cy="28%" r="70%">
+        <stop offset="0%"   stop-color="#FFFFFF"/>
+        <stop offset="30%"  stop-color="#E0E0E0"/>
+        <stop offset="70%"  stop-color="#A8A8A8"/>
+        <stop offset="100%" stop-color="#707070"/>
       </radialGradient>
-      <!-- Metallic silver linear gradient for star arms -->
-      <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"   stop-color="#EFEFEF"/>
-        <stop offset="45%"  stop-color="#BEBEBE"/>
-        <stop offset="100%" stop-color="#888888"/>
+      <!-- Star arms — slightly darker so they read against the disc -->
+      <linearGradient id="armGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="#D8D8D8"/>
+        <stop offset="50%"  stop-color="#A0A0A0"/>
+        <stop offset="100%" stop-color="#686868"/>
       </linearGradient>
-      <!-- Lighter highlight gradient -->
-      <linearGradient id="highlightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.6"/>
-        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-      </linearGradient>
+      <!-- Outer ring gradient (darker edge) -->
+      <radialGradient id="ringEdge" cx="35%" cy="28%" r="70%">
+        <stop offset="75%"  stop-color="#B0B0B0" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#505050" stop-opacity="1"/>
+      </radialGradient>
     </defs>
 
-    <!-- Outer ring — filled silver disc as base -->
-    <circle cx="19" cy="19" r="18" fill="url(#ringGrad)"/>
-    <!-- Outer ring border -->
-    <circle cx="19" cy="19" r="17.5" stroke="#A0A0A0" stroke-width="0.6"/>
-    <!-- Inner ring cut (dark background shows through) -->
-    <circle cx="19" cy="19" r="15.5" fill="#0E0E0E"/>
+    <!-- Full silver disc — no dark cutout -->
+    <circle cx="19" cy="19" r="18" fill="url(#discGrad)"/>
 
-    <!-- Three-pointed star arms — solid silver -->
+    <!-- Outer ring darker edge overlay -->
+    <circle cx="19" cy="19" r="18" fill="url(#ringEdge)"/>
+
+    <!-- Ring border lines -->
+    <circle cx="19" cy="19" r="17.8" stroke="#888" stroke-width="0.4"/>
+    <circle cx="19" cy="19" r="15.6" stroke="#999" stroke-width="0.4"/>
+
+    <!-- Star arms — drawn over the disc in a slightly darker silver -->
     <!-- Top arm -->
-    <path d="M19 3.5 L20.8 17.2 L19 19 L17.2 17.2 Z" fill="url(#starGrad)"/>
+    <path d="M19 3.5 L20.8 17.2 L19 19 L17.2 17.2 Z" fill="url(#armGrad)"/>
     <!-- Bottom-right arm -->
-    <path d="M19 19 L33.5 29.5 L21.8 21 Z" fill="url(#starGrad)"/>
+    <path d="M19 19 L33.5 29.5 L21.8 21 Z" fill="url(#armGrad)"/>
     <!-- Bottom-left arm -->
-    <path d="M19 19 L4.5 29.5 L16.2 21 Z" fill="url(#starGrad)"/>
+    <path d="M19 19 L4.5 29.5 L16.2 21 Z" fill="url(#armGrad)"/>
 
     <!-- Center hub -->
-    <circle cx="19" cy="19" r="2.8" fill="url(#starGrad)"/>
-    <circle cx="19" cy="19" r="1.2" fill="#EEEEEE"/>
-
-    <!-- Specular highlight on the ring -->
-    <circle cx="19" cy="19" r="15.5" fill="url(#highlightGrad)" opacity="0.25"/>
+    <circle cx="19" cy="19" r="2.6" fill="#C8C8C8"/>
+    <circle cx="18.4" cy="18.4" r="1" fill="#F0F0F0" opacity="0.8"/>
   </svg>
 </div>
 
