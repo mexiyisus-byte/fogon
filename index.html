@@ -570,6 +570,134 @@
   /* section-title needs block (has <br> inside) */
   body.lang-es .section-title[data-es], body.lang-en .section-title[data-en] { display: block; }
 
+  /* SIMULATOR */
+  .sim-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px; margin-top: 60px; align-items: start;
+  }
+  .sim-controls { display: flex; flex-direction: column; gap: 32px; }
+  .sim-group {
+    background: var(--ash);
+    border: 1px solid rgba(200,200,200,0.08);
+    padding: 24px 26px;
+  }
+  .sim-group-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .sim-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .sim-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; color: var(--white);
+  }
+  .sim-sub-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--silver);
+    margin-top: 10px; letter-spacing: 0.05em;
+  }
+  .sim-sub-value strong { color: var(--white); }
+  .sim-range-labels {
+    display: flex; justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; color: var(--muted);
+    margin-top: 6px; letter-spacing: 0.1em;
+  }
+
+  /* Custom range slider */
+  .sim-slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 2px;
+    background: rgba(200,200,200,0.15);
+    outline: none; border-radius: 0;
+    cursor: pointer;
+  }
+  .sim-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px;
+    background: var(--white);
+    border-radius: 50%; cursor: pointer;
+    border: 3px solid var(--dark);
+    box-shadow: 0 0 0 1px rgba(200,200,200,0.4);
+    transition: box-shadow 0.2s;
+  }
+  .sim-slider::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 4px rgba(200,200,200,0.15);
+  }
+  .sim-slider::-moz-range-thumb {
+    width: 18px; height: 18px;
+    background: var(--white); border-radius: 50%;
+    cursor: pointer; border: 3px solid var(--dark);
+  }
+
+  /* Scenario buttons */
+  .sim-scenario-btns { display: flex; gap: 1px; }
+  .sim-scenario-btn {
+    flex: 1; background: var(--smoke);
+    border: 1px solid rgba(200,200,200,0.1);
+    padding: 14px 10px; cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 4px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .sim-scenario-btn .scn-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.05em;
+    color: var(--silver);
+  }
+  .sim-scenario-btn .scn-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .sim-scenario-btn.bear.active { background: rgba(229,115,115,0.12); border-color: rgba(229,115,115,0.4); }
+  .sim-scenario-btn.bear.active .scn-name { color: #E57373; }
+  .sim-scenario-btn.base.active { background: rgba(200,200,200,0.08); border-color: rgba(200,200,200,0.35); }
+  .sim-scenario-btn.base.active .scn-name { color: var(--white); }
+  .sim-scenario-btn.bull.active { background: rgba(129,199,132,0.12); border-color: rgba(129,199,132,0.4); }
+  .sim-scenario-btn.bull.active .scn-name { color: #81C784; }
+
+  /* Live KPIs */
+  .sim-kpis {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: rgba(200,200,200,0.07);
+    border: 1px solid rgba(200,200,200,0.07);
+  }
+  .sim-kpi {
+    background: var(--charcoal);
+    padding: 22px 20px;
+    transition: background 0.2s;
+  }
+  .sim-kpi-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  }
+  .sim-kpi-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.9rem; color: var(--white);
+    line-height: 1; margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+  .sim-kpi-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 3px 8px;
+    border: 1px solid; transition: all 0.3s;
+  }
+  .sim-kpi-badge.pos { border-color: rgba(129,199,132,0.4); color: #81C784; }
+  .sim-kpi-badge.neg { border-color: rgba(229,115,115,0.4); color: #E57373; }
+  .sim-kpi-badge.warn { border-color: rgba(255,183,77,0.4); color: #FFB74D; }
+
+  /* Sim bottom */
+  .sim-bottom {
+    display: flex; gap: 40px; margin-top: 40px; align-items: flex-start;
+  }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
@@ -577,6 +705,8 @@
     section { padding: 80px 24px; }
     .kpi-grid { grid-template-columns: 1fr 1fr; }
     .project-grid, .chart-grid, .formula-grid, .conclusion-grid { grid-template-columns: 1fr; }
+    .sim-wrap, .sim-bottom { flex-direction: column; }
+    .sim-wrap { grid-template-columns: 1fr; }
     .risk-grid { grid-template-columns: 1fr 1fr; }
     .hero-metrics { flex-wrap: wrap; gap: 32px; }
     #hero { padding: 0 24px 60px; }
@@ -999,10 +1129,120 @@
 
 <div class="divider"></div>
 
+<!-- SIMULATOR -->
+<section id="simulador" style="background: var(--charcoal);">
+  <div class="section-tag" data-es>04 — Simulador Interactivo</div>
+  <div class="section-tag" data-en>04 — Interactive Simulator</div>
+  <div class="section-title" data-es>SIMULA TU<br>INVERSIÓN</div>
+  <div class="section-title" data-en>SIMULATE YOUR<br>INVESTMENT</div>
+  <div class="section-sub" data-es>Ajusta los parámetros y observa cómo cambian los indicadores financieros del Proyecto CLA 2026 / MMA en tiempo real.</div>
+  <div class="section-sub" data-en>Adjust the parameters and see how the financial indicators of the CLA 2026 / MMA Project change in real time.</div>
+
+  <!-- CONTROLS -->
+  <div class="sim-wrap">
+    <div class="sim-controls">
+
+      <!-- Stake slider -->
+      <div class="sim-group">
+        <div class="sim-group-header">
+          <span class="sim-label"><span data-es>Participación en el Proyecto</span><span data-en>Project Stake</span></span>
+          <span class="sim-value" id="stakeVal">10%</span>
+        </div>
+        <input type="range" class="sim-slider" id="stakeSlider" min="1" max="100" value="10" step="1">
+        <div class="sim-range-labels"><span>1%</span><span>100%</span></div>
+        <div class="sim-sub-value"><span data-es>Tu inversión:</span><span data-en>Your investment:</span> <strong id="investVal">€300M</strong></div>
+      </div>
+
+      <!-- WACC slider -->
+      <div class="sim-group">
+        <div class="sim-group-header">
+          <span class="sim-label"><span data-es>Tasa de Descuento (WACC)</span><span data-en>Discount Rate (WACC)</span></span>
+          <span class="sim-value" id="waccVal">9%</span>
+        </div>
+        <input type="range" class="sim-slider" id="waccSlider" min="3" max="30" value="9" step="0.5">
+        <div class="sim-range-labels"><span>3%</span><span>30%</span></div>
+      </div>
+
+      <!-- Scenario -->
+      <div class="sim-group">
+        <div class="sim-group-header">
+          <span class="sim-label"><span data-es>Escenario de Flujos</span><span data-en>Cash Flow Scenario</span></span>
+        </div>
+        <div class="sim-scenario-btns">
+          <button class="sim-scenario-btn bear" id="btn-bear" onclick="setScenario('bear')">
+            <span class="scn-name">Bear</span>
+            <span class="scn-sub">-30%</span>
+          </button>
+          <button class="sim-scenario-btn base active" id="btn-base" onclick="setScenario('base')">
+            <span class="scn-name">Base</span>
+            <span class="scn-sub">0%</span>
+          </button>
+          <button class="sim-scenario-btn bull" id="btn-bull" onclick="setScenario('bull')">
+            <span class="scn-name">Bull</span>
+            <span class="scn-sub">+30%</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE KPIs -->
+    <div class="sim-kpis">
+      <div class="sim-kpi">
+        <div class="sim-kpi-label">VPN / NPV</div>
+        <div class="sim-kpi-value" id="liveNPV">€860M</div>
+        <div class="sim-kpi-badge pos" id="liveNPVBadge" data-es>VIABLE</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="sim-kpi-label">TIR / IRR</div>
+        <div class="sim-kpi-value" id="liveIRR">41.0%</div>
+        <div class="sim-kpi-badge pos" id="liveIRRBadge" data-es>TIR > WACC</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="sim-kpi-label" data-es>Período Recuperación</div>
+        <div class="sim-kpi-label" data-en>Payback Period</div>
+        <div class="sim-kpi-value" id="livePayback">2.35 <span style="font-size:1rem" data-es>años</span><span style="font-size:1rem" data-en>yrs</span></div>
+        <div class="sim-kpi-badge pos" id="livePBBadge" data-es>&lt; 3 años</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="sim-kpi-label" data-es>Relación B/C</div>
+        <div class="sim-kpi-label" data-en>B/C Ratio</div>
+        <div class="sim-kpi-value" id="liveBC">3.87</div>
+        <div class="sim-kpi-badge pos" id="liveBCBadge">B/C &gt; 1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHART + TABLE -->
+  <div class="sim-bottom">
+    <div class="chart-box" style="flex:1.2;">
+      <div class="chart-label" data-es>Flujo Acumulado vs Inversión (€M)</div>
+      <div class="chart-label" data-en>Cumulative Cash Flow vs Investment (€M)</div>
+      <canvas id="simChart" height="240"></canvas>
+    </div>
+    <div style="flex:1; overflow-x:auto;">
+      <table class="cf-table" id="simTable">
+        <thead>
+          <tr>
+            <th><span data-es>Año</span><span data-en>Year</span></th>
+            <th><span data-es>Flujo (€M)</span><span data-en>Flow (€M)</span></th>
+            <th><span data-es>Fact. Desc.</span><span data-en>Disc. Factor</span></th>
+            <th><span data-es>VP (€M)</span><span data-en>PV (€M)</span></th>
+            <th><span data-es>Acumulado (€M)</span><span data-en>Cumulative (€M)</span></th>
+          </tr>
+        </thead>
+        <tbody id="simTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- RISKS -->
-<section id="riesgos" style="background: var(--charcoal);">
-  <div class="section-tag" data-es>04 — Análisis de Riesgos</div>
-  <div class="section-tag" data-en>04 — Risk Analysis</div>
+<section id="riesgos" style="background: var(--dark);">
+  <div class="section-tag" data-es>05 — Análisis de Riesgos</div>
+  <div class="section-tag" data-en>05 — Risk Analysis</div>
+
   <div class="section-title" data-es>COSTOS,<br>BENEFICIOS<br>Y RIESGOS</div>
   <div class="section-title" data-en>COSTS,<br>BENEFITS<br>& RISKS</div>
   <div class="section-sub" data-es>Identificación y evaluación de los principales factores de riesgo que pueden afectar la viabilidad del proyecto CLA 2026 / MMA Platform.</div>
@@ -1442,6 +1682,244 @@
 
   setTimeout(drawMindMapLines, 300);
   window.addEventListener('resize', drawMindMapLines);
+
+  // ─── SIMULATOR ───────────────────────────────────────────────
+  const BASE_FLOWS = [800, 1500, 2000, 2200, 2300, 2400, 2500, 2600, 2700, 2800];
+  const TOTAL_INV  = 3000; // €M
+  let simScenario  = 'base';
+  let simChart;
+
+  function getFlows(stake, scenario) {
+    const mult = scenario === 'bear' ? 0.70 : scenario === 'bull' ? 1.30 : 1.0;
+    return BASE_FLOWS.map(f => +(f * (stake / 100) * mult).toFixed(1));
+  }
+
+  function calcNPV(invest, flows, wacc) {
+    let pv = 0;
+    flows.forEach((f, i) => { pv += f / Math.pow(1 + wacc / 100, i + 1); });
+    return pv - invest;
+  }
+
+  function calcIRR(invest, flows) {
+    let lo = 0.001, hi = 9.99;
+    for (let i = 0; i < 200; i++) {
+      const mid = (lo + hi) / 2;
+      calcNPV(invest, flows, mid * 100) > 0 ? lo = mid : hi = mid;
+    }
+    return ((lo + hi) / 2) * 100;
+  }
+
+  function calcPayback(invest, flows) {
+    let cum = 0;
+    for (let i = 0; i < flows.length; i++) {
+      const prev = cum;
+      cum += flows[i];
+      if (cum >= invest) return i + (invest - prev) / flows[i];
+    }
+    return null;
+  }
+
+  function fmt(n, dec = 1) {
+    if (Math.abs(n) >= 1000) return '€' + (n / 1000).toFixed(dec) + 'B';
+    return '€' + n.toFixed(dec) + 'M';
+  }
+
+  function updateSim() {
+    const stake = +document.getElementById('stakeSlider').value;
+    const wacc  = +document.getElementById('waccSlider').value;
+    const invest = +(TOTAL_INV * stake / 100).toFixed(1);
+    const flows  = getFlows(stake, simScenario);
+
+    document.getElementById('stakeVal').textContent  = stake + '%';
+    document.getElementById('waccVal').textContent   = wacc + '%';
+    document.getElementById('investVal').textContent = fmt(invest, 0);
+
+    const npv     = calcNPV(invest, flows, wacc);
+    const irr     = calcIRR(invest, flows);
+    const payback = calcPayback(invest, flows);
+    const totalPV = flows.reduce((s, f, i) => s + f / Math.pow(1 + wacc / 100, i + 1), 0);
+    const bc      = totalPV / invest;
+
+    // Update KPI values
+    document.getElementById('liveNPV').textContent     = fmt(npv);
+    document.getElementById('liveIRR').textContent     = irr.toFixed(1) + '%';
+    document.getElementById('livePayback').innerHTML   = payback !== null
+      ? payback.toFixed(2) + ' <span style="font-size:1rem" data-es>años</span><span style="font-size:1rem" data-en>yrs</span>'
+      : '> 10';
+    document.getElementById('liveBC').textContent      = bc.toFixed(2);
+
+    // Color/badge NPV
+    const npvEl = document.getElementById('liveNPV');
+    const npvBadge = document.getElementById('liveNPVBadge');
+    if (npv > 0) {
+      npvEl.style.color = '#81C784';
+      npvBadge.className = 'sim-kpi-badge pos';
+      npvBadge.textContent = 'VPN > 0';
+    } else {
+      npvEl.style.color = '#E57373';
+      npvBadge.className = 'sim-kpi-badge neg';
+      npvBadge.textContent = 'VPN < 0';
+    }
+
+    // Color/badge IRR
+    const irrEl = document.getElementById('liveIRR');
+    const irrBadge = document.getElementById('liveIRRBadge');
+    if (irr > wacc) {
+      irrEl.style.color = '#81C784';
+      irrBadge.className = 'sim-kpi-badge pos';
+      irrBadge.textContent = 'TIR > WACC';
+    } else {
+      irrEl.style.color = '#E57373';
+      irrBadge.className = 'sim-kpi-badge neg';
+      irrBadge.textContent = 'TIR < WACC';
+    }
+
+    // Color/badge Payback
+    const pbEl = document.getElementById('livePayback');
+    const pbBadge = document.getElementById('livePBBadge');
+    if (payback !== null && payback < 5) {
+      pbEl.style.color = '#81C784';
+      pbBadge.className = 'sim-kpi-badge pos';
+      pbBadge.textContent = '< 5 años';
+    } else {
+      pbEl.style.color = payback !== null ? '#FFB74D' : '#E57373';
+      pbBadge.className = payback !== null ? 'sim-kpi-badge warn' : 'sim-kpi-badge neg';
+      pbBadge.textContent = payback !== null ? '> 5 años' : 'No recupera';
+    }
+
+    // Color/badge B/C
+    const bcEl = document.getElementById('liveBC');
+    const bcBadge = document.getElementById('liveBCBadge');
+    if (bc >= 1) {
+      bcEl.style.color = '#81C784';
+      bcBadge.className = 'sim-kpi-badge pos';
+      bcBadge.textContent = 'B/C ≥ 1';
+    } else {
+      bcEl.style.color = '#E57373';
+      bcBadge.className = 'sim-kpi-badge neg';
+      bcBadge.textContent = 'B/C < 1';
+    }
+
+    // Build table
+    const tbody = document.getElementById('simTableBody');
+    tbody.innerHTML = '';
+    let cumPV = -invest;
+    // Row 0: investment
+    tbody.innerHTML += `<tr>
+      <td class="highlight">0</td>
+      <td class="neg">${fmt(-invest, 0)}</td>
+      <td>1.000</td>
+      <td class="neg">${fmt(-invest, 0)}</td>
+      <td class="neg">${fmt(-invest, 0)}</td>
+    </tr>`;
+    flows.forEach((f, i) => {
+      const factor = Math.pow(1 + wacc / 100, i + 1);
+      const pv = f / factor;
+      cumPV += pv;
+      const cumClass = cumPV >= 0 ? 'pos' : 'neg';
+      tbody.innerHTML += `<tr>
+        <td class="highlight">${i + 1}</td>
+        <td class="pos">${fmt(f)}</td>
+        <td>${(1 / factor).toFixed(3)}</td>
+        <td class="pos">${fmt(pv)}</td>
+        <td class="${cumClass}">${fmt(cumPV)}</td>
+      </tr>`;
+    });
+    // Total row
+    tbody.innerHTML += `<tr class="total">
+      <td colspan="2"><strong>TOTAL</strong></td>
+      <td></td>
+      <td class="pos"><strong>${fmt(totalPV)}</strong></td>
+      <td class="${npv >= 0 ? 'pos' : 'neg'}"><strong>VPN ${fmt(npv)}</strong></td>
+    </tr>`;
+
+    // Update chart
+    const labels = ['0', ...flows.map((_, i) => i + 1)];
+    const cumFlows = [-invest];
+    let run = -invest;
+    flows.forEach(f => { run += f; cumFlows.push(+run.toFixed(1)); });
+
+    const pvFlows = [0];
+    let runPV = 0;
+    flows.forEach((f, i) => {
+      runPV += f / Math.pow(1 + wacc / 100, i + 1);
+      pvFlows.push(+runPV.toFixed(1));
+    });
+
+    if (simChart) {
+      simChart.data.labels = labels;
+      simChart.data.datasets[0].data = cumFlows;
+      simChart.data.datasets[1].data = pvFlows;
+      simChart.data.datasets[2].data = Array(labels.length).fill(invest);
+      simChart.update('none');
+    } else {
+      const ctx = document.getElementById('simChart').getContext('2d');
+      simChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: document.body.classList.contains('lang-en') ? 'Cumulative CF (€M)' : 'Flujo Acum. (€M)',
+              data: cumFlows,
+              borderColor: 'rgba(192,192,192,0.8)',
+              backgroundColor: 'rgba(192,192,192,0.04)',
+              fill: false, tension: 0.35,
+              pointBackgroundColor: cumFlows.map(v => v >= 0 ? '#81C784' : '#E57373'),
+              pointRadius: 5
+            },
+            {
+              label: document.body.classList.contains('lang-en') ? 'Cumulative PV (€M)' : 'VP Acumulado (€M)',
+              data: pvFlows,
+              borderColor: 'rgba(129,199,132,0.6)',
+              backgroundColor: 'rgba(129,199,132,0.04)',
+              fill: false, tension: 0.35, borderDash: [4, 4],
+              pointBackgroundColor: '#81C784', pointRadius: 3
+            },
+            {
+              label: document.body.classList.contains('lang-en') ? 'Investment (€M)' : 'Inversión (€M)',
+              data: Array(labels.length).fill(invest),
+              borderColor: 'rgba(229,115,115,0.5)',
+              borderDash: [6, 3], fill: false, pointRadius: 0, tension: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } },
+            tooltip: {
+              callbacks: {
+                label: ctx => ctx.dataset.label + ': €' + ctx.parsed.y.toFixed(1) + 'M'
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            y: {
+              ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v + 'M' },
+              grid: { color: 'rgba(255,255,255,0.04)' }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  function setScenario(s) {
+    simScenario = s;
+    ['bear', 'base', 'bull'].forEach(b => {
+      const btn = document.getElementById('btn-' + b);
+      btn.className = 'sim-scenario-btn ' + b + (b === s ? ' active' : '');
+    });
+    updateSim();
+  }
+
+  document.getElementById('stakeSlider').addEventListener('input', updateSim);
+  document.getElementById('waccSlider').addEventListener('input', updateSim);
+  updateSim();
+  // ─────────────────────────────────────────────────────────────
 
   // SCROLL ANIMATIONS
   const observer = new IntersectionObserver((entries) => {
