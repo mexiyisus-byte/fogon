@@ -33,22 +33,20 @@
   }
 
   /* CURSOR */
-  /* MB EV CAR CURSOR */
+  /* MB STAR CURSOR */
   #mbCursor {
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9999;
-    filter: drop-shadow(0 0 8px rgba(79,195,247,0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.6));
-    transition: filter 0.2s;
+    filter: drop-shadow(0 0 4px rgba(200,200,200,0.3));
+    transition: filter 0.15s ease;
     will-change: transform;
   }
   #mbCursor.clicking {
-    filter: drop-shadow(0 0 14px rgba(79,195,247,0.7)) drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+    filter:
+      drop-shadow(0 0 8px rgba(79,195,247,1))
+      drop-shadow(0 0 20px rgba(79,195,247,0.7))
+      drop-shadow(0 0 40px rgba(79,195,247,0.4));
   }
-  @keyframes evPulse {
-    0%,100% { opacity: 0.4; }
-    50%      { opacity: 0.9; }
-  }
-  .ev-glow { animation: evPulse 1.8s ease-in-out infinite; }
 
   /* NAV */
   nav {
@@ -716,79 +714,22 @@
 <body class="lang-en">
 
 <!-- CURSOR -->
-<!-- MB EV Cursor — CLA silhouette facing right, hotspot at front nose -->
+<!-- MB Star Cursor — hotspot at center -->
 <div id="mbCursor">
-  <svg width="88" height="38" viewBox="0 0 88 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Ground shadow -->
-    <ellipse cx="44" cy="37" rx="30" ry="1.8" fill="rgba(0,0,0,0.45)"/>
-
-    <!-- Main body -->
-    <path d="M8 26 L8 21 Q10 17 15 15 Q21 13 30 12 Q40 11 50 12 Q59 13 64 16 L69 19 L74 22 L80 24 L82 26 Z" fill="#D2D2D2"/>
-
-    <!-- Darker lower body accent -->
-    <path d="M8 24 L8 26 L82 26 L80 24 L74 22 L8 22 Z" fill="#B8B8B8"/>
-
-    <!-- Cabin / greenhouse -->
-    <path d="M20 21 Q22 13 30 12 Q40 11 50 12 Q58 13 62 16 L65 19 L20 19 Z" fill="#111111"/>
-
-    <!-- A-pillar / windshield -->
-    <path d="M62 16 L65 19 L60 19 L58 15 Z" fill="#1A1A1A"/>
-
-    <!-- B-pillar (window divider) -->
-    <rect x="39" y="12.5" width="1.5" height="6.5" fill="#D2D2D2"/>
-
-    <!-- Rear quarter window -->
-    <path d="M20 19 L20 21 L30 21 L32 12.5 L30 12 Z" fill="#1A1A1A"/>
-
-    <!-- Front splitter / lip -->
-    <path d="M80 25 L84 25 L84 27 L80 26 Z" fill="#999"/>
-
-    <!-- LED headlight strip -->
-    <path d="M81 22 L85 23 L85 24 L82 24" stroke="#FFF9C4" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-
-    <!-- Daytime running light -->
-    <line x1="82" y1="22" x2="85" y2="23" stroke="#FFFFFF" stroke-width="0.8" opacity="0.9"/>
-
-    <!-- LED taillight strip -->
-    <path d="M8 21 L5 22 L5 25 L8 25" stroke="#EF5350" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-
-    <!-- Front wheel -->
-    <circle cx="62" cy="28" r="8" fill="#181818"/>
-    <circle cx="62" cy="28" r="5.5" fill="#303030"/>
-    <!-- Wheel spokes (5-spoke AMG style) -->
-    <line x1="62" y1="22.5" x2="62" y2="25.5" stroke="#888" stroke-width="1.4"/>
-    <line x1="67.6" y1="25.2" x2="65.2" y2="26.7" stroke="#888" stroke-width="1.4"/>
-    <line x1="65.5" y1="31.8" x2="63.8" y2="29.8" stroke="#888" stroke-width="1.4"/>
-    <line x1="58.5" y1="31.8" x2="60.2" y2="29.8" stroke="#888" stroke-width="1.4"/>
-    <line x1="56.4" y1="25.2" x2="58.8" y2="26.7" stroke="#888" stroke-width="1.4"/>
-    <circle cx="62" cy="28" r="2.2" fill="#666"/>
-
-    <!-- Rear wheel -->
-    <circle cx="24" cy="28" r="8" fill="#181818"/>
-    <circle cx="24" cy="28" r="5.5" fill="#303030"/>
-    <line x1="24" y1="22.5" x2="24" y2="25.5" stroke="#888" stroke-width="1.4"/>
-    <line x1="29.6" y1="25.2" x2="27.2" y2="26.7" stroke="#888" stroke-width="1.4"/>
-    <line x1="27.5" y1="31.8" x2="25.8" y2="29.8" stroke="#888" stroke-width="1.4"/>
-    <line x1="20.5" y1="31.8" x2="22.2" y2="29.8" stroke="#888" stroke-width="1.4"/>
-    <line x1="18.4" y1="25.2" x2="20.8" y2="26.7" stroke="#888" stroke-width="1.4"/>
-    <circle cx="24" cy="28" r="2.2" fill="#666"/>
-
-    <!-- EV blue underglow / ambient strip -->
-    <rect x="31" y="26" width="26" height="2" rx="1" fill="#4FC3F7" opacity="0.75"/>
-    <!-- Glow pulse (via animation) -->
-    <rect x="31" y="26" width="26" height="2" rx="1" fill="#81D4FA" opacity="0.4" class="ev-glow"/>
-
-    <!-- Mercedes three-pointed star on hood -->
-    <g transform="translate(71,19)">
-      <circle r="3.2" fill="none" stroke="#AAAAAA" stroke-width="0.7"/>
-      <line x1="0" y1="-3.2" x2="0" y2="0" stroke="#BBBBB" stroke-width="0.8"/>
-      <line x1="0" y1="0" x2="2.77" y2="1.6" stroke="#BBBBBB" stroke-width="0.8"/>
-      <line x1="0" y1="0" x2="-2.77" y2="1.6" stroke="#BBBBBB" stroke-width="0.8"/>
-      <circle r="1" fill="#CCCCCC"/>
-    </g>
-
-    <!-- Charging port indicator (on rear) -->
-    <rect x="6" y="18" width="3" height="2" rx="0.5" fill="#4FC3F7" opacity="0.9"/>
+  <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer ring -->
+    <circle cx="19" cy="19" r="17.5" stroke="#C8C8C8" stroke-width="1.8"/>
+    <!-- Inner ring (subtle) -->
+    <circle cx="19" cy="19" r="14.5" stroke="#C8C8C8" stroke-width="0.5" opacity="0.35"/>
+    <!-- Three-pointed star -->
+    <!-- Top arm -->
+    <path d="M19 2 L20.6 17 L19 19 L17.4 17 Z" fill="#D0D0D0"/>
+    <!-- Bottom-right arm -->
+    <path d="M19 19 L34 30 L22.2 20.8 Z" fill="#D0D0D0"/>
+    <!-- Bottom-left arm -->
+    <path d="M19 19 L4 30 L15.8 20.8 Z" fill="#D0D0D0"/>
+    <!-- Center hub -->
+    <circle cx="19" cy="19" r="2.6" fill="#D8D8D8"/>
   </svg>
 </div>
 
@@ -1574,11 +1515,11 @@
 </footer>
 
 <script>
-  // MB EV CAR CURSOR
+  // MB STAR CURSOR
   const mbCursor = document.getElementById('mbCursor');
   let mx = 0, my = 0, cx = 0, cy = 0;
-  // Hotspot: front nose of the car (right side) — x≈84, y≈24 in the 88×38 SVG
-  const HOT_X = 84, HOT_Y = 24;
+  // Hotspot: center of the 38×38 star
+  const HOT_X = 19, HOT_Y = 19;
   document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
   document.addEventListener('mousedown', () => mbCursor.classList.add('clicking'));
   document.addEventListener('mouseup',   () => mbCursor.classList.remove('clicking'));
