@@ -21,15 +21,15 @@
     --star:     #B0BEC5;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-  html { scroll-behavior: smooth; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+  html { scroll-behavior: smooth; cursor: none !important; }
 
   body {
     background: var(--dark);
     color: var(--chrome);
     font-family: 'Instrument Sans', sans-serif;
     overflow-x: hidden;
-    cursor: none;
+    cursor: none !important;
   }
 
   /* CURSOR */
