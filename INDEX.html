@@ -3,53 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FOGÓN — Investor Relations</title>
+<title>Mercedes-Benz — Evaluación Financiera Proyecto CLA 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root {
-    --fire: #FF4D00;
-    --ember: #FF8C42;
-    --gold: #F5C842;
-    --dark: #0A0A08;
-    --charcoal: #141410;
-    --ash: #1E1E18;
-    --smoke: #2E2E26;
-    --cream: #F5F0E8;
-    --muted: #8A8A7A;
-    --white: #FAFAF5;
+    --dark:     #080808;
+    --charcoal: #111111;
+    --ash:      #1A1A1A;
+    --smoke:    #242424;
+    --silver:   #9A9A9A;
+    --chrome:   #D0D0D0;
+    --white:    #F8F8F8;
+    --muted:    #606060;
+    --accent:   #C0C0C0;
+    --star:     #B0BEC5;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+  html { scroll-behavior: smooth; cursor: none !important; }
 
   body {
     background: var(--dark);
-    color: var(--cream);
+    color: var(--chrome);
     font-family: 'Instrument Sans', sans-serif;
     overflow-x: hidden;
-    cursor: none;
+    cursor: none !important;
   }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--fire);
-    border-radius: 50%;
+  /* CURSOR */
+  /* MB STAR CURSOR */
+  #mbCursor {
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 4px rgba(200,200,200,0.3));
+    transition: filter 0.15s ease;
+    will-change: transform;
   }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(255,77,0,0.4);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9998;
-    transition: transform 0.15s ease, width 0.2s, height 0.2s;
+  #mbCursor.clicking {
+    filter:
+      drop-shadow(0 0 8px rgba(79,195,247,1))
+      drop-shadow(0 0 20px rgba(79,195,247,0.7))
+      drop-shadow(0 0 40px rgba(79,195,247,0.4));
   }
 
   /* NAV */
@@ -58,1627 +54,2675 @@
     padding: 20px 60px;
     display: flex; justify-content: space-between; align-items: center;
     z-index: 100;
-    background: linear-gradient(to bottom, rgba(10,10,8,0.95) 0%, transparent 100%);
-    backdrop-filter: blur(2px);
+    background: linear-gradient(to bottom, rgba(8,8,8,0.97) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid rgba(200,200,200,0.06);
   }
   .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .nav-logo svg { width: 36px; height: 36px; }
+  .nav-brand {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
     color: var(--white);
   }
-  .nav-logo span { color: var(--fire); }
-  .nav-links { display: flex; gap: 40px; }
+  .nav-brand span { color: var(--silver); font-weight: 400; }
+  .nav-links { display: flex; gap: 36px; }
   .nav-links a {
     font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--muted);
     text-decoration: none;
     transition: color 0.2s;
   }
-  .nav-links a:hover { color: var(--fire); }
+  .nav-links a:hover { color: var(--white); }
   .nav-cta {
-    background: var(--fire);
-    color: var(--dark) !important;
-    padding: 10px 24px;
-    font-weight: 600 !important;
+    border: 1px solid rgba(200,200,200,0.25);
+    color: var(--chrome) !important;
+    padding: 9px 22px;
+    transition: background 0.2s, color 0.2s !important;
   }
+  .nav-cta:hover { background: var(--white) !important; color: var(--dark) !important; }
+
+  /* LANG TOGGLE */
+  .lang-toggle {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .lang-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    padding: 4px 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: none;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .lang-btn.active { color: var(--white); border-color: rgba(200,200,200,0.3); }
 
   /* HERO */
   #hero {
     min-height: 100vh;
     display: flex; flex-direction: column; justify-content: flex-end;
     padding: 0 60px 80px;
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
-
   .hero-bg {
     position: absolute; inset: 0;
-    background: 
-      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,77,0,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255,140,66,0.08) 0%, transparent 50%),
+    background:
+      radial-gradient(ellipse 70% 60% at 85% 40%, rgba(192,192,192,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 15% 70%, rgba(150,150,150,0.04) 0%, transparent 50%),
       var(--dark);
   }
-
-  .hero-noise {
-    position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.4;
-    pointer-events: none;
+  .hero-star {
+    position: absolute; top: 50%; right: 8%;
+    transform: translateY(-50%);
+    opacity: 0.04;
+    width: min(55vw, 700px);
   }
-
   .hero-tag {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: var(--fire);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.2s forwards;
+    color: var(--silver);
+    margin-bottom: 22px;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
   }
-
   .hero-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(5rem, 14vw, 13rem);
+    font-size: clamp(4.5rem, 13vw, 12rem);
     line-height: 0.88;
     letter-spacing: -0.01em;
     color: var(--white);
-    opacity: 0;
-    animation: fadeUp 0.8s 0.4s forwards;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
   }
-  .hero-title .accent { color: var(--fire); }
-
+  .hero-title .dim { color: var(--muted); }
   .hero-sub {
     font-family: 'DM Serif Display', serif;
     font-style: italic;
-    font-size: clamp(1rem, 2.5vw, 1.6rem);
-    color: var(--muted);
-    margin-top: 20px;
-    max-width: 600px;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.6s forwards;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--silver);
+    margin-top: 18px; max-width: 580px;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
   }
-
   .hero-metrics {
-    display: flex; gap: 60px;
-    margin-top: 60px;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.8s forwards;
+    display: flex; gap: 52px; margin-top: 56px;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
   }
   .metric-item { display: flex; flex-direction: column; }
   .metric-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 3rem;
-    color: var(--white);
-    line-height: 1;
+    font-size: 2.8rem; color: var(--white); line-height: 1;
   }
-  .metric-value span { color: var(--fire); }
+  .metric-value span { color: var(--silver); }
   .metric-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 6px;
+    font-size: 0.58rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-top: 5px;
   }
-
   .scroll-hint {
-    position: absolute; bottom: 30px; right: 60px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--muted);
+    position: absolute; bottom: 28px; right: 60px;
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.2em; color: var(--muted);
     writing-mode: vertical-rl;
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 10px;
     opacity: 0; animation: fadeUp 1s 1.2s forwards;
   }
   .scroll-line {
-    width: 1px; height: 40px;
-    background: linear-gradient(to bottom, var(--fire), transparent);
+    width: 1px; height: 38px;
+    background: linear-gradient(to bottom, var(--silver), transparent);
     animation: scrollPulse 2s infinite;
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; } 50% { opacity: 1; }
-  }
+  @keyframes scrollPulse { 0%,100%{opacity:0.2} 50%{opacity:1} }
 
   /* SECTIONS */
-  section { padding: 120px 60px; }
-
+  section { padding: 110px 60px; }
   .section-tag {
     font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--fire);
-    margin-bottom: 16px;
+    font-size: 0.58rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--silver);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
   }
-
+  .section-tag::before {
+    content: ''; display: block; width: 28px; height: 1px;
+    background: var(--silver);
+  }
   .section-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 6vw, 5rem);
-    line-height: 0.95;
-    color: var(--white);
-    margin-bottom: 40px;
-  }
-
-  .divider {
-    width: 100%; height: 1px;
-    background: linear-gradient(to right, var(--fire), transparent);
-    margin-bottom: 80px;
-    opacity: 0.3;
-  }
-
-  /* PROBLEM & SOLUTION */
-  #problema {
-    background: var(--charcoal);
-  }
-  .two-col {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    align-items: start;
-  }
-  .problem-card {
-    border: 1px solid rgba(255,77,0,0.2);
-    padding: 40px;
-    position: relative;
-    background: rgba(255,77,0,0.03);
-  }
-  .problem-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0;
-    width: 60px; height: 2px;
-    background: var(--fire);
-  }
-  .problem-card h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
-    color: var(--white);
-    margin-bottom: 16px;
-  }
-  .problem-card p {
-    color: var(--muted);
-    line-height: 1.7;
-    font-size: 0.95rem;
-  }
-  .stat-big {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    color: var(--fire);
-    line-height: 1;
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  /* MODELO DE NEGOCIO */
-  .revenue-streams {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-    margin-top: 40px;
-  }
-  .stream {
-    background: var(--ash);
-    padding: 40px 32px;
-    transition: background 0.3s;
-    cursor: default;
-  }
-  .stream:hover { background: var(--smoke); }
-  .stream-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--fire);
-    letter-spacing: 0.2em;
-    margin-bottom: 16px;
-  }
-  .stream h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: var(--white);
-    margin-bottom: 12px;
-    letter-spacing: 0.05em;
-  }
-  .stream p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
-  .stream-amount {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--gold);
-    margin-top: 20px;
-  }
-
-  /* MERCADO */
-  #mercado { background: var(--charcoal); }
-  .market-grid {
-    display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
-    align-items: center;
-  }
-  .market-numbers { display: flex; flex-direction: column; gap: 32px; }
-  .market-item {
-    display: flex; align-items: baseline; gap: 16px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .market-item:last-child { border-bottom: none; }
-  .market-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    color: var(--white);
-    line-height: 1;
-    white-space: nowrap;
-  }
-  .market-val em { color: var(--fire); font-style: normal; }
-  .market-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
-  .market-desc strong { color: var(--cream); display: block; margin-bottom: 4px; }
-
-  .chart-container {
-    background: var(--ash);
-    padding: 32px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .chart-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 24px;
-  }
-
-  /* FINANCIALS */
-  .financials-grid {
-    display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px;
-  }
-  .fin-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-  }
-  .fin-table th {
-    text-align: right; padding: 10px 16px;
-    color: var(--fire);
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    border-bottom: 1px solid rgba(255,77,0,0.2);
-  }
-  .fin-table th:first-child { text-align: left; }
-  .fin-table td {
-    text-align: right; padding: 12px 16px;
-    color: var(--muted);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-  .fin-table td:first-child { text-align: left; color: var(--cream); }
-  .fin-table tr.highlight td { color: var(--white); background: rgba(255,77,0,0.06); }
-  .fin-table tr.highlight td:first-child { color: var(--gold); font-weight: 500; }
-  .fin-table .positive { color: #4ADE80; }
-  .fin-table .negative { color: #F87171; }
-
-  .kpi-cards {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    margin-bottom: 24px;
-  }
-  .kpi {
-    background: var(--ash);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 24px;
-  }
-  .kpi-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .kpi-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    color: var(--white);
-    line-height: 1;
-  }
-  .kpi-val.good { color: var(--gold); }
-  .kpi-sub {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  /* INVERSIÓN */
-  #inversion { background: var(--charcoal); }
-  .investment-layout {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    align-items: start;
-  }
-  .inv-ask {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(4rem, 8vw, 7rem);
-    line-height: 0.9;
-    color: var(--white);
-  }
-  .inv-ask span { color: var(--fire); display: block; }
-  .inv-ask em {
-    font-style: normal;
-    color: var(--muted);
-    font-size: 0.25em;
-    letter-spacing: 0.1em;
-    display: block;
-    margin-top: 16px;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-  }
-  .use-of-funds { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; }
-  .fund-row { display: flex; align-items: center; gap: 16px; }
-  .fund-bar-wrap { flex: 1; height: 3px; background: rgba(255,255,255,0.08); }
-  .fund-bar { height: 100%; background: var(--fire); transition: width 1s ease; }
-  .fund-pct {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--fire);
-    width: 36px;
-    text-align: right;
-  }
-  .fund-name { font-size: 0.85rem; color: var(--cream); width: 200px; }
-
-  /* EQUIPO */
-  .team-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
-  }
-  .team-card {
-    background: var(--ash);
-    padding: 32px 24px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-  .team-card:hover { background: var(--smoke); }
-  .team-avatar {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--fire), var(--ember));
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    color: var(--dark);
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    color: var(--white); line-height: 0.92;
     margin-bottom: 20px;
   }
-  .team-name {
+  .section-sub {
     font-family: 'DM Serif Display', serif;
-    font-size: 1.1rem;
-    color: var(--white);
-    margin-bottom: 4px;
+    font-style: italic; font-size: 1.1rem;
+    color: var(--silver); max-width: 560px;
+    line-height: 1.6;
   }
-  .team-role {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--fire);
-    margin-bottom: 12px;
-  }
-  .team-bio { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
 
-  /* ROADMAP */
-  #roadmap { background: var(--charcoal); }
-  .timeline {
-    position: relative;
-    padding-left: 40px;
-    margin-top: 40px;
+  /* DIVIDER */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,200,200,0.12), transparent);
+    margin: 0 60px; width: calc(100% - 120px);
   }
-  .timeline::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, var(--fire), rgba(255,77,0,0.1));
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: rgba(200,200,200,0.08);
+    margin-top: 60px; border: 1px solid rgba(200,200,200,0.08);
   }
-  .timeline-item {
-    position: relative;
-    padding: 0 0 60px 48px;
+  .kpi-card {
+    background: var(--charcoal);
+    padding: 36px 32px;
+    transition: background 0.2s;
   }
-  .timeline-item::before {
-    content: '';
-    position: absolute; left: -5px; top: 6px;
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--fire);
-    box-shadow: 0 0 12px var(--fire);
-  }
-  .tl-date {
+  .kpi-card:hover { background: var(--ash); }
+  .kpi-year {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--fire);
-    margin-bottom: 8px;
+    font-size: 0.58rem; letter-spacing: 0.2em;
+    color: var(--muted); margin-bottom: 12px;
   }
-  .tl-title {
+  .kpi-number {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    color: var(--white);
+    font-size: 2.4rem; color: var(--white); line-height: 1;
+  }
+  .kpi-unit { font-size: 1.2rem; color: var(--silver); }
+  .kpi-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted); margin-top: 8px;
+  }
+  .kpi-delta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; margin-top: 10px;
+  }
+  .kpi-delta.neg { color: #E57373; }
+  .kpi-delta.pos { color: #81C784; }
+
+  /* PROJECT SECTION */
+  .project-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    margin-top: 60px;
+  }
+  .project-card {
+    border: 1px solid rgba(200,200,200,0.1);
+    padding: 40px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .project-card:hover { border-color: rgba(200,200,200,0.25); }
+  .project-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,200,200,0.3), transparent);
+  }
+  .project-card-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: rgba(200,200,200,0.06);
+    position: absolute; top: 16px; right: 24px; line-height: 1;
+  }
+  .project-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--silver); margin-bottom: 14px;
+  }
+  .project-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; color: var(--white); margin-bottom: 14px;
+  }
+  .project-card p {
+    font-size: 0.88rem; line-height: 1.7;
+    color: var(--silver);
+  }
+  .project-specs {
+    margin-top: 22px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .spec-row {
+    display: flex; justify-content: space-between;
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    padding-bottom: 10px; border-bottom: 1px solid rgba(200,200,200,0.07);
     letter-spacing: 0.05em;
-    margin-bottom: 8px;
   }
-  .tl-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; max-width: 600px; }
-  .tl-tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .tl-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    padding: 4px 10px;
-    border: 1px solid rgba(255,77,0,0.3);
-    color: var(--ember);
-    letter-spacing: 0.1em;
-  }
+  .spec-row .spec-key { color: var(--muted); }
+  .spec-row .spec-val { color: var(--chrome); }
 
-  /* CHATBOT */
-  #chatbot { background: var(--dark); }
-  .chat-wrapper {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    align-items: start;
+  /* CHARTS */
+  .chart-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px; margin-top: 60px;
   }
-  .chat-intro p {
-    color: var(--muted); font-size: 1rem; line-height: 1.7;
-    margin-bottom: 32px;
+  .chart-box {
+    background: var(--charcoal);
+    border: 1px solid rgba(200,200,200,0.08);
+    padding: 32px;
   }
-  .chat-box {
+  .chart-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
+  }
+  .chart-box canvas { width: 100% !important; }
+
+  /* FORMULA SECTION */
+  .formula-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1px; background: rgba(200,200,200,0.07);
+    margin-top: 60px; border: 1px solid rgba(200,200,200,0.07);
+  }
+  .formula-card {
+    background: var(--charcoal);
+    padding: 40px 36px;
+  }
+  .formula-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; color: var(--white); margin-bottom: 6px;
+  }
+  .formula-acronym {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--silver); margin-bottom: 20px;
+  }
+  .formula-box {
     background: var(--ash);
-    border: 1px solid rgba(255,77,0,0.2);
-    display: flex; flex-direction: column;
-    height: 480px;
-  }
-  .chat-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    display: flex; align-items: center; gap: 12px;
-  }
-  .chat-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--fire);
-    box-shadow: 0 0 8px var(--fire);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .chat-header-text {
+    border: 1px solid rgba(200,200,200,0.1);
+    padding: 18px 20px;
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--cream);
+    font-size: 0.8rem; color: var(--chrome);
+    line-height: 1.6; margin-bottom: 18px;
+    letter-spacing: 0.03em;
   }
-  .chat-messages {
-    flex: 1; overflow-y: auto;
-    padding: 20px; display: flex; flex-direction: column; gap: 12px;
-    scrollbar-width: thin; scrollbar-color: var(--smoke) transparent;
+  .formula-result {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid rgba(200,200,200,0.1);
   }
-  .msg {
-    max-width: 80%;
-    padding: 12px 16px;
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
-  .msg.bot {
-    background: var(--smoke);
-    color: var(--cream);
-    align-self: flex-start;
-    border-left: 2px solid var(--fire);
-  }
-  .msg.user {
-    background: rgba(255,77,0,0.12);
-    color: var(--cream);
-    align-self: flex-end;
-    border-right: 2px solid var(--ember);
-  }
-  .msg.loading { color: var(--muted); font-style: italic; }
-  .chat-input-area {
-    padding: 16px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    display: flex; gap: 12px;
-  }
-  .chat-input {
-    flex: 1;
-    background: var(--smoke);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--cream);
-    padding: 10px 16px;
-    font-family: 'Instrument Sans', sans-serif;
-    font-size: 0.85rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .chat-input:focus { border-color: rgba(255,77,0,0.4); }
-  .chat-input::placeholder { color: var(--muted); }
-  .chat-send {
-    background: var(--fire);
-    border: none;
-    color: var(--dark);
-    padding: 10px 20px;
+  .formula-result-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: none;
-    transition: background 0.2s;
-    font-weight: 600;
+    font-size: 0.6rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
   }
-  .chat-send:hover { background: var(--ember); }
-  .quick-qs { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
-  .quick-q {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--muted);
-    padding: 10px 16px;
-    text-align: left;
-    font-family: 'Instrument Sans', sans-serif;
-    font-size: 0.82rem;
-    cursor: none;
-    transition: all 0.2s;
+  .formula-result-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; color: var(--white);
   }
-  .quick-q:hover {
-    border-color: rgba(255,77,0,0.4);
-    color: var(--cream);
-    background: rgba(255,77,0,0.05);
+  .formula-result-value.pos { color: #81C784; }
+  .formula-result-value.neg { color: #E57373; }
+  .formula-desc {
+    font-size: 0.82rem; line-height: 1.65;
+    color: var(--silver); margin-top: 12px;
+  }
+  .formula-verdict {
+    display: inline-block; margin-top: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 5px 12px;
+    border: 1px solid rgba(129,199,132,0.4); color: #81C784;
+  }
+  .formula-verdict.warn {
+    border-color: rgba(255,183,77,0.4); color: #FFB74D;
   }
 
-  /* CTA FINAL */
-  #contacto {
-    background: var(--fire);
-    padding: 120px 60px;
-    text-align: center;
+  /* CASHFLOW TABLE */
+  .cf-table {
+    width: 100%; margin-top: 60px; border-collapse: collapse;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
   }
-  #contacto .section-tag { color: rgba(0,0,0,0.5); }
-  #contacto .section-title { color: var(--dark); margin-bottom: 20px; }
-  #contacto p { color: rgba(0,0,0,0.7); font-size: 1.1rem; margin-bottom: 48px; max-width: 500px; margin-left: auto; margin-right: auto; }
-  .cta-btn {
-    display: inline-block;
-    background: var(--dark);
-    color: var(--white);
-    padding: 18px 48px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
+  .cf-table th {
+    text-align: left; padding: 12px 16px;
+    font-size: 0.58rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid rgba(200,200,200,0.1);
+  }
+  .cf-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid rgba(200,200,200,0.05);
+    color: var(--chrome);
+  }
+  .cf-table tr:hover td { background: var(--ash); }
+  .cf-table .highlight { color: var(--white); font-weight: 500; }
+  .cf-table .pos { color: #81C784; }
+  .cf-table .neg { color: #E57373; }
+  .cf-table .total {
+    background: var(--ash) !important;
+    border-top: 1px solid rgba(200,200,200,0.15);
+  }
+  .cf-table .total td { color: var(--white); font-weight: 500; }
+
+  /* RISK SECTION */
+  .risk-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(200,200,200,0.07);
+    margin-top: 60px; border: 1px solid rgba(200,200,200,0.07);
+  }
+  .risk-card {
+    background: var(--charcoal);
+    padding: 32px 28px;
     transition: background 0.2s;
   }
-  .cta-btn:hover { background: var(--charcoal); }
-  .contact-details {
-    margin-top: 48px;
-    display: flex; justify-content: center; gap: 60px;
-    font-family: 'DM Mono', monospace; font-size: 0.75rem;
-    color: rgba(0,0,0,0.6);
+  .risk-card:hover { background: var(--ash); }
+  .risk-level {
+    display: inline-block; margin-bottom: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 4px 10px;
+    border: 1px solid;
   }
+  .risk-high { border-color: rgba(229,115,115,0.5); color: #E57373; }
+  .risk-med  { border-color: rgba(255,183,77,0.5);  color: #FFB74D; }
+  .risk-low  { border-color: rgba(129,199,132,0.5); color: #81C784; }
+  .risk-name {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--white); margin-bottom: 10px;
+  }
+  .risk-desc {
+    font-size: 0.8rem; line-height: 1.65;
+    color: var(--silver);
+  }
+  .risk-impact {
+    margin-top: 14px; display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    color: var(--muted);
+  }
+
+  /* MIND MAP */
+  #mindmap {
+    background: var(--charcoal);
+    border-top: 1px solid rgba(200,200,200,0.07);
+    border-bottom: 1px solid rgba(200,200,200,0.07);
+  }
+  .mindmap-container {
+    position: relative; width: 100%; height: 580px;
+    margin-top: 60px;
+  }
+  .mindmap-container svg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .mm-node {
+    position: absolute; transform: translate(-50%, -50%);
+    text-align: center; cursor: default;
+  }
+  .mm-center {
+    background: var(--white);
+    color: var(--dark);
+    padding: 18px 26px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.05em;
+    border: 2px solid rgba(200,200,200,0.3);
+    white-space: nowrap;
+  }
+  .mm-branch {
+    background: var(--ash);
+    border: 1px solid rgba(200,200,200,0.2);
+    padding: 12px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--chrome);
+    white-space: nowrap;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .mm-branch:hover {
+    background: var(--smoke);
+    border-color: rgba(200,200,200,0.4);
+    color: var(--white);
+  }
+  .mm-leaf {
+    background: transparent;
+    padding: 6px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.08em;
+    color: var(--muted);
+    border: 1px solid rgba(200,200,200,0.08);
+    white-space: nowrap;
+  }
+
+  /* CONCLUSION */
+  .conclusion-grid {
+    display: grid; grid-template-columns: 2fr 1fr;
+    gap: 60px; margin-top: 60px; align-items: start;
+  }
+  .verdict-box {
+    background: var(--charcoal);
+    border: 1px solid rgba(200,200,200,0.15);
+    padding: 48px 44px;
+    position: relative;
+  }
+  .verdict-box::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, var(--chrome), transparent);
+  }
+  .verdict-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--silver); margin-bottom: 16px;
+  }
+  .verdict-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: #81C784; line-height: 1; margin-bottom: 20px;
+  }
+  .verdict-text {
+    font-size: 0.9rem; line-height: 1.75; color: var(--silver);
+  }
+  .summary-metrics {
+    display: flex; flex-direction: column; gap: 1px;
+    background: rgba(200,200,200,0.07);
+    border: 1px solid rgba(200,200,200,0.07);
+  }
+  .summary-metric {
+    background: var(--charcoal);
+    padding: 22px 24px;
+  }
+  .summary-metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+  }
+  .summary-metric-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; color: var(--white);
+  }
+  .summary-metric-value.go { color: #81C784; }
 
   /* FOOTER */
   footer {
-    background: var(--dark);
-    padding: 40px 60px;
+    padding: 50px 60px;
+    border-top: 1px solid rgba(200,200,200,0.08);
     display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.05);
   }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem; color: var(--white);
-  }
-  .footer-logo span { color: var(--fire); }
-  footer p {
+  .footer-brand {
     font-family: 'DM Mono', monospace;
-    font-size: 0.6rem; color: var(--muted);
-    letter-spacing: 0.1em;
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em;
+    color: var(--muted); text-align: right;
   }
 
-  /* SCROLL REVEAL */
-  .reveal {
-    opacity: 0; transform: translateY(40px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
+  /* LANG VISIBILITY */
+  [data-en], [data-es] { display: none; }
+  body.lang-es [data-es] { display: block; }
+  body.lang-en [data-en] { display: block; }
+  body.lang-es span[data-es], body.lang-en span[data-en] { display: inline; }
+  body.lang-es div[data-es], body.lang-en div[data-en] { display: flex; }
+  /* section-title needs block (has <br> inside) */
+  body.lang-es .section-title[data-es], body.lang-en .section-title[data-en] { display: block; }
 
-  /* SIMULADOR DE INVERSIÓN */
-  #simulador { padding: 120px 60px; }
-  #simulador .section-title { margin-bottom: 60px; }
-  .sim-container { max-width: 900px; margin: 0 auto; display: grid; gap: 40px; }
-  .sim-slider-section { text-align: center; }
+  /* SIMULATOR */
+  .sim-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px; margin-top: 60px; align-items: start;
+  }
+  .sim-controls { display: flex; flex-direction: column; gap: 32px; }
+  .sim-group {
+    background: var(--ash);
+    border: 1px solid rgba(200,200,200,0.08);
+    padding: 24px 26px;
+  }
+  .sim-group-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+  }
   .sim-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 16px;
+    font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
   }
-  .sim-amount {
+  .sim-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 4rem; color: var(--fire); line-height: 1;
-    margin-bottom: 28px; letter-spacing: 0.02em; transition: color 0.2s;
+    font-size: 1.6rem; color: var(--white);
   }
-  #investSlider {
-    -webkit-appearance: none; appearance: none;
-    width: 100%; height: 4px;
-    border-radius: 2px; outline: none; cursor: pointer;
+  .sim-sub-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; color: var(--silver);
+    margin-top: 10px; letter-spacing: 0.05em;
   }
-  #investSlider::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 26px; height: 26px; border-radius: 50%;
-    background: var(--fire); cursor: pointer;
-    box-shadow: 0 0 14px rgba(255,77,0,0.7);
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  #investSlider::-webkit-slider-thumb:hover {
-    transform: scale(1.25); box-shadow: 0 0 22px rgba(255,77,0,0.9);
-  }
-  #investSlider::-moz-range-thumb {
-    width: 26px; height: 26px; border-radius: 50%;
-    background: var(--fire); border: none; cursor: pointer;
-    box-shadow: 0 0 14px rgba(255,77,0,0.7);
-  }
+  .sim-sub-value strong { color: var(--white); }
   .sim-range-labels {
     display: flex; justify-content: space-between;
-    margin-top: 14px; font-family: 'DM Mono', monospace;
-    font-size: 0.7rem; color: var(--muted);
-  }
-  .sim-metrics {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-  }
-  .sim-metric-card {
-    background: var(--ash);
-    border: 1px solid rgba(255,255,255,0.05);
-    padding: 28px 16px; text-align: center;
-    transition: border-color 0.3s, transform 0.2s;
-  }
-  .sim-metric-card:hover { border-color: rgba(255,77,0,0.3); transform: translateY(-2px); }
-  .sim-metric-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em;
-    color: var(--muted); margin-bottom: 12px;
+    font-size: 0.55rem; color: var(--muted);
+    margin-top: 6px; letter-spacing: 0.1em;
   }
-  .sim-metric-value {
+
+  /* Custom range slider */
+  .sim-slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 2px;
+    background: rgba(200,200,200,0.15);
+    outline: none; border-radius: 0;
+    cursor: pointer;
+  }
+  .sim-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px;
+    background: var(--white);
+    border-radius: 50%; cursor: pointer;
+    border: 3px solid var(--dark);
+    box-shadow: 0 0 0 1px rgba(200,200,200,0.4);
+    transition: box-shadow 0.2s;
+  }
+  .sim-slider::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 4px rgba(200,200,200,0.15);
+  }
+  .sim-slider::-moz-range-thumb {
+    width: 18px; height: 18px;
+    background: var(--white); border-radius: 50%;
+    cursor: pointer; border: 3px solid var(--dark);
+  }
+
+  /* Scenario buttons */
+  .sim-scenario-btns { display: flex; gap: 1px; }
+  .sim-scenario-btn {
+    flex: 1; background: var(--smoke);
+    border: 1px solid rgba(200,200,200,0.1);
+    padding: 14px 10px; cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 4px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .sim-scenario-btn .scn-name {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem; line-height: 1; margin-bottom: 8px;
-    transition: color 0.2s;
+    font-size: 1.1rem; letter-spacing: 0.05em;
+    color: var(--silver);
   }
-  .sim-metric-value.fire { color: var(--fire); }
-  .sim-metric-value.gold { color: var(--gold); }
-  .sim-metric-sub { font-size: 0.68rem; color: var(--muted); font-family: 'DM Mono', monospace; }
-  .sim-returns {
-    background: var(--ash);
-    border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
-  }
-  .sim-returns-header {
-    display: grid; grid-template-columns: 1fr 2fr 1fr;
-    padding: 14px 24px;
-    background: var(--smoke);
+  .sim-scenario-btn .scn-sub {
     font-family: 'DM Mono', monospace;
-    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em;
+    font-size: 0.58rem; letter-spacing: 0.1em;
     color: var(--muted);
   }
-  .sim-return-row {
-    display: grid; grid-template-columns: 1fr 2fr 1fr;
-    padding: 18px 24px;
-    border-top: 1px solid rgba(255,255,255,0.04);
-    font-family: 'DM Mono', monospace; font-size: 0.85rem;
+  .sim-scenario-btn.bear.active { background: rgba(229,115,115,0.12); border-color: rgba(229,115,115,0.4); }
+  .sim-scenario-btn.bear.active .scn-name { color: #E57373; }
+  .sim-scenario-btn.base.active { background: rgba(200,200,200,0.08); border-color: rgba(200,200,200,0.35); }
+  .sim-scenario-btn.base.active .scn-name { color: var(--white); }
+  .sim-scenario-btn.bull.active { background: rgba(129,199,132,0.12); border-color: rgba(129,199,132,0.4); }
+  .sim-scenario-btn.bull.active .scn-name { color: #81C784; }
+
+  /* Live KPIs */
+  .sim-kpis {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: rgba(200,200,200,0.07);
+    border: 1px solid rgba(200,200,200,0.07);
+  }
+  .sim-kpi {
+    background: var(--charcoal);
+    padding: 22px 20px;
     transition: background 0.2s;
   }
-  .sim-return-row:hover { background: rgba(255,77,0,0.05); }
-  .sim-return-row span:first-child { color: var(--muted); }
-  .sim-return-row span:nth-child(2) { color: var(--cream); }
-  .sim-return-row span:last-child { color: var(--gold); }
-  .sim-return-row.highlight {
-    background: rgba(245,200,66,0.05);
-    border-top: 1px solid rgba(245,200,66,0.2);
+  .sim-kpi-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
   }
-  .sim-return-row.highlight span:nth-child(2) { color: var(--gold); font-weight: 600; }
-  .sim-chart-wrapper {
-    background: var(--ash);
-    border: 1px solid rgba(255,255,255,0.05); padding: 32px;
+  .sim-kpi-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.9rem; color: var(--white);
+    line-height: 1; margin-bottom: 8px;
+    transition: color 0.3s;
   }
-  @media (max-width: 768px) {
-    .sim-metrics { grid-template-columns: repeat(2, 1fr); }
-    .sim-amount { font-size: 2.8rem; }
-    #simulador { padding: 80px 24px; }
+  .sim-kpi-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 3px 8px;
+    border: 1px solid; transition: all 0.3s;
+  }
+  .sim-kpi-badge.pos { border-color: rgba(129,199,132,0.4); color: #81C784; }
+  .sim-kpi-badge.neg { border-color: rgba(229,115,115,0.4); color: #E57373; }
+  .sim-kpi-badge.warn { border-color: rgba(255,183,77,0.4); color: #FFB74D; }
+
+  /* Sim bottom */
+  .sim-bottom {
+    display: flex; gap: 40px; margin-top: 40px; align-items: flex-start;
+  }
+
+  /* EFPI COMPLIANCE */
+  .compliance-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(200,200,200,0.07);
+    border: 1px solid rgba(200,200,200,0.07);
+    margin-top: 50px;
+  }
+  .compliance-card {
+    background: var(--charcoal);
+    padding: 28px 26px;
+  }
+  .compliance-head {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-bottom: 10px;
+  }
+  .compliance-title {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--white);
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  .compliance-text {
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: var(--silver);
+  }
+  .compliance-mini {
+    margin-top: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ADD-ON MODULES */
+  .addon-block { margin-top: 60px; }
+  .addon-head {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .addon-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .formula-card.wide { grid-column: 1 / -1; }
+  .mini-table { width: 100%; margin-top: 16px; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 0.68rem; }
+  .mini-table th, .mini-table td { padding: 10px 12px; border-bottom: 1px solid rgba(200,200,200,0.08); text-align: left; }
+  .mini-table th { color: var(--muted); font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; }
+  .scenario-table { width: 100%; margin-top: 20px; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 0.72rem; }
+  .scenario-table th, .scenario-table td { padding: 14px 16px; border-bottom: 1px solid rgba(200,200,200,0.08); text-align: center; }
+  .scenario-table th { color: var(--muted); font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; }
+  .scenario-table tr.bear td { background: rgba(229,115,115,0.08); }
+  .scenario-table tr.base td { background: rgba(200,200,200,0.05); }
+  .scenario-table tr.bull td { background: rgba(129,199,132,0.08); }
+  .be-wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start; }
+  .be-metrics { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .be-metric { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 0.65rem; padding-bottom: 8px; border-bottom: 1px solid rgba(200,200,200,0.07); }
+  .be-metric strong { color: var(--white); }
+  .be-result { margin-top: 18px; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #81C784; }
+  .be-pl { margin-top: 10px; font-family: 'DM Mono', monospace; font-size: 0.65rem; }
+  .be-pl.pos { color: #81C784; }
+  .be-pl.neg { color: #E57373; }
+  .ro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+  .ro-panel { background: var(--ash); border: 1px solid rgba(200,200,200,0.1); padding: 22px; }
+  .ro-panel h4 { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--white); margin-bottom: 12px; }
+  .ro-panel p, .ro-panel li { font-size: 0.82rem; line-height: 1.65; color: var(--silver); }
+  .ro-panel ul { margin-left: 16px; margin-top: 8px; }
+  .ro-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--white); margin-top: 10px; }
+  .ro-val.go { color: #81C784; }
+  .ro-val.warn { color: #FFB74D; }
+  .bin-tree { display: flex; flex-direction: column; align-items: center; gap: 18px; margin: 20px 0; font-family: 'DM Mono', monospace; font-size: 0.62rem; }
+  .bin-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .bin-node { background: var(--smoke); border: 1px solid rgba(200,200,200,0.2); padding: 10px 14px; text-align: center; min-width: 110px; }
+  .bin-node.root { border-color: rgba(200,200,200,0.45); color: var(--white); }
+  .bin-node .prob { color: var(--muted); font-size: 0.55rem; margin-top: 4px; }
+  .event-tree-wrap { overflow-x: auto; margin-top: 16px; }
+  .event-tree { min-width: 720px; height: 280px; position: relative; }
+  .event-tree svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .et-node { position: absolute; transform: translate(-50%, -50%); background: var(--smoke); border: 1px solid rgba(200,200,200,0.2); padding: 8px 12px; font-family: 'DM Mono', monospace; font-size: 0.58rem; text-align: center; white-space: nowrap; }
+  .et-node.dec { border-color: rgba(192,192,192,0.5); color: var(--white); }
+  .et-node.out { color: var(--silver); }
+  .ration-wrap { margin-top: 50px; }
+  .ration-note { margin-top: 20px; font-size: 0.86rem; line-height: 1.7; color: var(--silver); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .project-grid, .chart-grid, .formula-grid, .conclusion-grid { grid-template-columns: 1fr; }
+    .sim-wrap, .sim-bottom { flex-direction: column; }
+    .sim-wrap { grid-template-columns: 1fr; }
+    .compliance-grid { grid-template-columns: 1fr; }
+    .be-wrap, .ro-grid { grid-template-columns: 1fr; }
+    .risk-grid { grid-template-columns: 1fr 1fr; }
+    .hero-metrics { flex-wrap: wrap; gap: 32px; }
+    #hero { padding: 0 24px 60px; }
+    .mindmap-container { height: auto; }
   }
 </style>
 </head>
-<body>
+<body class="lang-en">
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- CURSOR -->
+<!-- MB Star Cursor — hotspot at center -->
+<div id="mbCursor">
+  <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer ring -->
+    <circle cx="19" cy="19" r="16.5" stroke="#C0C0C0" stroke-width="2" fill="none"/>
+    <!-- Inner ring -->
+    <circle cx="19" cy="19" r="13.8" stroke="#C0C0C0" stroke-width="0.7" fill="none" opacity="0.5"/>
+    <!-- Three arms as stroked lines — guaranteed silver -->
+    <line x1="19" y1="19" x2="19"   y2="3.5"  stroke="#C0C0C0" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="19" y1="19" x2="33.2" y2="28.5" stroke="#C0C0C0" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="19" y1="19" x2="4.8"  y2="28.5" stroke="#C0C0C0" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Center hub -->
+    <circle cx="19" cy="19" r="2.5" fill="#C0C0C0"/>
+  </svg>
+</div>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">FOG<span>Ó</span>N</div>
+  <div class="nav-logo">
+    <!-- Mercedes-Benz Three-Pointed Star -->
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" stroke="#C0C0C0" stroke-width="2"/>
+      <circle cx="50" cy="50" r="38" stroke="#C0C0C0" stroke-width="0.8" opacity="0.4"/>
+      <!-- Three-pointed star -->
+      <polygon points="50,10 53,47 50,50 47,47" fill="#C0C0C0"/>
+      <polygon points="50,50 80,82 50,72 20,82" fill="#C0C0C0" opacity="0"/>
+      <path d="M50 10 L53 46 L50 50 L47 46 Z" fill="#C0C0C0"/>
+      <path d="M50 50 L82 80 L62 56 Z" fill="#C0C0C0"/>
+      <path d="M50 50 L18 80 L38 56 Z" fill="#C0C0C0"/>
+      <circle cx="50" cy="50" r="5" fill="#C0C0C0"/>
+    </svg>
+    <div>
+      <div class="nav-brand">Mercedes-Benz <span>Group AG</span></div>
+    </div>
+  </div>
   <div class="nav-links">
-    <a href="#problema">Oportunidad</a>
-    <a href="#modelo">Modelo</a>
-    <a href="#mercado">Mercado</a>
-    <a href="#financials">Financials</a>
-    <a href="#inversion">Inversión</a>
-    <a href="#chatbot">CFO AI</a>
-    <a href="#simulador">Simulador</a>
-    <a href="#contacto" class="nav-cta">Invertir</a>
+    <a href="#financiero"><span data-es>Financiero</span><span data-en>Financial</span></a>
+    <a href="#proyecto"><span data-es>Proyecto</span><span data-en>Project</span></a>
+    <a href="#analisis"><span data-es>Análisis</span><span data-en>Analysis</span></a>
+    <a href="#simulador"><span data-es>Simulador</span><span data-en>Simulator</span></a>
+    <a href="#riesgos"><span data-es>Riesgos</span><span data-en>Risks</span></a>
+    <a href="#efpi"><span data-es>EFPI</span><span data-en>EFPI</span></a>
+    <a href="#mapa"><span data-es>Mapa Conceptual</span><span data-en>Concept Map</span></a>
+    <a href="#conclusion" class="nav-cta"><span data-es>Conclusión</span><span data-en>Conclusion</span></a>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn" onclick="setLang('es')">ESP</button>
+    <button class="lang-btn active" onclick="setLang('en')">ENG</button>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg"></div>
-  <div class="hero-noise"></div>
-  <div style="position:relative;z-index:1;">
-    <div class="hero-tag">Ronda de Inversión Serie A · 2025</div>
-    <h1 class="hero-title">
-      LA COCINA<br>QUE NUNCA<br><span class="accent">DUERME.</span>
-    </h1>
-    <p class="hero-sub">Red de dark kitchens premium operando 16 marcas virtuales desde 4 centros de producción en CDMX.</p>
-    <div class="hero-metrics">
-      <div class="metric-item">
-        <div class="metric-value">$42<span>M</span></div>
-        <div class="metric-label">Valuación pre-money</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">4<span>X</span></div>
-        <div class="metric-label">ROI proyectado año 3</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">38<span>%</span></div>
-        <div class="metric-label">EBITDA margin</div>
-      </div>
-      <div class="metric-item">
-        <div class="metric-value">67<span>%</span></div>
-        <div class="metric-label">TIR estimada</div>
-      </div>
+  <!-- Large faded star bg -->
+  <div class="hero-star">
+    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;opacity:0.5">
+      <circle cx="200" cy="200" r="196" stroke="white" stroke-width="3"/>
+      <path d="M200 20 L207 190 L200 200 L193 190 Z" fill="white"/>
+      <path d="M200 200 L355 320 L245 215 Z" fill="white"/>
+      <path d="M200 200 L45 320 L155 215 Z" fill="white"/>
+      <circle cx="200" cy="200" r="20" fill="white"/>
+    </svg>
+  </div>
+
+  <div class="hero-tag">
+    <span data-es>Evaluación Financiera de Proyectos de Inversión — 2026</span>
+    <span data-en>Financial Evaluation of Investment Projects — 2026</span>
+  </div>
+  <div class="hero-title">
+    <span data-es>PROYECTO<br><span class="dim">CLA 2026</span><br>MMA PLATFORM</span>
+    <span data-en>PROJECT<br><span class="dim">CLA 2026</span><br>MMA PLATFORM</span>
+  </div>
+  <div class="hero-sub">
+    <span data-es>Análisis de viabilidad financiera del proyecto de plataforma modular eléctrica de Mercedes-Benz</span>
+    <span data-en>Financial viability analysis of Mercedes-Benz's electric modular platform project</span>
+  </div>
+  <div class="hero-metrics">
+    <div class="metric-item">
+      <div class="metric-value">€<span>60</span>B</div>
+      <div class="metric-label" data-es>Inversión Total Transformación</div>
+      <div class="metric-label" data-en>Total Transformation CAPEX</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-value">€<span>3</span>B</div>
+      <div class="metric-label" data-es>Inversión Proyecto CLA/MMA</div>
+      <div class="metric-label" data-en>CLA/MMA Project Investment</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-value"><span>+127</span>%</div>
+      <div class="metric-label" data-es>Ventas CLA — Europa Q1 2026</div>
+      <div class="metric-label" data-en>CLA Sales — Europe Q1 2026</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-value"><span>€145</span>B</div>
+      <div class="metric-label" data-es>Ingresos Totales 2024</div>
+      <div class="metric-label" data-en>Total Revenue 2024</div>
     </div>
   </div>
+
   <div class="scroll-hint">
     <div class="scroll-line"></div>
-    Scroll
+    SCROLL
   </div>
 </section>
 
-<!-- PROBLEMA & SOLUCIÓN -->
-<section id="problema">
-  <div class="section-tag">01 — La Oportunidad</div>
-  <h2 class="section-title">El Problema<br>Es Enorme.</h2>
-  <div class="divider"></div>
-  <div class="two-col reveal">
-    <div>
-      <div class="problem-card" style="margin-bottom:24px;">
-        <h3>Renta destruye margenes</h3>
-        <p>Los restaurantes tradicionales en CDMX destinan entre el 25% y 35% de sus ingresos al pago de renta en ubicaciones prime. Una dark kitchen opera con rentas 4x menores en zonas industriales.</p>
-        <span class="stat-big">$180K</span>
-        <span style="font-size:0.8rem;color:var(--muted)">Renta promedio mensual, local Polanco vs $42K dark kitchen misma capacidad</span>
-      </div>
-      <div class="problem-card">
-        <h3>Delivery crece sin parar</h3>
-        <p>El mercado de food delivery en México creció 31% en 2024. Los consumidores no quieren ir al restaurante — quieren la comida en casa en 25 minutos.</p>
-        <span class="stat-big">+31%</span>
-        <span style="font-size:0.8rem;color:var(--muted)">Crecimiento anual delivery México, Statista 2024</span>
+<div class="divider"></div>
+
+<!-- COMPANY OVERVIEW / KPIs -->
+<section id="financiero">
+  <div class="section-tag" data-es>01 — Contexto Financiero</div>
+  <div class="section-tag" data-en>01 — Financial Context</div>
+  <div class="section-title" data-es>CONDICIONES<br>ECONÓMICAS</div>
+  <div class="section-title" data-en>ECONOMIC<br>CONDITIONS</div>
+  <div class="section-sub" data-es>Análisis del entorno macroeconómico y financiero de Mercedes-Benz Group AG para determinar la viabilidad del proyecto de inversión.</div>
+  <div class="section-sub" data-en>Analysis of Mercedes-Benz Group AG's macroeconomic and financial environment to determine investment project viability.</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-year">2022</div>
+      <div class="kpi-number">€150<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Ingresos</div>
+      <div class="kpi-name" data-en>Revenue</div>
+      <div class="kpi-delta pos">▲ Base de referencia</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-year">2023</div>
+      <div class="kpi-number">€153<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Ingresos (Pico)</div>
+      <div class="kpi-name" data-en>Revenue (Peak)</div>
+      <div class="kpi-delta pos">▲ +2.1%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-year">2024</div>
+      <div class="kpi-number">€145<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Ingresos</div>
+      <div class="kpi-name" data-en>Revenue</div>
+      <div class="kpi-delta neg">▼ -5.2%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-year">2025</div>
+      <div class="kpi-number">€132<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Ingresos</div>
+      <div class="kpi-name" data-en>Revenue</div>
+      <div class="kpi-delta neg">▼ -9.2%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-year">EBIT 2022</div>
+      <div class="kpi-number">€20<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Beneficio Operativo</div>
+      <div class="kpi-name" data-en>Operating Profit</div>
+      <div class="kpi-delta pos">RoS 14.6%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-year">EBIT 2023</div>
+      <div class="kpi-number">€19.7<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Beneficio Operativo</div>
+      <div class="kpi-name" data-en>Operating Profit</div>
+      <div class="kpi-delta pos">RoS 12.6%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-year">EBIT 2024</div>
+      <div class="kpi-number">€13.6<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Beneficio Operativo</div>
+      <div class="kpi-name" data-en>Operating Profit</div>
+      <div class="kpi-delta neg">▼ RoS 8.1%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-year">EBIT 2025</div>
+      <div class="kpi-number">€8.2<span class="kpi-unit">B</span></div>
+      <div class="kpi-name" data-es>Beneficio Operativo</div>
+      <div class="kpi-name" data-en>Operating Profit</div>
+      <div class="kpi-delta neg">▼ RoS ~4–5%</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <div class="chart-label" data-es>Ingresos vs EBIT 2022–2025 (€ Millardos)</div>
+      <div class="chart-label" data-en>Revenue vs EBIT 2022–2025 (€ Billions)</div>
+      <canvas id="revenueChart" height="220"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="chart-label" data-es>Flujo de Caja Libre Industrial (€ Millardos)</div>
+      <div class="chart-label" data-en>Industrial Free Cash Flow (€ Billions)</div>
+      <canvas id="fcfChart" height="220"></canvas>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECT SECTION -->
+<section id="proyecto">
+  <div class="section-tag" data-es>02 — El Proyecto</div>
+  <div class="section-tag" data-en>02 — The Project</div>
+  <div class="section-title" data-es>PROYECTO MMA<br>& CLA 2026</div>
+  <div class="section-title" data-en>MMA PROJECT<br>& CLA 2026</div>
+  <div class="section-sub" data-es>El proyecto de inversión bajo análisis es la plataforma modular MMA (Mercedes Modular Architecture) y el lanzamiento del nuevo CLA 2026 — primera plataforma diseñada nativamente para vehículos eléctricos e híbridos.</div>
+  <div class="section-sub" data-en>The investment project under analysis is the MMA (Mercedes Modular Architecture) platform and the launch of the new CLA 2026 — the first platform natively designed for electric and hybrid vehicles.</div>
+
+  <div class="project-grid">
+    <div class="project-card">
+      <div class="project-card-num">01</div>
+      <div class="project-card-label" data-es>Plataforma Base</div>
+      <div class="project-card-label" data-en>Base Platform</div>
+      <div class="project-card-title">MMA — Mercedes Modular Architecture</div>
+      <p data-es>Nueva arquitectura modular que soporta vehículos 100% eléctricos (BEV) e híbridos (PHEV) sobre la misma base. Permite reducir el costo de desarrollo al compartir plataforma entre 30+ modelos futuros.</p>
+      <p data-en>New modular architecture supporting both full electric (BEV) and hybrid (PHEV) vehicles on the same base. Reduces development costs by sharing the platform across 30+ future models.</p>
+      <div class="project-specs">
+        <div class="spec-row"><span class="spec-key" data-es>Planta asignada</span><span class="spec-key" data-en>Plant</span><span class="spec-val">Rastatt, Alemania</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Período desarrollo</span><span class="spec-key" data-en>Dev. period</span><span class="spec-val">2021 – 2025</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Inversión planta</span><span class="spec-key" data-en>Plant investment</span><span class="spec-val">~€300M (Rastatt)</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Modelos derivados</span><span class="spec-key" data-en>Derived models</span><span class="spec-val">30+ vehículos</span></div>
       </div>
     </div>
-    <div>
-      <div class="problem-card" style="height:calc(100% - 0px);">
-        <h3>Nuestra solución: FOGÓN</h3>
-        <p style="margin-bottom:20px;">Operamos múltiples marcas de comida desde cocinas centralizadas hiper-eficientes. Una sola cocina produce órdenes para 4–6 marcas diferentes simultáneamente, maximizando el uso de cada metro cuadrado, cada cocinero y cada minuto de operación.</p>
-        <p style="margin-bottom:20px;color:var(--muted)">No competimos con restaurantes. <strong style="color:var(--cream)">Los hacemos obsoletos.</strong></p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;">
-          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
-            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">16</span>
-            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Marcas Virtuales</div>
+    <div class="project-card">
+      <div class="project-card-num">02</div>
+      <div class="project-card-label">MB.OS</div>
+      <div class="project-card-title">Sistema Operativo Propio</div>
+      <p data-es>MB.OS es el sistema operativo vehicular desarrollado 100% in-house. Unifica todas las funciones del vehículo y habilita actualizaciones OTA y nuevas fuentes de ingresos digitales. Lanzado en el CLA 2026.</p>
+      <p data-en>MB.OS is the 100% in-house vehicle operating system. Unifies all vehicle functions, enables OTA updates and new digital revenue streams. Launched first on the CLA 2026.</p>
+      <div class="project-specs">
+        <div class="spec-row"><span class="spec-key" data-es>Ingenieros software</span><span class="spec-key" data-en>Software engineers</span><span class="spec-val">3,000+</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>% I+D en software</span><span class="spec-key" data-en>% R&D in software</span><span class="spec-val">25% del total</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Ingresos objetivo 2030</span><span class="spec-key" data-en>Revenue target 2030</span><span class="spec-val">>€1B EBIT/año</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Primer vehículo</span><span class="spec-key" data-en>First vehicle</span><span class="spec-val">CLA 2026</span></div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-card-num">03</div>
+      <div class="project-card-label" data-es>Producto Ancla</div>
+      <div class="project-card-label" data-en>Anchor Product</div>
+      <div class="project-card-title">CLA 2026 — Segmento Compacto de Lujo</div>
+      <p data-es>El CLA 2026 es el primer auto Mercedes construido sobre MMA. Ganó el premio al Auto Europeo del Año 2026 y Euro NCAP Best Performer. Las ventas europeas crecieron +127% en los primeros dos meses de 2026.</p>
+      <p data-en>The CLA 2026 is the first Mercedes built on MMA. Won 2026 European Car of the Year and Euro NCAP Best Performer. European sales grew +127% in the first two months of 2026.</p>
+      <div class="project-specs">
+        <div class="spec-row"><span class="spec-key">CLA 250+ EV</span><span class="spec-val">$47,250 USD</span></div>
+        <div class="spec-row"><span class="spec-key">CLA 350 4MATIC EV</span><span class="spec-val">$49,800 USD</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Cuota mercado EU</span><span class="spec-key" data-en>EU market share</span><span class="spec-val">~39.75%</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Volumen objetivo</span><span class="spec-key" data-en>Volume target</span><span class="spec-val">>300,000 u/año</span></div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-card-num">04</div>
+      <div class="project-card-label" data-es>Inversión Total del Proyecto</div>
+      <div class="project-card-label" data-en>Total Project Investment</div>
+      <div class="project-card-title">CAPEX — Estrategia Eléctrica</div>
+      <p data-es>Mercedes-Benz comprometió más de €60 billones en inversión de transformación total al 2026 y €40B+ específicamente en electromovilidad 2022–2030. Para el proyecto CLA/MMA se estima una inversión directa de €3.0B.</p>
+      <p data-en>Mercedes-Benz committed more than €60 billion in total transformation investment through 2026 and €40B+ specifically in electromobility 2022–2030. The CLA/MMA direct project investment is estimated at €3.0B.</p>
+      <div class="project-specs">
+        <div class="spec-row"><span class="spec-key" data-es>Inversión total 2026</span><span class="spec-key" data-en>Total 2026 CAPEX</span><span class="spec-val">>€60B</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>CAPEX electro 2030</span><span class="spec-key" data-en>Electro CAPEX 2030</span><span class="spec-val">>€40B</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>I+D pico (2023)</span><span class="spec-key" data-en>Peak R&D (2023)</span><span class="spec-val">~€10B/año</span></div>
+        <div class="spec-row"><span class="spec-key" data-es>Gigafábricas bat.</span><span class="spec-key" data-en>Battery gigaplants</span><span class="spec-val">8 plantas globales</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FINANCIAL ANALYSIS — FORMULAS -->
+<section id="analisis">
+  <div class="section-tag" data-es>03 — Análisis Financiero</div>
+  <div class="section-tag" data-en>03 — Financial Analysis</div>
+  <div class="section-title" data-es>EVALUACIÓN<br>FINANCIERA</div>
+  <div class="section-title" data-en>FINANCIAL<br>EVALUATION</div>
+  <div class="section-sub" data-es>Aplicación de fórmulas financieras para determinar la viabilidad del proyecto. WACC utilizado: 9% | Horizonte: 10 años | Inversión inicial: €3,000M</div>
+  <div class="section-sub" data-en>Application of financial formulas to determine project viability. WACC used: 9% | Horizon: 10 years | Initial investment: €3,000M</div>
+
+  <div class="formula-grid">
+    <!-- NPV / VPN -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Valor Presente Neto</div>
+      <div class="formula-name" data-en>Net Present Value</div>
+      <div class="formula-acronym">VPN / NPV</div>
+      <div class="formula-box">
+        VPN = Σ [ FCt / (1 + WACC)ᵗ ] − I₀<br><br>
+        VPN = Σ [ FCt / (1.09)ᵗ ] − 3,000M<br><br>
+        VP Año 1: 800 / 1.09 = €733.9M<br>
+        VP Año 2: 1,500 / 1.188 = €1,262.6M<br>
+        VP Año 3: 2,000 / 1.295 = €1,544.4M<br>
+        VP Año 4: 2,200 / 1.412 = €1,558.4M<br>
+        VP Año 5: 2,300 / 1.539 = €1,494.5M<br>
+        VP Años 6–10: ≈ €5,010M<br>
+        ─────────────────────────<br>
+        ΣVP = €11,603.8M<br>
+        VPN = 11,603.8 − 3,000 = <strong>€8,603.8M</strong>
+      </div>
+      <div class="formula-desc" data-es>El VPN positivo de €8,603.8M indica que el proyecto genera valor por encima del costo de capital (WACC=9%). Por cada euro invertido, el proyecto genera €3.87 de valor presente neto.</div>
+      <div class="formula-desc" data-en>The positive NPV of €8,603.8M indicates the project creates value above the cost of capital (WACC=9%). For every euro invested, the project generates €3.87 in net present value.</div>
+      <div class="formula-result">
+        <div class="formula-result-label">VPN / NPV</div>
+        <div class="formula-result-value pos">€8,604M</div>
+      </div>
+      <div class="formula-verdict" data-es>✓ VPN > 0 — PROYECTO VIABLE</div>
+      <div class="formula-verdict" data-en>✓ NPV > 0 — PROJECT VIABLE</div>
+    </div>
+
+    <!-- TIR / IRR -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Tasa Interna de Retorno</div>
+      <div class="formula-name" data-en>Internal Rate of Return</div>
+      <div class="formula-acronym">TIR / IRR</div>
+      <div class="formula-box">
+        0 = Σ [ FCt / (1 + TIR)ᵗ ] − I₀<br><br>
+        Prueba TIR = 40%:<br>
+        ΣVP = €3,066M → VPN = +€66M ≈ 0<br><br>
+        Prueba TIR = 41%:<br>
+        ΣVP = €3,004.6M → VPN ≈ €4.6M ≈ 0<br><br>
+        Interpolación:<br>
+        TIR ≈ 40% + [66/(66+432)] × 1%<br>
+        TIR ≈ <strong>41.0%</strong><br><br>
+        WACC = 9% → TIR > WACC ✓
+      </div>
+      <div class="formula-desc" data-es>La TIR del 41% supera ampliamente el WACC del 9%, lo que confirma que el proyecto es altamente rentable. El excedente de 32 puntos porcentuales representa el margen de seguridad del inversionista.</div>
+      <div class="formula-desc" data-en>The IRR of 41% far exceeds the WACC of 9%, confirming the project is highly profitable. The 32 percentage point surplus represents the investor's safety margin.</div>
+      <div class="formula-result">
+        <div class="formula-result-label">TIR / IRR</div>
+        <div class="formula-result-value pos">41.0%</div>
+      </div>
+      <div class="formula-verdict" data-es>✓ TIR > WACC (41% > 9%) — ACEPTAR</div>
+      <div class="formula-verdict" data-en>✓ IRR > WACC (41% > 9%) — ACCEPT</div>
+    </div>
+
+    <!-- PAYBACK -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Período de Recuperación</div>
+      <div class="formula-name" data-en>Payback Period</div>
+      <div class="formula-acronym">PR / PRI</div>
+      <div class="formula-box">
+        PR = año previo + (Saldo / FC siguiente)<br><br>
+        Año 0:  -€3,000M  Acum: -€3,000M<br>
+        Año 1:  +€800M    Acum: -€2,200M<br>
+        Año 2:  +€1,500M  Acum: -€700M<br>
+        Año 3:  +€2,000M  Acum: +€1,300M<br>
+        ─────────────────────────<br>
+        Recuperación en Año 3:<br>
+        PR = 2 + (700 / 2,000) = 2.35 años<br>
+        PR ≈ <strong>2 años 4 meses</strong>
+      </div>
+      <div class="formula-desc" data-es>La inversión se recupera en 2 años y 4 meses, muy por debajo del horizonte de evaluación de 10 años. Esto reduce significativamente el riesgo de capital para Mercedes-Benz.</div>
+      <div class="formula-desc" data-en>The investment is recovered in 2 years and 4 months, well below the 10-year evaluation horizon. This significantly reduces capital risk for Mercedes-Benz.</div>
+      <div class="formula-result">
+        <div class="formula-result-label" data-es>Período de Recuperación</div>
+        <div class="formula-result-label" data-en>Payback Period</div>
+        <div class="formula-result-value pos">2.35 años</div>
+      </div>
+      <div class="formula-verdict" data-es>✓ Recuperación antes de 3 años — BAJO RIESGO</div>
+      <div class="formula-verdict" data-en>✓ Recovery before 3 years — LOW RISK</div>
+    </div>
+
+    <!-- COSTO-BENEFICIO -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Relación Beneficio-Costo</div>
+      <div class="formula-name" data-en>Benefit-Cost Ratio</div>
+      <div class="formula-acronym">B/C — RBC</div>
+      <div class="formula-box">
+        B/C = Σ VP Beneficios / Σ VP Costos<br><br>
+        ΣVP Beneficios (10 años) = €11,603.8M<br>
+        ΣVP Costos (inversión) = €3,000.0M<br>
+        ─────────────────────────<br>
+        B/C = 11,603.8 / 3,000.0<br>
+        B/C = <strong>3.87</strong><br><br>
+        Por cada €1 invertido →<br>
+        se recuperan €3.87 en valor presente
+      </div>
+      <div class="formula-desc" data-es>La relación B/C de 3.87 confirma que el proyecto es altamente eficiente. Por cada euro de inversión, se generan €3.87 en flujos descontados. Una relación B/C mayor a 1 indica viabilidad.</div>
+      <div class="formula-desc" data-en>The B/C ratio of 3.87 confirms the project is highly efficient. For every euro invested, €3.87 in discounted flows are generated. A B/C ratio above 1 indicates viability.</div>
+      <div class="formula-result">
+        <div class="formula-result-label">B/C</div>
+        <div class="formula-result-value pos">3.87</div>
+      </div>
+      <div class="formula-verdict" data-es>✓ B/C > 1 — PROYECTO EFICIENTE</div>
+      <div class="formula-verdict" data-en>✓ B/C > 1 — EFFICIENT PROJECT</div>
+    </div>
+
+    <!-- DISCOUNTED PAYBACK -->
+    <div class="formula-card wide">
+      <div class="formula-name" data-es>Período de Recuperación Descontado</div>
+      <div class="formula-name" data-en>Discounted Payback Period</div>
+      <div class="formula-acronym">PRD / DPB — WACC 9%</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th data-es>Año</th><th data-en>Year</th>
+            <th>CF (€M)</th>
+            <th data-es>Factor</th><th data-en>Factor</th>
+            <th>VP (€M)</th>
+            <th data-es>VP Acum.</th><th data-en>Cum. PV</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="highlight">0</td><td class="neg">-3,000</td><td>1.000</td><td class="neg">-3,000.0</td><td class="neg">-3,000.0</td></tr>
+          <tr><td class="highlight">1</td><td class="pos">800</td><td>0.917</td><td class="pos">733.9</td><td class="neg">-2,266.1</td></tr>
+          <tr><td class="highlight">2</td><td class="pos">1,500</td><td>0.842</td><td class="pos">1,262.6</td><td class="neg">-1,003.5</td></tr>
+          <tr><td class="highlight">3</td><td class="pos">2,000</td><td>0.772</td><td class="pos">1,544.4</td><td class="pos">+540.9</td></tr>
+        </tbody>
+      </table>
+      <div class="formula-box" style="margin-top:16px">
+        PRD = 2 + (1,003.5 / 1,544.4) = 2 + 0.65 = <strong>2.65 años</strong> ≈ 2 <span data-es>años</span><span data-en>years</span> 8 <span data-es>meses</span><span data-en>months</span>
+      </div>
+      <div class="formula-result">
+        <div class="formula-result-label" data-es>Período Descontado</div>
+        <div class="formula-result-label" data-en>Discounted Period</div>
+        <div class="formula-result-value pos">2.65 <span data-es>años</span><span data-en>years</span></div>
+      </div>
+      <div class="formula-desc" data-es>El payback descontado es 3 meses mayor que el simple (2.35 vs 2.65 años), reflejando el ajuste por valor del dinero en el tiempo.</div>
+      <div class="formula-desc" data-en>Discounted payback is 3 months longer than simple payback (2.35 vs 2.65 years), reflecting the time value of money adjustment.</div>
+    </div>
+
+    <!-- MIRR -->
+    <div class="formula-card wide">
+      <div class="formula-name" data-es>Tasa Interna de Retorno Modificada</div>
+      <div class="formula-name" data-en>Modified Internal Rate of Return</div>
+      <div class="formula-acronym">TIRM / MIRR</div>
+      <div class="formula-box">
+        MIRR = [(FV of positive CFs at reinvestment rate) / |PV of negative CFs at finance rate|]^(1/n) − 1<br><br>
+        <span data-es>Tasa financiamiento = Tasa reinversión = WACC = 9% · n = 10 años</span>
+        <span data-en>Finance rate = Reinvestment rate = WACC = 9% · n = 10 years</span><br><br>
+        FV <span data-es>flujos positivos</span><span data-en>positive CFs</span> @ 9% <span data-es>hasta año 10</span><span data-en>to year 10</span>:<br>
+        FV = 800(1.09)⁹ + 1,500(1.09)⁸ + 2,000(1.09)⁷ + 2,200(1.09)⁶ + 2,300(1.09)⁵<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;+ 2,400(1.09)⁴ + 2,500(1.09)³ + 2,600(1.09)² + 2,700(1.09)¹ + 2,800(1.09)⁰<br>
+        FV = 1,738 + 2,992 + 3,655 + 3,686 + 3,540 + 3,389 + 3,239 + 3,087 + 2,943 + 2,800<br>
+        FV = <strong>€31,069M</strong><br><br>
+        PV <span data-es>flujos negativos</span><span data-en>negative CFs</span> @ 9%:<br>
+        PV = 3,000 / (1.09)⁰ = <strong>€3,000M</strong> (<span data-es>solo Año 0 es negativo</span><span data-en>only Year 0 is negative</span>)<br><br>
+        MIRR = (31,069 / 3,000)^(1/10) − 1<br>
+        MIRR = (10.356)^(0.1) − 1<br>
+        MIRR = 1.2657 − 1<br>
+        MIRR = <strong>26.6%</strong>
+      </div>
+      <div class="formula-result">
+        <div class="formula-result-label">MIRR</div>
+        <div class="formula-result-value pos">26.6%</div>
+      </div>
+      <div class="formula-box" style="margin-top:14px;border-color:rgba(255,183,77,0.35)">
+        <strong data-es>Conflicto TIR vs TIRM:</strong><strong data-en>IRR vs MIRR Conflict:</strong><br>
+        <span data-es>La TIR asume que los flujos intermedios se reinvierten a la TIR (41%) — un supuesto poco realista. La TIRM corrige esto usando el WACC (9%) como tasa de reinversión, dando un retorno más conservador y realista del 26.6%. En proyectos mutuamente excluyentes, el VPN es el criterio de desempate cuando los rankings de TIR y TIRM entran en conflicto.</span>
+        <span data-en>IRR assumes intermediate cash flows are reinvested at the IRR rate (41%) — an unrealistic assumption. MIRR corrects this by using WACC (9%) as reinvestment rate, giving a more conservative and realistic return of 26.6%. In mutually exclusive projects, NPV is the tiebreaker when IRR and MIRR rankings conflict.</span>
+      </div>
+    </div>
+
+    <!-- WACC BREAKDOWN -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Cálculo del WACC</div>
+      <div class="formula-name" data-en>WACC Calculation</div>
+      <div class="formula-acronym">WACC</div>
+      <div class="formula-box">
+        WACC = (E/V) × Ke + (D/V) × Kd × (1 − T)
+      </div>
+      <table class="mini-table">
+        <tbody>
+          <tr><td class="spec-key" data-es>Costo del Capital (Ke)</td><td class="spec-key" data-en>Cost of Equity (Ke)</td><td class="spec-val">11.8%</td></tr>
+          <tr><td colspan="2" style="color:var(--muted);font-size:0.62rem">CAPM: Rf(4.5%) + β(1.2) × ERP(6.1%)</td><td></td></tr>
+          <tr><td class="spec-key" data-es>Costo de la Deuda (Kd)</td><td class="spec-key" data-en>Cost of Debt (Kd)</td><td class="spec-val">3.8%</td></tr>
+          <tr><td colspan="2" style="color:var(--muted);font-size:0.62rem"><span data-es>Bonos investment-grade Mercedes-Benz</span><span data-en>Mercedes-Benz investment-grade bonds</span></td><td></td></tr>
+          <tr><td class="spec-key" data-es>Tasa Impositiva</td><td class="spec-key" data-en>Tax Rate</td><td class="spec-val">30%</td></tr>
+          <tr><td class="spec-key" data-es>Kd después de impuestos</td><td class="spec-key" data-en>After-tax Kd</td><td class="spec-val">2.66%</td></tr>
+          <tr><td colspan="2" style="color:var(--muted);font-size:0.62rem">3.8% × (1 − 0.30) = 2.66%</td><td></td></tr>
+          <tr><td class="spec-key" data-es>Estructura de capital</td><td class="spec-key" data-en>Capital structure</td><td class="spec-val">60% E / 40% D</td></tr>
+        </tbody>
+      </table>
+      <div class="formula-box" style="margin-top:14px">
+        WACC = 0.60 × 11.8% + 0.40 × 2.66%<br>
+        WACC = 7.08% + 1.06% = 8.14% ≈ <strong>9%</strong> (<span data-es>redondeado por conservadurismo</span><span data-en>rounded for conservatism</span>)
+      </div>
+      <div class="formula-result">
+        <div class="formula-result-label">WACC</div>
+        <div class="formula-result-value">9.0%</div>
+      </div>
+    </div>
+
+    <!-- COST STRUCTURE -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Estructura de Costos</div>
+      <div class="formula-name" data-en>Cost Structure</div>
+      <div class="formula-acronym">CAPEX + OPEX</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th data-es>Componente</th><th data-en>Component</th>
+            <th data-es>Monto</th><th data-en>Amount</th>
+            <th data-es>% Total</th><th data-en>% Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-es>I+D Plataforma (MMA)</td><td data-en>Platform R&D (MMA)</td><td>€1,200M</td><td>40%</td></tr>
+          <tr><td data-es>CAPEX Planta (Rastatt)</td><td data-en>Plant CAPEX (Rastatt)</td><td>€900M</td><td>30%</td></tr>
+          <tr><td colspan="2">MB.OS Software</td><td>€600M</td><td>20%</td></tr>
+          <tr><td data-es>Capital de Trabajo</td><td data-en>Working Capital</td><td>€180M</td><td>6%</td></tr>
+          <tr><td data-es>Contingencia</td><td data-en>Contingency</td><td>€120M</td><td>4%</td></tr>
+          <tr class="total"><td colspan="2"><strong>TOTAL CAPEX</strong></td><td><strong>€3,000M</strong></td><td><strong>100%</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="formula-acronym" style="margin-top:18px" data-es>OPEX ANUAL (POST-LANZAMIENTO)</div>
+      <div class="formula-acronym" style="margin-top:18px" data-en>ANNUAL OPEX (POST-LAUNCH)</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th data-es>Componente</th><th data-en>Component</th>
+            <th>€M/<span data-es>año</span><span data-en>year</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-es>OPEX Manufactura</td><td data-en>Manufacturing OPEX</td><td>€280M</td></tr>
+          <tr><td data-es>Mantenimiento I+D</td><td data-en>R&D maintenance</td><td>€85M</td></tr>
+          <tr><td data-es>Ventas y Marketing</td><td data-en>Sales &amp; Marketing</td><td>€55M</td></tr>
+          <tr class="total"><td><strong>TOTAL OPEX</strong></td><td></td><td><strong>€420M</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="formula-desc" data-es>Capital de trabajo: 15 días cobranzas + 30 días inventario − 45 días pagos = neto €180M</div>
+      <div class="formula-desc" data-en>Working capital: 15 days receivables + 30 days inventory − 45 days payables = net €180M</div>
+    </div>
+  </div>
+
+  <!-- CASHFLOW TABLE -->
+  <table class="cf-table">
+    <thead>
+      <tr>
+        <th data-es>Año</th><th data-en>Year</th>
+        <th data-es>Flujo de Caja (€M)</th><th data-en>Cash Flow (€M)</th>
+        <th data-es>Factor Descuento (9%)</th><th data-en>Discount Factor (9%)</th>
+        <th data-es>VP Flujo (€M)</th><th data-en>PV Flow (€M)</th>
+        <th data-es>VP Acumulado (€M)</th><th data-en>Cumulative PV (€M)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="highlight">0</td><td class="neg">-3,000</td><td>1.000</td><td class="neg">-3,000</td><td class="neg">-3,000</td></tr>
+      <tr><td class="highlight">1</td><td class="pos">800</td><td>0.917</td><td class="pos">733.9</td><td class="neg">-2,266.1</td></tr>
+      <tr><td class="highlight">2</td><td class="pos">1,500</td><td>0.842</td><td class="pos">1,262.6</td><td class="neg">-1,003.5</td></tr>
+      <tr><td class="highlight">3</td><td class="pos">2,000</td><td>0.772</td><td class="pos">1,544.4</td><td class="pos">540.9</td></tr>
+      <tr><td class="highlight">4</td><td class="pos">2,200</td><td>0.708</td><td class="pos">1,558.4</td><td class="pos">2,099.3</td></tr>
+      <tr><td class="highlight">5</td><td class="pos">2,300</td><td>0.650</td><td class="pos">1,494.5</td><td class="pos">3,593.8</td></tr>
+      <tr><td class="highlight">6</td><td class="pos">2,400</td><td>0.596</td><td class="pos">1,430.9</td><td class="pos">5,024.7</td></tr>
+      <tr><td class="highlight">7</td><td class="pos">2,500</td><td>0.547</td><td class="pos">1,367.4</td><td class="pos">6,392.1</td></tr>
+      <tr><td class="highlight">8</td><td class="pos">2,600</td><td>0.502</td><td class="pos">1,304.5</td><td class="pos">7,696.6</td></tr>
+      <tr><td class="highlight">9</td><td class="pos">2,700</td><td>0.460</td><td class="pos">1,241.9</td><td class="pos">8,938.5</td></tr>
+      <tr><td class="highlight">10</td><td class="pos">2,800</td><td>0.422</td><td class="pos">1,165.3</td><td class="pos">10,103.8</td></tr>
+      <tr class="total">
+        <td colspan="2" data-es><strong>TOTAL</strong></td>
+        <td></td>
+        <td class="pos"><strong>€11,603.8M</strong></td>
+        <td class="pos"><strong>VPN = €8,603.8M</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="chart-grid" style="margin-top:40px;">
+    <div class="chart-box">
+      <div class="chart-label" data-es>Flujo de Caja Proyectado por Año (€M)</div>
+      <div class="chart-label" data-en>Projected Cash Flow by Year (€M)</div>
+      <canvas id="cashflowChart" height="220"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="chart-label" data-es>Sensibilidad VPN — Variación del WACC</div>
+      <div class="chart-label" data-en>NPV Sensitivity — WACC Variation</div>
+      <canvas id="sensitivityChart" height="220"></canvas>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SIMULATOR -->
+<section id="simulador" style="background: var(--charcoal);">
+  <div class="section-tag" data-es>04 — Simulador Interactivo</div>
+  <div class="section-tag" data-en>04 — Interactive Simulator</div>
+  <div class="section-title" data-es>SIMULA TU<br>INVERSIÓN</div>
+  <div class="section-title" data-en>SIMULATE YOUR<br>INVESTMENT</div>
+  <div class="section-sub" data-es>Ajusta los parámetros y observa cómo cambian los indicadores financieros del Proyecto CLA 2026 / MMA en tiempo real.</div>
+  <div class="section-sub" data-en>Adjust the parameters and see how the financial indicators of the CLA 2026 / MMA Project change in real time.</div>
+
+  <!-- CONTROLS -->
+  <div class="sim-wrap">
+    <div class="sim-controls">
+
+      <!-- Stake slider -->
+      <div class="sim-group">
+        <div class="sim-group-header">
+          <span class="sim-label"><span data-es>Participación en el Proyecto</span><span data-en>Project Stake</span></span>
+          <span class="sim-value" id="stakeVal">10%</span>
+        </div>
+        <input type="range" class="sim-slider" id="stakeSlider" min="1" max="100" value="10" step="1">
+        <div class="sim-range-labels"><span>1%</span><span>100%</span></div>
+        <div class="sim-sub-value"><span data-es>Tu inversión:</span><span data-en>Your investment:</span> <strong id="investVal">€300M</strong></div>
+      </div>
+
+      <!-- WACC slider -->
+      <div class="sim-group">
+        <div class="sim-group-header">
+          <span class="sim-label"><span data-es>Tasa de Descuento (WACC)</span><span data-en>Discount Rate (WACC)</span></span>
+          <span class="sim-value" id="waccVal">9%</span>
+        </div>
+        <input type="range" class="sim-slider" id="waccSlider" min="3" max="30" value="9" step="0.5">
+        <div class="sim-range-labels"><span>3%</span><span>30%</span></div>
+      </div>
+
+      <!-- Scenario -->
+      <div class="sim-group">
+        <div class="sim-group-header">
+          <span class="sim-label"><span data-es>Escenario de Flujos</span><span data-en>Cash Flow Scenario</span></span>
+        </div>
+        <div class="sim-scenario-btns">
+          <button class="sim-scenario-btn bear" id="btn-bear" onclick="setScenario('bear')">
+            <span class="scn-name">Bear</span>
+            <span class="scn-sub">-30%</span>
+          </button>
+          <button class="sim-scenario-btn base active" id="btn-base" onclick="setScenario('base')">
+            <span class="scn-name">Base</span>
+            <span class="scn-sub">0%</span>
+          </button>
+          <button class="sim-scenario-btn bull" id="btn-bull" onclick="setScenario('bull')">
+            <span class="scn-name">Bull</span>
+            <span class="scn-sub">+30%</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE KPIs -->
+    <div class="sim-kpis">
+      <div class="sim-kpi">
+        <div class="sim-kpi-label">VPN / NPV</div>
+        <div class="sim-kpi-value" id="liveNPV">€860M</div>
+        <div class="sim-kpi-badge pos" id="liveNPVBadge" data-es>VIABLE</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="sim-kpi-label">TIR / IRR</div>
+        <div class="sim-kpi-value" id="liveIRR">41.0%</div>
+        <div class="sim-kpi-badge pos" id="liveIRRBadge" data-es>TIR > WACC</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="sim-kpi-label" data-es>Período Recuperación</div>
+        <div class="sim-kpi-label" data-en>Payback Period</div>
+        <div class="sim-kpi-value" id="livePayback">2.35 <span style="font-size:1rem" data-es>años</span><span style="font-size:1rem" data-en>yrs</span></div>
+        <div class="sim-kpi-badge pos" id="livePBBadge" data-es>&lt; 3 años</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="sim-kpi-label" data-es>Relación B/C</div>
+        <div class="sim-kpi-label" data-en>B/C Ratio</div>
+        <div class="sim-kpi-value" id="liveBC">3.87</div>
+        <div class="sim-kpi-badge pos" id="liveBCBadge">B/C &gt; 1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHART + TABLE -->
+  <div class="sim-bottom">
+    <div class="chart-box" style="flex:1.2;">
+      <div class="chart-label" data-es>Flujo Acumulado vs Inversión (€M)</div>
+      <div class="chart-label" data-en>Cumulative Cash Flow vs Investment (€M)</div>
+      <canvas id="simChart" height="240"></canvas>
+    </div>
+    <div style="flex:1; overflow-x:auto;">
+      <table class="cf-table" id="simTable">
+        <thead>
+          <tr>
+            <th><span data-es>Año</span><span data-en>Year</span></th>
+            <th><span data-es>Flujo (€M)</span><span data-en>Flow (€M)</span></th>
+            <th><span data-es>Fact. Desc.</span><span data-en>Disc. Factor</span></th>
+            <th><span data-es>VP (€M)</span><span data-en>PV (€M)</span></th>
+            <th><span data-es>Acumulado (€M)</span><span data-en>Cumulative (€M)</span></th>
+          </tr>
+        </thead>
+        <tbody id="simTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RISKS -->
+<section id="riesgos" style="background: var(--dark);">
+  <div class="section-tag" data-es>05 — Análisis de Riesgos</div>
+  <div class="section-tag" data-en>05 — Risk Analysis</div>
+
+  <div class="section-title" data-es>COSTOS,<br>BENEFICIOS<br>Y RIESGOS</div>
+  <div class="section-title" data-en>COSTS,<br>BENEFITS<br>& RISKS</div>
+  <div class="section-sub" data-es>Identificación y evaluación de los principales factores de riesgo que pueden afectar la viabilidad del proyecto CLA 2026 / MMA Platform.</div>
+  <div class="section-sub" data-en>Identification and evaluation of the main risk factors that may affect the viability of the CLA 2026 / MMA Platform project.</div>
+
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-level risk-high" data-es>ALTO — Mercado</div>
+      <div class="risk-level risk-high" data-en>HIGH — Market</div>
+      <div class="risk-name" data-es>Colapso del Mercado Chino</div>
+      <div class="risk-name" data-en>China Market Collapse</div>
+      <p class="risk-desc" data-es>China representa ~1/3 de las ventas globales de Mercedes. Las ventas cayeron -19% en 2024 y -27% en Q3 2025. BYD y Nio dominan con vehículos locales más económicos.</p>
+      <p class="risk-desc" data-en>China represents ~1/3 of global Mercedes sales. Sales fell -19% in 2024 and -27% in Q3 2025. BYD and Nio dominate with cheaper local vehicles.</p>
+      <div class="risk-impact">
+        <span data-es>Impacto: Muy Alto</span><span data-en>Impact: Very High</span>
+        <span data-es>Probabilidad: Alta</span><span data-en>Probability: High</span>
+      </div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level risk-high" data-es>ALTO — Financiero</div>
+      <div class="risk-level risk-high" data-en>HIGH — Financial</div>
+      <div class="risk-name" data-es>Compresión de Márgenes</div>
+      <div class="risk-name" data-en>Margin Compression</div>
+      <p class="risk-desc" data-es>El RoS (Retorno sobre Ventas) cayó de 14.6% en 2022 a ~4-5% en 2026. Las tarifas arancelarias de EE.UU. costaron ~$1.2B en 2025 adicionalmente.</p>
+      <p class="risk-desc" data-en>RoS (Return on Sales) fell from 14.6% in 2022 to ~4-5% in 2026. US tariffs cost an additional ~$1.2B in 2025.</p>
+      <div class="risk-impact">
+        <span data-es>Impacto: Alto</span><span data-en>Impact: High</span>
+        <span data-es>Probabilidad: Alta</span><span data-en>Probability: High</span>
+      </div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level risk-high" data-es>ALTO — Ejecución</div>
+      <div class="risk-level risk-high" data-en>HIGH — Execution</div>
+      <div class="risk-name" data-es>Riesgo MB.OS — Software</div>
+      <div class="risk-name" data-en>MB.OS — Software Risk</div>
+      <p class="risk-desc" data-es>El desarrollo de un sistema operativo vehicular in-house es altamente complejo. Retrasos o fallos en MB.OS comprometerían el lanzamiento del CLA y toda la plataforma MMA.</p>
+      <p class="risk-desc" data-en>In-house vehicle OS development is highly complex. Delays or failures in MB.OS would compromise the CLA launch and the entire MMA platform.</p>
+      <div class="risk-impact">
+        <span data-es>Impacto: Crítico</span><span data-en>Impact: Critical</span>
+        <span data-es>Probabilidad: Media</span><span data-en>Probability: Medium</span>
+      </div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level risk-med" data-es>MEDIO — Macro</div>
+      <div class="risk-level risk-med" data-en>MEDIUM — Macro</div>
+      <div class="risk-name" data-es>Demanda EV Lenta</div>
+      <div class="risk-name" data-en>Slow EV Demand</div>
+      <p class="risk-desc" data-es>Las ventas de vehículos eléctricos de Mercedes cayeron -23% en 2024. Los modelos EQ anteriores (EQE, EQS) sufrieron por precio elevado e infraestructura insuficiente.</p>
+      <p class="risk-desc" data-en>Mercedes BEV sales fell -23% in 2024. Previous EQ models (EQE, EQS) suffered from high pricing and insufficient charging infrastructure.</p>
+      <div class="risk-impact">
+        <span data-es>Impacto: Alto</span><span data-en>Impact: High</span>
+        <span data-es>Probabilidad: Media</span><span data-en>Probability: Medium</span>
+      </div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level risk-med" data-es>MEDIO — Competencia</div>
+      <div class="risk-level risk-med" data-en>MEDIUM — Competition</div>
+      <div class="risk-name" data-es>Presión Competitiva Tesla / BMW</div>
+      <div class="risk-name" data-en>Tesla / BMW Competitive Pressure</div>
+      <p class="risk-desc" data-es>Tesla continúa con recortes de precio agresivos en el segmento mid-luxury. BMW también invierte fuertemente en plataformas nativas eléctricas (Neue Klasse).</p>
+      <p class="risk-desc" data-en>Tesla continues aggressive price cuts in the mid-luxury segment. BMW is also heavily investing in native EV platforms (Neue Klasse).</p>
+      <div class="risk-impact">
+        <span data-es>Impacto: Medio</span><span data-en>Impact: Medium</span>
+        <span data-es>Probabilidad: Alta</span><span data-en>Probability: High</span>
+      </div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level risk-low" data-es>BAJO — Validado</div>
+      <div class="risk-level risk-low" data-en>LOW — Validated</div>
+      <div class="risk-name" data-es>Riesgo de Volumen CLA</div>
+      <div class="risk-name" data-en>CLA Volume Risk</div>
+      <p class="risk-desc" data-es>Mitigado por el éxito inicial: +127% ventas en Europa Q1 2026, Auto del Año 2026, cuota de mercado 39.75% en compacto de lujo. La validación de mercado es positiva.</p>
+      <p class="risk-desc" data-en>Mitigated by early success: +127% EU sales in Q1 2026, 2026 Car of the Year, 39.75% market share in luxury compact. Market validation is positive.</p>
+      <div class="risk-impact">
+        <span data-es>Impacto: Bajo</span><span data-en>Impact: Low</span>
+        <span data-es>Probabilidad: Baja</span><span data-en>Probability: Low</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREAK-EVEN -->
+  <div class="addon-block" id="breakeven-addon">
+    <div class="addon-head" data-es>PUNTO DE EQUILIBRIO</div>
+    <div class="addon-head" data-en>BREAK-EVEN ANALYSIS</div>
+    <div class="addon-sub" data-es>Costos fijos, variables y volumen de equilibrio — CLA/MMA</div>
+    <div class="addon-sub" data-en>Fixed costs, variable costs and break-even volume — CLA/MMA</div>
+    <div class="be-wrap">
+      <div class="chart-box">
+        <div class="formula-box" style="margin-bottom:0">
+          FC = €420M / año<br>
+          VC = €28,000 / unidad<br>
+          P = €45,000 / unidad<br><br>
+          BE = FC / (P − VC)<br>
+          BE = 420,000,000 / (45,000 − 28,000)<br>
+          BE = 420,000,000 / 17,000<br>
+          BE = <strong>24,706 unidades</strong>
+        </div>
+        <div class="be-metrics">
+          <div class="be-metric"><span data-es>Costos fijos anuales</span><span data-en>Annual fixed costs</span><strong>€420M</strong></div>
+          <div class="be-metric"><span data-es>Costo variable unitario</span><span data-en>Variable cost per unit</span><strong>€28,000</strong></div>
+          <div class="be-metric"><span data-es>Precio unitario</span><span data-en>Price per unit</span><strong>€45,000</strong></div>
+          <div class="be-metric"><span data-es>Margen de contribución</span><span data-en>Contribution margin</span><strong>€17,000</strong></div>
+        </div>
+        <div class="sim-group" style="margin-top:20px">
+          <div class="sim-group-header">
+            <span class="sim-label"><span data-es>Volumen (unidades)</span><span data-en>Volume (units)</span></span>
+            <span class="sim-value" id="beUnitsVal">30,000</span>
           </div>
-          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
-            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">4</span>
-            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Cocinas Activas</div>
-          </div>
-          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
-            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">25min</span>
-            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Entrega Promedio</div>
-          </div>
-          <div style="text-align:center;padding:20px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.15);">
-            <span style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);">4.8★</span>
-            <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Rating Promedio</div>
-          </div>
+          <input type="range" class="sim-slider" id="beUnitsSlider" min="5000" max="60000" value="30000" step="500">
+          <div class="sim-range-labels"><span>5,000</span><span>60,000</span></div>
+          <div class="be-result" id="beUnitsResult">—</div>
+          <div class="be-pl pos" id="beProfitLabel">—</div>
         </div>
       </div>
+      <div class="chart-box">
+        <div class="chart-label" data-es>Ingresos vs Costo Total (€M)</div>
+        <div class="chart-label" data-en>Revenue vs Total Cost (€M)</div>
+        <canvas id="beChart" height="260"></canvas>
+      </div>
     </div>
+  </div>
+
+  <!-- TORNADO -->
+  <div class="addon-block" id="tornado-addon">
+    <div class="addon-head" data-es>ANÁLISIS TORNADO — SENSIBILIDAD VPN</div>
+    <div class="addon-head" data-en>TORNADO ANALYSIS — NPV SENSITIVITY</div>
+    <div class="addon-sub" data-es>Impacto de ± variación en variables clave sobre el VPN base (€8,603.8M)</div>
+    <div class="addon-sub" data-en>Impact of ± variation in key variables on base NPV (€8,603.8M)</div>
+    <div class="chart-box">
+      <canvas id="tornadoChart" height="280"></canvas>
+    </div>
+  </div>
+
+  <!-- SCENARIO TABLE -->
+  <div class="addon-block" id="scenario-addon">
+    <div class="addon-head" data-es>ANÁLISIS DE ESCENARIOS</div>
+    <div class="addon-head" data-en>SCENARIO ANALYSIS</div>
+    <div class="addon-sub" data-es>Comparación Bear / Base / Bull con crecimiento de ingresos y WACC diferenciados</div>
+    <div class="addon-sub" data-en>Bear / Base / Bull comparison with differentiated revenue growth and WACC</div>
+    <table class="scenario-table" id="scenarioTable">
+      <thead>
+        <tr>
+          <th data-es>Escenario</th><th data-en>Scenario</th>
+          <th data-es>Crec. Ingresos</th><th data-en>Revenue Growth</th>
+          <th>WACC</th>
+          <th>NPV / VPN</th>
+          <th>IRR / TIR</th>
+          <th data-es>Payback</th><th data-en>Payback</th>
+        </tr>
+      </thead>
+      <tbody id="scenarioTableBody"></tbody>
+    </table>
   </div>
 </section>
 
-<!-- MODELO DE NEGOCIO -->
-<section id="modelo">
-  <div class="section-tag">02 — Modelo de Negocio</div>
-  <h2 class="section-title">Tres Fuentes<br>de Ingreso.</h2>
-  <div class="divider"></div>
-  <div class="revenue-streams reveal">
-    <div class="stream">
-      <div class="stream-num">01</div>
-      <h3>Marcas Propias</h3>
-      <p>Operamos nuestras propias marcas virtuales: KUMA Ramen, El Carnal Birria, Madre Pasta, Nikkei Box y 12 más. Control total de producto, precio y experiencia.</p>
-      <div class="stream-amount">↑ 65% del revenue total</div>
-    </div>
-    <div class="stream">
-      <div class="stream-num">02</div>
-      <h3>Kitchen-as-a-Service</h3>
-      <p>Rentamos espacio y capacidad productiva a marcas externas que quieren operar sin invertir en infraestructura. Revenue fijo + % de ventas.</p>
-      <div class="stream-amount">↑ 25% del revenue total</div>
-    </div>
-    <div class="stream">
-      <div class="stream-num">03</div>
-      <h3>Licencias de Marca</h3>
-      <p>Licenciamos nuestras marcas más exitosas a operadores en otras ciudades. Royalty del 6% sobre ventas brutas sin costo operativo para FOGÓN.</p>
-      <div class="stream-amount">↑ 10% del revenue total · alto margen</div>
-    </div>
-  </div>
-  <div style="margin-top:60px;" class="reveal reveal-delay-1">
-    <div class="chart-container">
-      <div class="chart-title">Ingresos por canal — proyección mensual año 1 (MXN)</div>
-      <canvas id="revenueChart" height="80"></canvas>
-    </div>
-  </div>
-</section>
+<div class="divider"></div>
 
-<!-- MERCADO -->
-<section id="mercado">
-  <div class="section-tag">03 — Tamaño de Mercado</div>
-  <h2 class="section-title">Mercado de<br>Billones.</h2>
-  <div class="divider"></div>
-  <div class="market-grid reveal">
-    <div class="market-numbers">
-      <div class="market-item">
-        <div class="market-val">$<em>8.2</em>B</div>
-        <div class="market-desc">
-          <strong>TAM — Mercado Total</strong>
-          Industria de food delivery en México. Crece al 28% anual proyectado hasta 2028.
-        </div>
-      </div>
-      <div class="market-item">
-        <div class="market-val">$<em>1.4</em>B</div>
-        <div class="market-desc">
-          <strong>SAM — Mercado Disponible</strong>
-          Segmento dark kitchens + delivery en CDMX, Guadalajara y Monterrey donde operaremos.
-        </div>
-      </div>
-      <div class="market-item">
-        <div class="market-val">$<em>68</em>M</div>
-        <div class="market-desc">
-          <strong>SOM — Mercado Objetivo (Año 3)</strong>
-          Captura realista basada en 12 cocinas operativas y 40+ marcas virtuales.
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="chart-container">
-        <div class="chart-title">Crecimiento del mercado dark kitchens México (MXN Billones)</div>
-        <canvas id="marketChart" height="200"></canvas>
-      </div>
-      <div class="chart-container" style="margin-top:16px;">
-        <div class="chart-title">Mix de revenue por marca (año 2)</div>
-        <canvas id="brandChart" height="160"></canvas>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- EFPI COMPLIANCE -->
+<section id="efpi" style="background: var(--charcoal);">
+  <div class="section-tag" data-es>06 — Cobertura Académica EFPI</div>
+  <div class="section-tag" data-en>06 — EFPI Academic Coverage</div>
+  <div class="section-title" data-es>RÚBRICA COMPLETA<br>DEL PROYECTO</div>
+  <div class="section-title" data-en>COMPLETE PROJECT<br>RUBRIC</div>
+  <div class="section-sub" data-es>Esta sección integra explícitamente todos los requerimientos obligatorios: causalidad, transparencia numérica, interpretación gerencial y decisiones bajo incertidumbre.</div>
+  <div class="section-sub" data-en>This section explicitly integrates all mandatory requirements: causal logic, numerical transparency, managerial interpretation, and decisions under uncertainty.</div>
 
-<!-- FINANCIALS -->
-<section id="financials">
-  <div class="section-tag">04 — Proyecciones Financieras</div>
-  <h2 class="section-title">Los Números<br>No Mienten.</h2>
-  <div class="divider"></div>
-  <div class="financials-grid reveal">
-    <div>
-      <div style="background:var(--ash);padding:32px;border:1px solid rgba(255,255,255,0.06);">
-        <div class="chart-title">P&L Proyectado — 5 años (MXN millones)</div>
-        <table class="fin-table">
-          <thead>
-            <tr>
-              <th>Concepto</th>
-              <th>Año 1</th>
-              <th>Año 2</th>
-              <th>Año 3</th>
-              <th>Año 4</th>
-              <th>Año 5</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Ingresos</td>
-              <td>$8.4M</td>
-              <td>$18.2M</td>
-              <td>$34.6M</td>
-              <td>$52.1M</td>
-              <td>$68.0M</td>
-            </tr>
-            <tr>
-              <td>Costo de ventas</td>
-              <td class="negative">($3.2M)</td>
-              <td class="negative">($6.5M)</td>
-              <td class="negative">($11.8M)</td>
-              <td class="negative">($17.2M)</td>
-              <td class="negative">($21.8M)</td>
-            </tr>
-            <tr class="highlight">
-              <td>Utilidad Bruta</td>
-              <td>$5.2M</td>
-              <td>$11.7M</td>
-              <td>$22.8M</td>
-              <td>$34.9M</td>
-              <td>$46.2M</td>
-            </tr>
-            <tr>
-              <td>Margen Bruto</td>
-              <td>62%</td>
-              <td>64%</td>
-              <td>66%</td>
-              <td>67%</td>
-              <td>68%</td>
-            </tr>
-            <tr>
-              <td>OPEX</td>
-              <td class="negative">($4.8M)</td>
-              <td class="negative">($8.9M)</td>
-              <td class="negative">($14.7M)</td>
-              <td class="negative">($20.1M)</td>
-              <td class="negative">($25.2M)</td>
-            </tr>
-            <tr class="highlight">
-              <td>EBITDA</td>
-              <td class="negative">($0.4M)</td>
-              <td class="positive">$2.8M</td>
-              <td class="positive">$8.1M</td>
-              <td class="positive">$14.8M</td>
-              <td class="positive">$21.0M</td>
-            </tr>
-            <tr>
-              <td>EBITDA Margin</td>
-              <td class="negative">-4.8%</td>
-              <td class="positive">15.4%</td>
-              <td class="positive">23.4%</td>
-              <td class="positive">28.4%</td>
-              <td class="positive">30.9%</td>
-            </tr>
-            <tr>
-              <td>Impuestos (30%)</td>
-              <td>—</td>
-              <td class="negative">($0.84M)</td>
-              <td class="negative">($2.43M)</td>
-              <td class="negative">($4.44M)</td>
-              <td class="negative">($6.30M)</td>
-            </tr>
-            <tr class="highlight">
-              <td>Utilidad Neta</td>
-              <td class="negative">($0.4M)</td>
-              <td class="positive">$1.96M</td>
-              <td class="positive">$5.67M</td>
-              <td class="positive">$10.36M</td>
-              <td class="positive">$14.70M</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div style="margin-top:16px;">
-        <div class="chart-container">
-          <div class="chart-title">Evolución EBITDA vs Ingresos (MXN millones)</div>
-          <canvas id="plChart" height="100"></canvas>
-        </div>
-      </div>
+  <div class="compliance-grid">
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Aspectos Generales</div>
+      <div class="compliance-head" data-en>General Aspects</div>
+      <div class="compliance-title" data-es>Independiente vs. Mutuamente Excluyente</div>
+      <div class="compliance-title" data-en>Independent vs. Mutually Exclusive</div>
+      <p class="compliance-text" data-es>El proyecto CLA/MMA se evalúa como independiente frente al portafolio total, pero compite por capital contra alternativas de inversión (software, baterías, nuevos modelos). Decisión base: aceptar si VPN incremental > 0 y ranking superior al costo de oportunidad.</p>
+      <p class="compliance-text" data-en>The CLA/MMA project is evaluated as independent versus the total portfolio, but it competes for capital against alternatives (software, batteries, new models). Base decision: accept if incremental NPV > 0 and ranking is above opportunity cost.</p>
+      <div class="compliance-mini">Capital constraint proxy: max CAPEX allocation €3.0B for this initiative.</div>
     </div>
-    <div>
-      <div class="kpi-cards">
-        <div class="kpi">
-          <div class="kpi-label">TIR (IRR)</div>
-          <div class="kpi-val good">67%</div>
-          <div class="kpi-sub">Sobre inversión inicial</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">VPN (NPV)</div>
-          <div class="kpi-val good">$28.4M</div>
-          <div class="kpi-sub">WACC del 12%</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Payback Period</div>
-          <div class="kpi-val">2.4 años</div>
-          <div class="kpi-sub">Retorno de capital</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Multiple of Money</div>
-          <div class="kpi-val good">4.1x</div>
-          <div class="kpi-sub">En 5 años</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Break-even</div>
-          <div class="kpi-val">Mes 18</div>
-          <div class="kpi-sub">A nivel consolidado</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Ticket Promedio</div>
-          <div class="kpi-val">$285</div>
-          <div class="kpi-sub">MXN por orden</div>
-        </div>
-      </div>
-      <div class="chart-container">
-        <div class="chart-title">Punto de equilibrio — año 1 (órdenes/mes)</div>
-        <canvas id="breakChart" height="180"></canvas>
-      </div>
-      <div style="margin-top:16px;background:rgba(255,77,0,0.06);border:1px solid rgba(255,77,0,0.2);padding:24px;">
-        <div class="section-tag" style="margin-bottom:8px;">Supuestos Clave</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
-          <li style="font-size:0.8rem;color:var(--muted);">→ 280 órdenes/día por cocina en estado estable</li>
-          <li style="font-size:0.8rem;color:var(--muted);">→ Crecimiento de 2 cocinas/año a partir del año 2</li>
-          <li style="font-size:0.8rem;color:var(--muted);">→ Comisión Rappi/UBER Eats: 18% promedio negociado</li>
-          <li style="font-size:0.8rem;color:var(--muted);">→ Food cost: 28% sobre precio de venta</li>
-          <li style="font-size:0.8rem;color:var(--muted);">→ Labor: 22% del revenue en año 1, optimiza a 18%</li>
-          <li style="font-size:0.8rem;color:var(--muted);">→ Inflación: 4.5% anual en costos de insumos</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- INVERSIÓN -->
-<section id="inversion">
-  <div class="section-tag">05 — La Inversión</div>
-  <h2 class="section-title">Buscamos<br>Socios.</h2>
-  <div class="divider"></div>
-  <div class="investment-layout reveal">
-    <div>
-      <div class="inv-ask">
-        LEVANTAMOS
-        <span>$18M</span>
-        <em>MXN · Serie A · 2025</em>
-      </div>
-      <div style="margin-top:48px;">
-        <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:24px;">
-          Valuación pre-money de $42M MXN. Los inversionistas de esta ronda adquieren un <strong style="color:var(--cream);">30% de participación accionaria</strong> con derechos de board seat proporcional para tickets mayores a $3M.
-        </p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div style="padding:20px;border:1px solid rgba(255,255,255,0.08);">
-            <div style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--fire);letter-spacing:0.15em;margin-bottom:8px;">TICKET MÍNIMO</div>
-            <div style="font-family:'Bebas Neue';font-size:2rem;color:var(--white);">$500K MXN</div>
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Estudio de Mercado</div>
+      <div class="compliance-head" data-en>Market Study</div>
+      <div class="compliance-title" data-es>Oferta, Demanda y Precio</div>
+      <div class="compliance-title" data-en>Supply, Demand and Price</div>
+      <p class="compliance-text" data-es>Supuesto base: segmento compacto de lujo con crecimiento moderado, precio promedio entre $47k–$50k y volumen objetivo >300k unidades/año. Estrés aplicado: escenario Bear (-30% flujos), Base (0%), Bull (+30%).</p>
+      <p class="compliance-text" data-en>Base assumption: premium compact segment with moderate growth, average pricing between $47k–$50k, and target volume >300k units/year. Stress test applied: Bear (-30% flows), Base (0%), Bull (+30%).</p>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Estudio Técnico</div>
+      <div class="compliance-head" data-en>Technical Study</div>
+      <div class="compliance-title" data-es>Tamaño, Ubicación y Organización</div>
+      <div class="compliance-title" data-en>Size, Location and Organization</div>
+      <p class="compliance-text" data-es>Tamaño del proyecto: plataforma modular para 30+ derivados. Ubicación principal: planta Rastatt (Alemania), integrada con cadena europea de alto valor. Estructura organizacional: integración hardware + MB.OS con ejecución cruzada ingeniería/producción.</p>
+      <p class="compliance-text" data-en>Project size: modular platform for 30+ derivative models. Main location: Rastatt plant (Germany), integrated with a high-value European supply chain. Organizational structure: hardware + MB.OS integration through cross-functional engineering/production execution.</p>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Estudio Económico</div>
+      <div class="compliance-head" data-en>Economic Study</div>
+      <div class="compliance-title" data-es>Costos, Capital de Trabajo y Financiamiento</div>
+      <div class="compliance-title" data-en>Costs, Working Capital and Financing</div>
+      <p class="compliance-text" data-es>Estructura base: CAPEX inicial €3,000M + OPEX operativo escalonado. Capital de trabajo modelado en flujos netos anuales (inventario, cuentas por cobrar/pagar). Estructura de financiamiento implícita: costo promedio de capital WACC 9% para validar creación de valor.</p>
+      <p class="compliance-text" data-en>Base structure: €3,000M initial CAPEX + scaled operational OPEX. Working capital is modeled through annual net flows (inventory, receivables/payables). Financing structure is represented through a 9% WACC as the hurdle rate for value creation.</p>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Evaluación Financiera</div>
+      <div class="compliance-head" data-en>Financial Evaluation</div>
+      <div class="compliance-title">Payback, NPV, IRR, MIRR</div>
+      <p class="compliance-text" data-es>Payback simple = 2.35 años. Payback descontado ≈ 3.35 años. NPV = €8,603.8M. IRR = 41.0%. MIRR (financiación 9%, reinversión 9%) ≈ 19.4%, corrigiendo el sesgo de reinversión implícito de la IRR.</p>
+      <p class="compliance-text" data-en>Simple payback = 2.35 years. Discounted payback ≈ 3.35 years. NPV = €8,603.8M. IRR = 41.0%. MIRR (9% finance and reinvest rates) ≈ 19.4%, correcting IRR reinvestment bias.</p>
+      <div class="compliance-mini">Conflict note: in mutually exclusive projects, NPV dominates when IRR ranking differs.</div>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Gestión de Riesgo</div>
+      <div class="compliance-head" data-en>Risk Management</div>
+      <div class="compliance-title" data-es>Break-even, Sensibilidad y Escenarios</div>
+      <div class="compliance-title" data-en>Break-even, Sensitivity and Scenarios</div>
+      <p class="compliance-text" data-es>Break-even de recuperación entre años 3 y 4 en términos descontados. Sensibilidad principal: WACC y nivel de flujos. Escenarios integrados en simulador: Bear/Base/Bull para medir robustez de NPV, IRR y B/C ante incertidumbre comercial.</p>
+      <p class="compliance-text" data-en>Discounted break-even occurs between years 3 and 4. Main sensitivities: WACC and cash-flow levels. Simulator scenarios (Bear/Base/Bull) test NPV, IRR and B/C robustness under commercial uncertainty.</p>
+    </div>
+
+    <div class="compliance-card" style="grid-column:1/-1;padding:0;border:none;background:transparent">
+      <div id="real-options-interactive" style="background:var(--charcoal);border:1px solid rgba(200,200,200,0.08);padding:36px 32px">
+        <div class="compliance-head" data-es>Opciones Reales (Crítico) — Cálculo Interactivo</div>
+        <div class="compliance-head" data-en>Real Options (Critical) — Interactive Valuation</div>
+        <div class="compliance-title" data-es>Esperar · Árbol de Eventos · Contracción · Abandono</div>
+        <div class="compliance-title" data-en>Delay · Event Tree · Contraction · Abandonment</div>
+
+        <div class="ro-grid">
+          <!-- a) Delay binomial -->
+          <div class="ro-panel" style="grid-column:1/-1">
+            <h4 data-es>a) Opción de Esperar — Árbol Binomial (2 períodos)</h4>
+            <h4 data-en>a) Option to Delay — Binomial Tree (2 periods)</h4>
+            <p data-es>S=€8,603M · K=€3,000M · T=2 años · σ=25% · r=4.5%</p>
+            <p data-en>S=€8,603M · K=€3,000M · T=2 yrs · σ=25% · r=4.5%</p>
+            <div class="formula-box" style="margin:14px 0" id="binomialParams">—</div>
+            <div class="bin-tree" id="binomialTree">—</div>
+            <div class="ro-val go" id="delayDecision">—</div>
           </div>
-          <div style="padding:20px;border:1px solid rgba(255,255,255,0.08);">
-            <div style="font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--fire);letter-spacing:0.15em;margin-bottom:8px;">VALUACIÓN POST</div>
-            <div style="font-family:'Bebas Neue';font-size:2rem;color:var(--white);">$60M MXN</div>
+
+          <!-- b) Event tree -->
+          <div class="ro-panel" style="grid-column:1/-1">
+            <h4 data-es>b) Árbol de Eventos — Rutas de Decisión</h4>
+            <h4 data-en>b) Event Tree — Decision Paths</h4>
+            <div class="event-tree-wrap">
+              <div class="event-tree" id="eventTreeBox">
+                <svg id="eventTreeSvg"></svg>
+                <div class="et-node dec" id="et-invest" style="left:12%;top:50%"><span data-es>Invertir Ahora</span><span data-en>Invest Now</span></div>
+                <div class="et-node out" id="et-bear" style="left:32%;top:22%">Bear</div>
+                <div class="et-node out" id="et-base" style="left:32%;top:50%">Base</div>
+                <div class="et-node out" id="et-bull" style="left:32%;top:78%">Bull</div>
+                <div class="et-node dec" id="et-wait1" style="left:55%;top:35%"><span data-es>Esperar 1 año</span><span data-en>Wait 1 yr</span></div>
+                <div class="et-node dec" id="et-wait2" style="left:55%;top:65%"><span data-es>Esperar 2 años</span><span data-en>Wait 2 yrs</span></div>
+                <div class="et-node dec" id="et-abandon" style="left:78%;top:50%"><span data-es>Abandonar</span><span data-en>Abandon</span><br>€1,100M</div>
+              </div>
+            </div>
+            <p class="compliance-mini" id="eventTreeEV" style="margin-top:12px">—</p>
+          </div>
+
+          <!-- c) Contraction -->
+          <div class="ro-panel">
+            <h4 data-es>c) Opción de Contracción</h4>
+            <h4 data-en>c) Contraction Option</h4>
+            <p data-es>Si adopción EV &lt; 15% en 2027 → escalar MMA -40%</p>
+            <p data-en>If EV adoption &lt; 15% by 2027 → scale MMA down 40%</p>
+            <ul>
+              <li data-es>Ahorro CAPEX: €1,200M</li>
+              <li data-en>CAPEX savings: €1,200M</li>
+              <li data-es>VPN sin opción: <span id="contractNpvBase">—</span></li>
+              <li data-es>VPN con contracción: <span id="contractNpvOpt">—</span></li>
+            </ul>
+            <div class="ro-val go" id="contractOptionVal">—</div>
+          </div>
+
+          <!-- d) Abandonment -->
+          <div class="ro-panel">
+            <h4 data-es>d) Opción de Abandono (Año 3)</h4>
+            <h4 data-en>d) Abandonment Option (Year 3)</h4>
+            <p data-es>Trigger: VPN acumulado &lt; -€800M · Valor de rescate: €1,100M</p>
+            <p data-en>Trigger: cumulative NPV &lt; -€800M · Salvage value: €1,100M</p>
+            <p data-es>Put: max(Rescate − Valor Continuación, 0)</p>
+            <p data-en>Put: max(Salvage − Continuation Value, 0)</p>
+            <div class="ro-val go" id="abandonOptionVal">—</div>
+            <p class="compliance-mini" id="abandonDetail">—</p>
           </div>
         </div>
       </div>
     </div>
-    <div>
-      <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;">Uso de los Fondos</div>
-      <div class="use-of-funds">
-        <div class="fund-row">
-          <div class="fund-name">Apertura 2 cocinas nuevas</div>
-          <div class="fund-bar-wrap"><div class="fund-bar" data-width="40" style="width:0%"></div></div>
-          <div class="fund-pct">40%</div>
-        </div>
-        <div class="fund-row">
-          <div class="fund-name">Equipamiento & Tecnología</div>
-          <div class="fund-bar-wrap"><div class="fund-bar" data-width="25" style="width:0%"></div></div>
-          <div class="fund-pct">25%</div>
-        </div>
-        <div class="fund-row">
-          <div class="fund-name">Marketing & Lanzamiento</div>
-          <div class="fund-bar-wrap"><div class="fund-bar" data-width="18" style="width:0%"></div></div>
-          <div class="fund-pct">18%</div>
-        </div>
-        <div class="fund-row">
-          <div class="fund-name">Capital de trabajo</div>
-          <div class="fund-bar-wrap"><div class="fund-bar" data-width="12" style="width:0%"></div></div>
-          <div class="fund-pct">12%</div>
-        </div>
-        <div class="fund-row">
-          <div class="fund-name">Legal & Constitución</div>
-          <div class="fund-bar-wrap"><div class="fund-bar" data-width="5" style="width:0%"></div></div>
-          <div class="fund-pct">5%</div>
-        </div>
-      </div>
-      <div style="margin-top:40px;">
-        <div class="chart-container">
-          <div class="chart-title">Retorno proyectado vs inversión inicial (MXN)</div>
-          <canvas id="roiChart" height="140"></canvas>
-        </div>
-      </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Integración Ejecutiva</div>
+      <div class="compliance-head" data-en>Executive Integration</div>
+      <div class="compliance-title" data-es>Ranking y Racionamiento de Capital</div>
+      <div class="compliance-title" data-en>Ranking and Capital Rationing</div>
+      <p class="compliance-text" data-es>Ranking prioritario por NPV ajustado por riesgo: CLA/MMA se mantiene en nivel alto por creación de valor y recuperación rápida. Bajo restricción de capital, se recomienda aprobar por etapas (stage-gate), liberando CAPEX contra hitos comerciales y tecnológicos trimestrales.</p>
+      <p class="compliance-text" data-en>Priority ranking by risk-adjusted NPV: CLA/MMA remains top-tier due to value creation and fast payback. Under capital rationing, approval should be stage-gated, releasing CAPEX against quarterly commercial and technical milestones.</p>
+      <div class="compliance-mini" data-es>Recomendación final board-level: ACEPTAR con control dinámico de riesgos y opciones reales activas.</div>
+      <div class="compliance-mini" data-en>Final board-level recommendation: ACCEPT with dynamic risk control and active real options governance.</div>
     </div>
   </div>
 </section>
 
-<!-- EQUIPO -->
-<section id="equipo" style="background:var(--charcoal);">
-  <div class="section-tag">06 — El Equipo</div>
-  <h2 class="section-title">Gente Que<br>Ya Lo Hizo.</h2>
-  <div class="divider"></div>
-  <div class="team-grid reveal">
-    <div class="team-card">
-      <div class="team-avatar">DM</div>
-      <div class="team-name">Diego Montoya</div>
-      <div class="team-role">CEO & Co-Founder</div>
-      <div class="team-bio">Ex-Director de Expansión en Grupo KFC México. Abrió 40+ unidades en 3 años. MBA ITAM. Obsesionado con operaciones de alto volumen.</div>
-    </div>
-    <div class="team-card">
-      <div class="team-avatar">SV</div>
-      <div class="team-name">Sofía Vargas</div>
-      <div class="team-role">CFO & Co-Founder</div>
-      <div class="team-bio">Ex-VP Finance en Cornershop (adquirida por Uber). Estructuró due diligence de $250M USD. CPA + Maestría en Finanzas, UP.</div>
-    </div>
-    <div class="team-card">
-      <div class="team-avatar">RA</div>
-      <div class="team-name">Rodrigo Alvarado</div>
-      <div class="team-role">CTO</div>
-      <div class="team-bio">Construyó la plataforma de logística de Jüsto desde cero. 12 años en tech de foodtech. Especialista en sistemas de gestión de cocinas y rutas de entrega.</div>
-    </div>
-    <div class="team-card">
-      <div class="team-avatar">LC</div>
-      <div class="team-name">Lucía Campos</div>
-      <div class="team-role">Chief Culinary Officer</div>
-      <div class="team-bio">Ex-Ejecutiva Culinaria de Grupo Alsea. Desarrolló +200 recetas para escala industrial manteniendo calidad. Le Cordon Bleu México.</div>
+<div class="divider"></div>
+
+<!-- MIND MAP -->
+<section id="mapa">
+  <div class="section-tag" data-es>05 — Mapa Conceptual</div>
+  <div class="section-tag" data-en>05 — Concept Map</div>
+  <div class="section-title" data-es>CONCEPTOS<br>DEL CURSO</div>
+  <div class="section-title" data-en>COURSE<br>CONCEPTS</div>
+  <div class="section-sub" data-es>Mapa conceptual de los conceptos de Evaluación Financiera de Proyectos de Inversión aplicados al caso Mercedes-Benz CLA 2026.</div>
+  <div class="section-sub" data-en>Concept map of Financial Evaluation of Investment Projects concepts applied to the Mercedes-Benz CLA 2026 case.</div>
+
+  <!-- Mind Map Visual -->
+  <div style="margin-top:60px; overflow-x:auto;">
+    <div style="min-width:900px; position:relative; height:620px;">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" id="mmSvg"></svg>
+
+      <!-- CENTER -->
+      <div class="mm-node mm-center" id="mm-c" style="left:50%;top:50%;">
+        <span data-es>EVALUACIÓN FINANCIERA<br>DE PROYECTOS</span>
+        <span data-en>FINANCIAL EVALUATION<br>OF PROJECTS</span>
+      </div>
+
+      <!-- BRANCH 1 — top -->
+      <div class="mm-node mm-branch" id="mm-1" style="left:50%;top:12%;">
+        <span data-es>IDENTIFICACIÓN DEL PROYECTO</span>
+        <span data-en>PROJECT IDENTIFICATION</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:28%;top:4%;" data-es>Objetivo: CLA 2026 / MMA</div>
+      <div class="mm-node mm-leaf" style="left:28%;top:4%;" data-en>Goal: CLA 2026 / MMA</div>
+      <div class="mm-node mm-leaf" style="left:72%;top:4%;" data-es>Horizonte: 10 años</div>
+      <div class="mm-node mm-leaf" style="left:72%;top:4%;" data-en>Horizon: 10 years</div>
+
+      <!-- BRANCH 2 — top-right -->
+      <div class="mm-node mm-branch" id="mm-2" style="left:82%;top:28%;">
+        <span data-es>FLUJO DE CAJA</span>
+        <span data-en>CASH FLOW</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:94%;top:18%;" data-es>Ingresos CLA: €800M→€2.8B</div>
+      <div class="mm-node mm-leaf" style="left:94%;top:18%;" data-en>CLA Revenue: €800M→€2.8B</div>
+      <div class="mm-node mm-leaf" style="left:94%;top:36%;" data-es>CAPEX: -€3,000M (Año 0)</div>
+      <div class="mm-node mm-leaf" style="left:94%;top:36%;" data-en>CAPEX: -€3,000M (Year 0)</div>
+
+      <!-- BRANCH 3 — right -->
+      <div class="mm-node mm-branch" id="mm-3" style="left:85%;top:52%;">
+        <span data-es>VPN / NPV</span>
+        <span data-en>NPV</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:96%;top:46%;" data-es>VPN = €8,603.8M</div>
+      <div class="mm-node mm-leaf" style="left:96%;top:46%;" data-en>NPV = €8,603.8M</div>
+      <div class="mm-node mm-leaf" style="left:96%;top:60%;" data-es>WACC = 9%</div>
+      <div class="mm-node mm-leaf" style="left:96%;top:60%;" data-en>WACC = 9%</div>
+
+      <!-- BRANCH 4 — bottom-right -->
+      <div class="mm-node mm-branch" id="mm-4" style="left:75%;top:78%;">
+        <span data-es>TIR / IRR</span>
+        <span data-en>IRR</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:88%;top:88%;" data-es>TIR = 41% > WACC</div>
+      <div class="mm-node mm-leaf" style="left:88%;top:88%;" data-en>IRR = 41% > WACC</div>
+
+      <!-- BRANCH 5 — bottom -->
+      <div class="mm-node mm-branch" id="mm-5" style="left:50%;top:88%;">
+        <span data-es>PERÍODO RECUPERACIÓN</span>
+        <span data-en>PAYBACK PERIOD</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:34%;top:96%;" data-es>PR = 2.35 años</div>
+      <div class="mm-node mm-leaf" style="left:34%;top:96%;" data-en>PB = 2.35 years</div>
+      <div class="mm-node mm-leaf" style="left:66%;top:96%;" data-es>Flujo acum. Año 3: positivo</div>
+      <div class="mm-node mm-leaf" style="left:66%;top:96%;" data-en>Cumul. flow Year 3: positive</div>
+
+      <!-- BRANCH 6 — bottom-left -->
+      <div class="mm-node mm-branch" id="mm-6" style="left:22%;top:75%;">
+        <span data-es>ANÁLISIS RIESGO</span>
+        <span data-en>RISK ANALYSIS</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:8%;top:85%;" data-es>China: riesgo ALTO</div>
+      <div class="mm-node mm-leaf" style="left:8%;top:85%;" data-en>China: HIGH risk</div>
+      <div class="mm-node mm-leaf" style="left:8%;top:93%;" data-es>EV demanda: riesgo MEDIO</div>
+      <div class="mm-node mm-leaf" style="left:8%;top:93%;" data-en>EV demand: MED risk</div>
+
+      <!-- BRANCH 7 — left -->
+      <div class="mm-node mm-branch" id="mm-7" style="left:14%;top:52%;">
+        <span data-es>COSTO-BENEFICIO</span>
+        <span data-en>COST-BENEFIT</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:3%;top:44%;" data-es>B/C = 3.87</div>
+      <div class="mm-node mm-leaf" style="left:3%;top:44%;" data-en>B/C = 3.87</div>
+      <div class="mm-node mm-leaf" style="left:3%;top:60%;" data-es>€3.87 por €1 invertido</div>
+      <div class="mm-node mm-leaf" style="left:3%;top:60%;" data-en>€3.87 per €1 invested</div>
+
+      <!-- BRANCH 8 — top-left -->
+      <div class="mm-node mm-branch" id="mm-8" style="left:18%;top:28%;">
+        <span data-es>CONDICIONES ECONÓMICAS</span>
+        <span data-en>ECONOMIC CONDITIONS</span>
+      </div>
+      <div class="mm-node mm-leaf" style="left:6%;top:18%;" data-es>Ingresos MB: €132B (2025)</div>
+      <div class="mm-node mm-leaf" style="left:6%;top:18%;" data-en>MB Revenue: €132B (2025)</div>
+      <div class="mm-node mm-leaf" style="left:6%;top:36%;" data-es>RoS: 14.6% → 4-5%</div>
+      <div class="mm-node mm-leaf" style="left:6%;top:36%;" data-en>RoS: 14.6% → 4-5%</div>
     </div>
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section id="roadmap">
-  <div class="section-tag">07 — Plan de Ejecución</div>
-  <h2 class="section-title">De Hoy<br>Al Liderazgo.</h2>
-  <div class="divider"></div>
-  <div class="timeline reveal">
-    <div class="timeline-item">
-      <div class="tl-date">Q1–Q2 2025 · HOY</div>
-      <div class="tl-title">Fundaciones</div>
-      <div class="tl-desc">Constitución de la empresa (S.A. de C.V.), ronda de inversión Serie A, firma de contratos con primeras 2 ubicaciones en CDMX (Iztapalapa y Vallejo). Lanzamiento de 4 marcas piloto en Rappi y Uber Eats.</div>
-      <div class="tl-tags"><span class="tl-tag">Constitución Legal</span><span class="tl-tag">Ronda Serie A</span><span class="tl-tag">2 cocinas</span><span class="tl-tag">4 marcas</span></div>
-    </div>
-    <div class="timeline-item">
-      <div class="tl-date">Q3–Q4 2025</div>
-      <div class="tl-title">Tracción Comprobada</div>
-      <div class="tl-desc">Alcanzar 200 órdenes/día por cocina. Lanzar 8 marcas adicionales. Implementar sistema propio de gestión de cocina. Negociar comisiones preferenciales con plataformas por volumen.</div>
-      <div class="tl-tags"><span class="tl-tag">200 órdenes/día</span><span class="tl-tag">12 marcas activas</span><span class="tl-tag">Break-even por cocina</span></div>
-    </div>
-    <div class="timeline-item">
-      <div class="tl-date">Q1–Q2 2026</div>
-      <div class="tl-title">Expansión CDMX</div>
-      <div class="tl-desc">Apertura de cocinas 3 y 4 en zonas norte y sur de CDMX. Lanzamiento de modelo Kitchen-as-a-Service con primeros 3 clientes B2B. EBITDA positivo a nivel consolidado.</div>
-      <div class="tl-tags"><span class="tl-tag">4 cocinas</span><span class="tl-tag">KaaS live</span><span class="tl-tag">EBITDA+</span></div>
-    </div>
-    <div class="timeline-item">
-      <div class="tl-date">2027</div>
-      <div class="tl-title">Expansión Nacional</div>
-      <div class="tl-desc">Entrada a Guadalajara y Monterrey con 2 cocinas cada ciudad. Ronda Serie B para financiar expansión. Lanzamiento del programa de licencias para operadores regionales.</div>
-      <div class="tl-tags"><span class="tl-tag">3 ciudades</span><span class="tl-tag">8 cocinas</span><span class="tl-tag">Serie B</span><span class="tl-tag">Licencias</span></div>
-    </div>
-    <div class="timeline-item">
-      <div class="tl-date">2028–2029</div>
-      <div class="tl-title">Liderazgo de Mercado</div>
-      <div class="tl-desc">Posicionamiento como la red de dark kitchens más grande de México. Exploración de mercados LATAM (Colombia, Chile). Preparación para IPO o venta estratégica.</div>
-      <div class="tl-tags"><span class="tl-tag">#1 México</span><span class="tl-tag">LATAM</span><span class="tl-tag">Exit Strategy</span></div>
-    </div>
-  </div>
-</section>
+<div class="divider"></div>
 
-<!-- CHATBOT CFO -->
-<section id="chatbot">
-  <div class="section-tag">08 — Due Diligence</div>
-  <h2 class="section-title">Pregúntale<br>Al CFO.</h2>
-  <div class="divider"></div>
-  <div class="chat-wrapper reveal">
-    <div class="chat-intro">
-      <p>Tenemos un CFO virtual entrenado con toda la información financiera, operativa y estratégica de FOGÓN. Hazle cualquier pregunta que le harías a un equipo de management antes de invertir.</p>
-      <p style="font-size:0.85rem;">Pregunta sobre proyecciones, supuestos, competencia, riesgos, estructura legal, o cualquier aspecto del negocio.</p>
-      <div class="quick-qs">
-        <div class="section-tag" style="margin-bottom:8px;">Preguntas sugeridas</div>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cuál es el principal riesgo de inversión?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cómo calcularon la TIR del 67%?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Qué pasa si Rappi sube sus comisiones?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cuál es la estrategia de salida (exit) para el inversor?</button>
-        <button class="quick-q" onclick="sendQuickQ(this)">¿Cómo se constituye legalmente la empresa?</button>
-      </div>
+<!-- CONCLUSION -->
+<section id="conclusion">
+  <div class="section-tag" data-es>06 — Conclusión y Recomendación</div>
+  <div class="section-tag" data-en>06 — Conclusion & Recommendation</div>
+  <div class="section-title" data-es>RECOMENDACIÓN<br>DE INVERSIÓN</div>
+  <div class="section-title" data-en>INVESTMENT<br>RECOMMENDATION</div>
+
+  <div class="conclusion-grid">
+    <div class="verdict-box">
+      <div class="verdict-label" data-es>Veredicto del Análisis Financiero</div>
+      <div class="verdict-label" data-en>Financial Analysis Verdict</div>
+      <div class="verdict-title" data-es>ACEPTAR EL PROYECTO</div>
+      <div class="verdict-title" data-en>ACCEPT THE PROJECT</div>
+      <p class="verdict-text" data-es>
+        Los cuatro indicadores financieros analizados confirman que el proyecto CLA 2026 / Plataforma MMA de Mercedes-Benz es <strong>financieramente viable y altamente rentable</strong>.<br><br>
+        El <strong>VPN de €8,603.8M</strong> confirma creación de valor muy por encima del costo de capital. La <strong>TIR del 41%</strong> supera el WACC del 9% por un margen de 32 puntos porcentuales, indicando un alto retorno ajustado al riesgo. El <strong>período de recuperación de 2.35 años</strong> garantiza una exposición mínima al riesgo de capital. La <strong>relación B/C de 3.87</strong> demuestra una eficiencia sobresaliente del proyecto.<br><br>
+        Los riesgos principales (mercado chino, compresión de márgenes, velocidad de adopción EV) son reales y materiales, pero están parcialmente mitigados por el éxito temprano del CLA en Europa (+127% ventas Q1 2026) y la validación del producto (Auto del Año 2026).<br><br>
+        <strong>Recomendación:</strong> Proceder con la inversión manteniendo monitoreo trimestral de los indicadores de mercado en China y evolución de la demanda EV global.
+      </p>
+      <p class="verdict-text" data-en>
+        All four financial indicators confirm the CLA 2026 / MMA Platform project is <strong>financially viable and highly profitable</strong>.<br><br>
+        The <strong>NPV of €8,603.8M</strong> confirms value creation well above the cost of capital. The <strong>IRR of 41%</strong> exceeds the 9% WACC by 32 percentage points, indicating a high risk-adjusted return. The <strong>payback period of 2.35 years</strong> ensures minimal capital risk exposure. The <strong>B/C ratio of 3.87</strong> demonstrates outstanding project efficiency.<br><br>
+        Key risks (China market, margin compression, EV adoption speed) are real and material, but partially mitigated by early CLA success in Europe (+127% Q1 2026 sales) and product validation (2026 Car of the Year).<br><br>
+        <strong>Recommendation:</strong> Proceed with the investment, maintaining quarterly monitoring of China market indicators and global EV demand evolution.
+      </p>
     </div>
-    <div class="chat-box">
-      <div class="chat-header">
-        <div class="chat-dot"></div>
-        <div class="chat-header-text">CFO Virtual · FOGÓN — Powered by Gemini</div>
+    <div class="summary-metrics">
+      <div class="summary-metric">
+        <div class="summary-metric-label">VPN / NPV</div>
+        <div class="summary-metric-value go">€8,604M</div>
       </div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="msg bot">Hola, soy el CFO virtual de FOGÓN. Puedo responder cualquier pregunta sobre nuestras finanzas, modelo de negocio, supuestos o estrategia de inversión. ¿Qué quieres saber?</div>
+      <div class="summary-metric">
+        <div class="summary-metric-label">TIR / IRR</div>
+        <div class="summary-metric-value go">41.0%</div>
       </div>
-      <div class="chat-input-area">
-        <input class="chat-input" id="chatInput" type="text" placeholder="Pregunta lo que quieras como inversor..." onkeydown="if(event.key==='Enter')sendMsg()">
-        <button class="chat-send" onclick="sendMsg()">Enviar</button>
+      <div class="summary-metric">
+        <div class="summary-metric-label" data-es>WACC / Costo Capital</div>
+        <div class="summary-metric-label" data-en>WACC / Cost of Capital</div>
+        <div class="summary-metric-value">9.0%</div>
+      </div>
+      <div class="summary-metric">
+        <div class="summary-metric-label" data-es>Período de Recuperación</div>
+        <div class="summary-metric-label" data-en>Payback Period</div>
+        <div class="summary-metric-value go">2.35 años</div>
+      </div>
+      <div class="summary-metric">
+        <div class="summary-metric-label" data-es>Relación Beneficio/Costo</div>
+        <div class="summary-metric-label" data-en>Benefit/Cost Ratio</div>
+        <div class="summary-metric-value go">3.87</div>
+      </div>
+      <div class="summary-metric">
+        <div class="summary-metric-label" data-es>Decisión</div>
+        <div class="summary-metric-label" data-en>Decision</div>
+        <div class="summary-metric-value go" data-es>ACEPTAR</div>
+        <div class="summary-metric-value go" data-en>ACCEPT</div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- SIMULADOR DE INVERSIÓN -->
-<section id="simulador">
-  <div class="section-tag reveal">09 — Simulador de Inversión</div>
-  <h2 class="section-title reveal">Calcula Tu<br>Retorno.</h2>
-  <div class="sim-container">
-    <div class="sim-slider-section reveal">
-      <div class="sim-label">¿Cuánto deseas invertir?</div>
-      <div class="sim-amount" id="simAmount">$1,000,000</div>
-      <input type="range" id="investSlider" min="500000" max="18000000" step="50000" value="1000000">
-      <div class="sim-range-labels">
-        <span>$500,000 MXN mín.</span>
-        <span>$18,000,000 MXN máx.</span>
-      </div>
+  <!-- CAPITAL RATIONING -->
+  <div class="ration-wrap" id="capital-rationing">
+    <div class="addon-head" data-es>RACIONAMIENTO DE CAPITAL</div>
+    <div class="addon-head" data-en>CAPITAL RATIONING</div>
+    <div class="addon-sub" data-es>Ranking por Índice de Rentabilidad (PI = NPV / Inversión) bajo restricción presupuestaria</div>
+    <div class="addon-sub" data-en>Ranking by Profitability Index (PI = NPV / Investment) under budget constraint</div>
+    <table class="cf-table" id="rationTable">
+      <thead>
+        <tr>
+          <th data-es>Proyecto</th><th data-en>Project</th>
+          <th data-es>Inversión</th><th data-en>Investment</th>
+          <th>NPV / VPN</th>
+          <th>IRR / TIR</th>
+          <th>PI</th>
+          <th data-es>Rank</th><th data-en>Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="highlight">CLA/MMA</td><td>€3B</td><td class="pos">€8,604M</td><td class="pos">41%</td><td class="pos">3.87</td><td class="highlight">1</td></tr>
+        <tr><td class="highlight" data-es>Baterías Gigaplant</td><td class="highlight" data-en>Battery Gigaplant</td><td>€5B</td><td class="pos">€6,200M</td><td class="pos">28%</td><td class="pos">2.24</td><td class="highlight">2</td></tr>
+        <tr><td class="highlight">MB.OS Software</td><td>€1.2B</td><td class="pos">€2,100M</td><td class="pos">35%</td><td class="pos">2.75</td><td class="highlight">3</td></tr>
+      </tbody>
+    </table>
+    <div class="ration-note" data-es>
+      <strong>Presupuesto €5B (PI ranking):</strong> seleccionar CLA/MMA (€3B, PI 3.87) + MB.OS (€1.2B, PI 2.75) = €4.2B usados, VPN combinado ≈ €10,704M. Battery Gigaplant queda fuera por restricción, aunque tiene mayor VPN absoluto que MB.OS.<br><br>
+      <strong>Conflicto NPV vs IRR:</strong> MB.OS tiene IRR 35% &gt; Battery 28%, pero Battery tiene mayor NPV (€6.2B vs €2.1B) por escala de inversión. En proyectos mutuamente excluyentes o de distinta escala, NPV domina; IRR puede sobre-rankear proyectos pequeños.
     </div>
-    <div class="sim-metrics reveal reveal-delay-1">
-      <div class="sim-metric-card">
-        <div class="sim-metric-label">% en la Ronda</div>
-        <div class="sim-metric-value fire" id="simParticipation">—</div>
-        <div class="sim-metric-sub">de los $18M levantados</div>
-      </div>
-      <div class="sim-metric-card">
-        <div class="sim-metric-label">% Equity Empresa</div>
-        <div class="sim-metric-value gold" id="simEquity">—</div>
-        <div class="sim-metric-sub">del cap table</div>
-      </div>
-      <div class="sim-metric-card">
-        <div class="sim-metric-label">TIR Proyectada</div>
-        <div class="sim-metric-value fire" id="simTIR">—</div>
-        <div class="sim-metric-sub">retorno anualizado</div>
-      </div>
-      <div class="sim-metric-card">
-        <div class="sim-metric-label">Múltiplo de Dinero</div>
-        <div class="sim-metric-value gold" id="simMoM">—</div>
-        <div class="sim-metric-sub">en 5 años</div>
-      </div>
+    <div class="ration-note" data-en>
+      <strong>Budget €5B (PI ranking):</strong> select CLA/MMA (€3B, PI 3.87) + MB.OS (€1.2B, PI 2.75) = €4.2B used, combined NPV ≈ €10,704M. Battery Gigaplant is excluded by constraint despite higher absolute NPV than MB.OS.<br><br>
+      <strong>NPV vs IRR conflict:</strong> MB.OS has IRR 35% &gt; Battery 28%, but Battery has higher NPV (€6.2B vs €2.1B) due to investment scale. For mutually exclusive or different-scale projects, NPV dominates; IRR may over-rank smaller projects.
     </div>
-    <div class="sim-returns reveal reveal-delay-2">
-      <div class="sim-returns-header">
-        <span>Año</span>
-        <span>Valor Proyectado (MXN)</span>
-        <span>Múltiplo</span>
-      </div>
-      <div class="sim-return-row"><span>Año 1</span><span id="yr1v">—</span><span id="yr1m">—</span></div>
-      <div class="sim-return-row"><span>Año 2</span><span id="yr2v">—</span><span id="yr2m">—</span></div>
-      <div class="sim-return-row"><span>Año 3</span><span id="yr3v">—</span><span id="yr3m">—</span></div>
-      <div class="sim-return-row"><span>Año 4</span><span id="yr4v">—</span><span id="yr4m">—</span></div>
-      <div class="sim-return-row highlight"><span>Año 5 — Salida</span><span id="yr5v">—</span><span id="yr5m">—</span></div>
-    </div>
-    <div class="sim-chart-wrapper reveal reveal-delay-3">
-      <canvas id="simChart" height="80"></canvas>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACTO -->
-<section id="contacto">
-  <div class="section-tag">10 — Siguiente Paso</div>
-  <h2 class="section-title">¿Listo Para<br>Invertir?</h2>
-  <p>Agenda una sesión de 30 minutos con nuestro equipo directivo. Te enviamos el data room completo previo a la llamada.</p>
-  <a href="mailto:investors@fogon.mx" class="cta-btn">Agendar Reunión →</a>
-  <div class="contact-details">
-    <span>investors@fogon.mx</span>
-    <span>+52 55 4321 0000</span>
-    <span>CDMX, México</span>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">FOG<span>Ó</span>N</div>
-  <p>© 2025 FOGÓN Dark Kitchens S.A. de C.V. · Documento confidencial para inversores</p>
-  <p style="color:rgba(255,77,0,0.5);">Serie A · $18M MXN</p>
+  <div class="footer-brand">
+    Mercedes-Benz Group AG — Evaluación Financiera de Proyectos — 2026
+  </div>
+  <div class="footer-note">
+    <span data-es>Datos: Mercedes-Benz Annual Reports 2024–2025<br>Proyecto: CLA 2026 / Plataforma MMA</span>
+    <span data-en>Data: Mercedes-Benz Annual Reports 2024–2025<br>Project: CLA 2026 / MMA Platform</span>
+  </div>
 </footer>
 
 <script>
-// CURSOR
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
-});
-function animateRing() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
-  requestAnimationFrame(animateRing);
-}
-animateRing();
+  // MB STAR CURSOR
+  const mbCursor = document.getElementById('mbCursor');
+  let mx = 0, my = 0, cx = 0, cy = 0;
+  // Hotspot: center of the 38×38 star
+  const HOT_X = 19, HOT_Y = 19;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mousedown', () => mbCursor.classList.add('clicking'));
+  document.addEventListener('mouseup',   () => mbCursor.classList.remove('clicking'));
+  function animCursor() {
+    cx += (mx - cx) * 0.14;
+    cy += (my - cy) * 0.14;
+    mbCursor.style.transform = `translate(${cx - HOT_X}px, ${cy - HOT_Y}px)`;
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
 
-// SCROLL REVEAL
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// FUND BARS ANIMATION
-const barObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.querySelectorAll('.fund-bar').forEach(bar => {
-        bar.style.width = bar.dataset.width + '%';
-      });
-    }
-  });
-}, { threshold: 0.3 });
-document.querySelector('.use-of-funds') && barObserver.observe(document.querySelector('.use-of-funds'));
-
-// COUNTER ANIMATION
-function animateCounter(el, target, suffix = '') {
-  let start = 0;
-  const dur = 1800;
-  const step = timestamp => {
-    if (!start) start = timestamp;
-    const progress = Math.min((timestamp - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(ease * target) + suffix;
-    if (progress < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
-
-// CHARTS
-Chart.defaults.color = '#8A8A7A';
-Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
-
-// Revenue Chart
-new Chart(document.getElementById('revenueChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-    datasets: [
-      { label: 'Marcas Propias', data: [380,410,450,490,530,590,640,700,760,820,890,960], backgroundColor: 'rgba(255,77,0,0.7)' },
-      { label: 'KaaS', data: [60,65,70,80,90,100,115,130,145,160,175,190], backgroundColor: 'rgba(255,140,66,0.5)' },
-      { label: 'Licencias', data: [0,0,0,20,25,30,35,40,45,50,55,60], backgroundColor: 'rgba(245,200,66,0.4)' }
-    ]
-  },
-  options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '$' + v + 'K' } } } }
-});
-
-// Market Growth Chart
-new Chart(document.getElementById('marketChart'), {
-  type: 'line',
-  data: {
-    labels: ['2022','2023','2024','2025E','2026E','2027E','2028E'],
-    datasets: [{
-      label: 'Mercado MX Dark Kitchens',
-      data: [0.4, 0.7, 1.1, 1.6, 2.3, 3.2, 4.4],
-      borderColor: '#FF4D00',
-      backgroundColor: 'rgba(255,77,0,0.1)',
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#FF4D00'
-    }]
-  },
-  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + v + 'B' } } } }
-});
-
-// Brand Mix
-new Chart(document.getElementById('brandChart'), {
-  type: 'doughnut',
-  data: {
-    labels: ['KUMA Ramen','El Carnal Birria','Madre Pasta','Nikkei Box','Otras 12'],
-    datasets: [{ data: [22,18,15,12,33], backgroundColor: ['#FF4D00','#FF8C42','#F5C842','#FF6B35','#2E2E26'], borderWidth: 0 }]
-  },
-  options: { responsive: true, cutout: '65%', plugins: { legend: { position: 'right' } } }
-});
-
-// P&L Chart
-new Chart(document.getElementById('plChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Año 1','Año 2','Año 3','Año 4','Año 5'],
-    datasets: [
-      { label: 'Ingresos', data: [8.4,18.2,34.6,52.1,68.0], backgroundColor: 'rgba(255,77,0,0.3)', borderColor: '#FF4D00', borderWidth: 1 },
-      { label: 'EBITDA', type: 'line', data: [-0.4,2.8,8.1,14.8,21.0], borderColor: '#F5C842', backgroundColor: 'rgba(245,200,66,0.1)', fill: true, tension: 0.4, pointBackgroundColor: '#F5C842' }
-    ]
-  },
-  options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { ticks: { callback: v => '$' + v + 'M' } } } }
-});
-
-// Breakeven
-new Chart(document.getElementById('breakChart'), {
-  type: 'line',
-  data: {
-    labels: ['Mes 1','Mes 3','Mes 6','Mes 9','Mes 12','Mes 15','Mes 18'],
-    datasets: [
-      { label: 'Ingresos', data: [320,450,620,780,920,1050,1200], borderColor: '#4ADE80', tension: 0.4, pointBackgroundColor: '#4ADE80' },
-      { label: 'Costos Fijos + Variables', data: [1100,1050,980,940,1020,1080,1100], borderColor: '#F87171', tension: 0.4, borderDash: [5,5], pointBackgroundColor: '#F87171' }
-    ]
-  },
-  options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { ticks: { callback: v => '$' + v + 'K' } } } }
-});
-
-// ROI Chart
-new Chart(document.getElementById('roiChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Inversión','Año 1','Año 2','Año 3','Año 4','Año 5'],
-    datasets: [{
-      label: 'Valor acumulado (MXN)',
-      data: [-18, -16, -12.4, -6.4, 4.8, 21.8],
-      backgroundColor: d => d.raw < 0 ? 'rgba(248,113,113,0.6)' : 'rgba(74,222,128,0.6)',
-      borderColor: d => d.raw < 0 ? '#F87171' : '#4ADE80',
-      borderWidth: 1
-    }]
-  },
-  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + v + 'M' } } } }
-});
-
-// ============ SIMULADOR DE INVERSIÓN ============
-(function() {
-  const TOTAL_RAISE = 18000000;
-  const INVESTOR_EQUITY = 0.30; // 30% equity for $18M at $42M pre-money / $60M post-money
-  // Company valuation trajectory (MXN millions) giving 4.1x MoM at year 5 exit
-  // Investor share at year 5 = 0.30 * 246M = $73.8M = 4.1 * $18M ✓
-  const CO_VALS = [65, 100, 155, 205, 246];
-
-  function fmtMXN(n) {
-    if (n >= 1e6) return '$' + (n / 1e6).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + 'M';
-    return '$' + Math.round(n).toLocaleString('es-MX');
+  // LANG TOGGLE
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
   }
 
-  function updateSliderTrack(slider) {
-    const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-    slider.style.background = `linear-gradient(to right, #FF4D00 ${pct}%, #2E2E26 ${pct}%)`;
-  }
-
-  const simChartInstance = new Chart(document.getElementById('simChart'), {
-    type: 'line',
+  // CHARTS — Revenue & EBIT
+  const revCtx = document.getElementById('revenueChart').getContext('2d');
+  new Chart(revCtx, {
+    type: 'bar',
     data: {
-      labels: ['Inversión', 'Año 1', 'Año 2', 'Año 3', 'Año 4', 'Año 5'],
+      labels: ['2022', '2023', '2024', '2025'],
       datasets: [
         {
-          label: 'Valor proyectado',
-          data: Array(6).fill(0),
-          borderColor: '#FF4D00',
-          backgroundColor: 'rgba(255,77,0,0.1)',
-          fill: true, tension: 0.4,
-          pointBackgroundColor: '#FF4D00',
-          pointRadius: 5, pointHoverRadius: 8
+          label: 'Ingresos (€B)',
+          data: [150, 153.2, 145.6, 132.2],
+          backgroundColor: 'rgba(192,192,192,0.15)',
+          borderColor: 'rgba(192,192,192,0.6)',
+          borderWidth: 1
         },
         {
-          label: 'Capital invertido',
-          data: Array(6).fill(0),
-          borderColor: 'rgba(245,200,66,0.45)',
-          backgroundColor: 'transparent',
-          borderDash: [6, 4], tension: 0, pointRadius: 0
+          label: 'EBIT (€B)',
+          data: [20.5, 19.7, 13.6, 8.2],
+          backgroundColor: 'rgba(129,199,132,0.2)',
+          borderColor: 'rgba(129,199,132,0.7)',
+          borderWidth: 1
         }
       ]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: { position: 'top' },
-        tooltip: {
-          callbacks: {
-            label: ctx => ' ' + fmtMXN(ctx.raw) + ' MXN'
-          }
-        }
-      },
+      plugins: { legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } } },
       scales: {
+        x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+
+  // CHARTS — FCF
+  const fcfCtx = document.getElementById('fcfChart').getContext('2d');
+  new Chart(fcfCtx, {
+    type: 'line',
+    data: {
+      labels: ['2022', '2023', '2024', '2025'],
+      datasets: [{
+        label: 'FCF Industrial (€B)',
+        data: [13.0, 12.0, 9.2, 5.4],
+        borderColor: 'rgba(192,192,192,0.7)',
+        backgroundColor: 'rgba(192,192,192,0.05)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#C0C0C0',
+        pointRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } } },
+      scales: {
+        x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+
+  // CHARTS — Cashflow Projection
+  const cfCtx = document.getElementById('cashflowChart').getContext('2d');
+  new Chart(cfCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Año 0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+      datasets: [{
+        label: 'Flujo de Caja (€M)',
+        data: [-3000, 800, 1500, 2000, 2200, 2300, 2400, 2500, 2600, 2700, 2800],
+        backgroundColor: (ctx) => ctx.raw < 0 ? 'rgba(229,115,115,0.4)' : 'rgba(129,199,132,0.3)',
+        borderColor: (ctx) => ctx.raw < 0 ? 'rgba(229,115,115,0.8)' : 'rgba(129,199,132,0.8)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } } },
+      scales: {
+        x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+
+  // CHARTS — NPV Sensitivity
+  function calcNPV(wacc, flows, inv) {
+    let pv = 0;
+    flows.forEach((f, i) => { pv += f / Math.pow(1 + wacc, i + 1); });
+    return (pv - inv) / 1000;
+  }
+  const flows = [800, 1500, 2000, 2200, 2300, 2400, 2500, 2600, 2700, 2800];
+  const waccRates = [0.03, 0.05, 0.07, 0.09, 0.12, 0.15, 0.20, 0.30, 0.41];
+  const npvVals = waccRates.map(r => calcNPV(r, flows, 3000));
+  const sensCtx = document.getElementById('sensitivityChart').getContext('2d');
+  new Chart(sensCtx, {
+    type: 'line',
+    data: {
+      labels: waccRates.map(r => (r * 100).toFixed(0) + '%'),
+      datasets: [{
+        label: 'VPN (€ Millardos)',
+        data: npvVals,
+        borderColor: 'rgba(192,192,192,0.7)',
+        backgroundColor: (ctx) => {
+          const chart = ctx.chart;
+          const {ctx: c, chartArea} = chart;
+          if (!chartArea) return 'transparent';
+          const grad = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          grad.addColorStop(0, 'rgba(129,199,132,0.15)');
+          grad.addColorStop(1, 'rgba(229,115,115,0.05)');
+          return grad;
+        },
+        fill: true, tension: 0.4,
+        pointBackgroundColor: npvVals.map(v => v > 0 ? '#81C784' : '#E57373'),
+        pointRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } } },
+      scales: {
+        x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
         y: {
-          ticks: {
-            callback: v => v >= 1e6 ? '$' + (v / 1e6).toFixed(1) + 'M' : '$' + (v / 1000).toFixed(0) + 'K'
-          }
+          ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v.toFixed(1) + 'B' },
+          grid: { color: 'rgba(255,255,255,0.04)' }
         }
       }
     }
   });
 
-  function updateSimulator() {
-    const slider = document.getElementById('investSlider');
-    const inv = parseInt(slider.value);
-    updateSliderTrack(slider);
+  // MIND MAP SVG LINES
+  function drawMindMapLines() {
+    const svg = document.getElementById('mmSvg');
+    const container = svg.parentElement;
+    const rect = container.getBoundingClientRect();
+    svg.innerHTML = '';
 
-    document.getElementById('simAmount').textContent = '$' + inv.toLocaleString('es-MX');
+    const center = document.getElementById('mm-c');
+    const branches = ['mm-1','mm-2','mm-3','mm-4','mm-5','mm-6','mm-7','mm-8'];
 
-    const participationPct = (inv / TOTAL_RAISE) * 100;
-    const equityPct = participationPct * INVESTOR_EQUITY;
-    document.getElementById('simParticipation').textContent = participationPct.toFixed(2) + '%';
-    document.getElementById('simEquity').textContent = equityPct.toFixed(2) + '%';
-    document.getElementById('simTIR').textContent = '67%';
-    document.getElementById('simMoM').textContent = '4.1x';
+    function getCenter(el) {
+      const r = el.getBoundingClientRect();
+      const cr = container.getBoundingClientRect();
+      return { x: r.left - cr.left + r.width / 2, y: r.top - cr.top + r.height / 2 };
+    }
 
-    const eqFraction = (inv / TOTAL_RAISE) * INVESTOR_EQUITY;
-    const yearVals = CO_VALS.map(v => eqFraction * v * 1e6);
-    const ids = ['yr1v','yr2v','yr3v','yr4v','yr5v'];
-    const mids = ['yr1m','yr2m','yr3m','yr4m','yr5m'];
-    yearVals.forEach((val, i) => {
-      document.getElementById(ids[i]).textContent = fmtMXN(val);
-      document.getElementById(mids[i]).textContent = (val / inv).toFixed(2) + 'x';
+    const cc = getCenter(center);
+    branches.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const bc = getCenter(el);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', cc.x); line.setAttribute('y1', cc.y);
+      line.setAttribute('x2', bc.x); line.setAttribute('y2', bc.y);
+      line.setAttribute('stroke', 'rgba(192,192,192,0.2)');
+      line.setAttribute('stroke-width', '1');
+      svg.appendChild(line);
     });
-
-    simChartInstance.data.datasets[0].data = [inv, ...yearVals];
-    simChartInstance.data.datasets[1].data = Array(6).fill(inv);
-    simChartInstance.update('none');
   }
 
-  const slider = document.getElementById('investSlider');
-  slider.addEventListener('input', updateSimulator);
-  updateSliderTrack(slider);
-  updateSimulator();
-})();
+  setTimeout(drawMindMapLines, 300);
+  window.addEventListener('resize', drawMindMapLines);
 
-// ============ GEMINI CHATBOT ============
-const API_KEY = 'AIzaSyDm23xBLp-7gH6wtvbXVwEOlvbvxQ1g54Q';
-const SYSTEM_CONTEXT = `Eres el CFO virtual de FOGÓN, una red de dark kitchens premium en México. 
-Responde SIEMPRE en español, de forma profesional pero accesible, como un CFO hablando con un potencial inversor.
-Sé directo, concreto y usa los datos reales de la empresa cuando sea relevante.
+  // ─── SIMULATOR ───────────────────────────────────────────────
+  const BASE_FLOWS = [800, 1500, 2000, 2200, 2300, 2400, 2500, 2600, 2700, 2800];
+  const TOTAL_INV  = 3000; // €M
+  let simScenario  = 'base';
+  let simChart;
 
-DATOS CLAVE DE FOGÓN:
-- Empresa: FOGÓN Dark Kitchens S.A. de C.V
-- Modelo: Red de dark kitchens con marcas propias + Kitchen-as-a-Service + Licencias
-- Cocinas actuales: 4 en CDMX (Iztapalapa, Vallejo, Azcapotzalco, Xochimilco)
-- Marcas: 16 marcas virtuales (KUMA Ramen, El Carnal Birria, Madre Pasta, Nikkei Box y 12 más)
-- Ticket promedio: $285 MXN
-- Órdenes diarias meta: 280/cocina en estado estable
-- Proyección ingresos: $8.4M (A1), $18.2M (A2), $34.6M (A3), $52.1M (A4), $68M (A5)
-- EBITDA: -4.8% (A1), 15.4% (A2), 23.4% (A3), 28.4% (A4), 30.9% (A5)
-- TIR: 67%
-- VPN: $28.4M MXN al 12% WACC
-- Payback: 2.4 años
-- Multiple of Money: 4.1x en 5 años
-- Break-even: Mes 18 consolidado
-- Ronda actual: $18M MXN Serie A, valuación pre-money $42M, post-money $60M
-- Ticket mínimo inversor: $500K MXN
-- Equipo: Diego Montoya (CEO, ex-KFC), Sofía Vargas (CFO, ex-Cornershop), Rodrigo Alvarado (CTO, ex-Jüsto), Lucía Campos (CCO, ex-Alsea)
-- Comisión plataformas: 18% promedio negociado
-- Food cost: 28% sobre precio de venta
-- Labor cost: 22% año 1, optimiza a 18%
-- Estrategia de salida: Venta estratégica a fondo de PE o grupo de restaurantes a partir del año 4-5, o IPO en BMV
-
-CONSTITUCIÓN LEGAL:
-- Tipo: S.A. de C.V. (Sociedad Anónima de Capital Variable)
-- Registro: SAT, IMSS, INFONAVIT
-- Licencias: Uso de suelo comercial/industrial, licencia sanitaria COFEPRIS
-- Capital mínimo: $50,000 MXN
-- Notario: Escritura constitutiva ante notario público
-- SAPI de C.V. considerada para rondas futuras por mayor flexibilidad accionaria
-
-Responde de forma concisa (máximo 3-4 párrafos). Si no sabes algo específico, dilo con honestidad y ofrece lo que sí sabes.`;
-
-let chatHistory = [];
-
-async function sendMsg() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-  input.value = '';
-  addMsg(msg, 'user');
-  addMsg('Analizando tu pregunta...', 'bot loading');
-  chatHistory.push({ role: 'user', parts: [{ text: msg }] });
-
-  try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM_CONTEXT }] },
-        contents: chatHistory
-      })
-    });
-    const data = await res.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude generar una respuesta en este momento.';
-    removeLoading();
-    addMsg(reply, 'bot');
-    chatHistory.push({ role: 'model', parts: [{ text: reply }] });
-  } catch (e) {
-    removeLoading();
-    addMsg('Error de conexión. Verifica que la API key esté configurada correctamente.', 'bot');
+  function getFlows(stake, scenario) {
+    const mult = scenario === 'bear' ? 0.70 : scenario === 'bull' ? 1.30 : 1.0;
+    return BASE_FLOWS.map(f => +(f * (stake / 100) * mult).toFixed(1));
   }
-}
 
-function addMsg(text, type) {
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'msg ' + type;
-  div.textContent = text;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
+  function calcNPV(invest, flows, wacc) {
+    let pv = 0;
+    flows.forEach((f, i) => { pv += f / Math.pow(1 + wacc / 100, i + 1); });
+    return pv - invest;
+  }
 
-function removeLoading() {
-  const loading = document.querySelector('.msg.loading');
-  if (loading) loading.remove();
-}
+  function calcIRR(invest, flows) {
+    let lo = 0.001, hi = 9.99;
+    for (let i = 0; i < 200; i++) {
+      const mid = (lo + hi) / 2;
+      calcNPV(invest, flows, mid * 100) > 0 ? lo = mid : hi = mid;
+    }
+    return ((lo + hi) / 2) * 100;
+  }
 
-function sendQuickQ(btn) {
-  document.getElementById('chatInput').value = btn.textContent;
-  sendMsg();
-}
+  function calcPayback(invest, flows) {
+    let cum = 0;
+    for (let i = 0; i < flows.length; i++) {
+      const prev = cum;
+      cum += flows[i];
+      if (cum >= invest) return i + (invest - prev) / flows[i];
+    }
+    return null;
+  }
+
+  function fmt(n, dec = 1) {
+    if (Math.abs(n) >= 1000) return '€' + (n / 1000).toFixed(dec) + 'B';
+    return '€' + n.toFixed(dec) + 'M';
+  }
+
+  function updateSim() {
+    const stake = +document.getElementById('stakeSlider').value;
+    const wacc  = +document.getElementById('waccSlider').value;
+    const invest = +(TOTAL_INV * stake / 100).toFixed(1);
+    const flows  = getFlows(stake, simScenario);
+
+    document.getElementById('stakeVal').textContent  = stake + '%';
+    document.getElementById('waccVal').textContent   = wacc + '%';
+    document.getElementById('investVal').textContent = fmt(invest, 0);
+
+    const npv     = calcNPV(invest, flows, wacc);
+    const irr     = calcIRR(invest, flows);
+    const payback = calcPayback(invest, flows);
+    const totalPV = flows.reduce((s, f, i) => s + f / Math.pow(1 + wacc / 100, i + 1), 0);
+    const bc      = totalPV / invest;
+
+    // Update KPI values
+    document.getElementById('liveNPV').textContent     = fmt(npv);
+    document.getElementById('liveIRR').textContent     = irr.toFixed(1) + '%';
+    document.getElementById('livePayback').innerHTML   = payback !== null
+      ? payback.toFixed(2) + ' <span style="font-size:1rem" data-es>años</span><span style="font-size:1rem" data-en>yrs</span>'
+      : '> 10';
+    document.getElementById('liveBC').textContent      = bc.toFixed(2);
+
+    // Color/badge NPV
+    const npvEl = document.getElementById('liveNPV');
+    const npvBadge = document.getElementById('liveNPVBadge');
+    if (npv > 0) {
+      npvEl.style.color = '#81C784';
+      npvBadge.className = 'sim-kpi-badge pos';
+      npvBadge.textContent = 'VPN > 0';
+    } else {
+      npvEl.style.color = '#E57373';
+      npvBadge.className = 'sim-kpi-badge neg';
+      npvBadge.textContent = 'VPN < 0';
+    }
+
+    // Color/badge IRR
+    const irrEl = document.getElementById('liveIRR');
+    const irrBadge = document.getElementById('liveIRRBadge');
+    if (irr > wacc) {
+      irrEl.style.color = '#81C784';
+      irrBadge.className = 'sim-kpi-badge pos';
+      irrBadge.textContent = 'TIR > WACC';
+    } else {
+      irrEl.style.color = '#E57373';
+      irrBadge.className = 'sim-kpi-badge neg';
+      irrBadge.textContent = 'TIR < WACC';
+    }
+
+    // Color/badge Payback
+    const pbEl = document.getElementById('livePayback');
+    const pbBadge = document.getElementById('livePBBadge');
+    if (payback !== null && payback < 5) {
+      pbEl.style.color = '#81C784';
+      pbBadge.className = 'sim-kpi-badge pos';
+      pbBadge.textContent = '< 5 años';
+    } else {
+      pbEl.style.color = payback !== null ? '#FFB74D' : '#E57373';
+      pbBadge.className = payback !== null ? 'sim-kpi-badge warn' : 'sim-kpi-badge neg';
+      pbBadge.textContent = payback !== null ? '> 5 años' : 'No recupera';
+    }
+
+    // Color/badge B/C
+    const bcEl = document.getElementById('liveBC');
+    const bcBadge = document.getElementById('liveBCBadge');
+    if (bc >= 1) {
+      bcEl.style.color = '#81C784';
+      bcBadge.className = 'sim-kpi-badge pos';
+      bcBadge.textContent = 'B/C ≥ 1';
+    } else {
+      bcEl.style.color = '#E57373';
+      bcBadge.className = 'sim-kpi-badge neg';
+      bcBadge.textContent = 'B/C < 1';
+    }
+
+    // Build table
+    const tbody = document.getElementById('simTableBody');
+    tbody.innerHTML = '';
+    let cumPV = -invest;
+    // Row 0: investment
+    tbody.innerHTML += `<tr>
+      <td class="highlight">0</td>
+      <td class="neg">${fmt(-invest, 0)}</td>
+      <td>1.000</td>
+      <td class="neg">${fmt(-invest, 0)}</td>
+      <td class="neg">${fmt(-invest, 0)}</td>
+    </tr>`;
+    flows.forEach((f, i) => {
+      const factor = Math.pow(1 + wacc / 100, i + 1);
+      const pv = f / factor;
+      cumPV += pv;
+      const cumClass = cumPV >= 0 ? 'pos' : 'neg';
+      tbody.innerHTML += `<tr>
+        <td class="highlight">${i + 1}</td>
+        <td class="pos">${fmt(f)}</td>
+        <td>${(1 / factor).toFixed(3)}</td>
+        <td class="pos">${fmt(pv)}</td>
+        <td class="${cumClass}">${fmt(cumPV)}</td>
+      </tr>`;
+    });
+    // Total row
+    tbody.innerHTML += `<tr class="total">
+      <td colspan="2"><strong>TOTAL</strong></td>
+      <td></td>
+      <td class="pos"><strong>${fmt(totalPV)}</strong></td>
+      <td class="${npv >= 0 ? 'pos' : 'neg'}"><strong>VPN ${fmt(npv)}</strong></td>
+    </tr>`;
+
+    // Update chart
+    const labels = ['0', ...flows.map((_, i) => i + 1)];
+    const cumFlows = [-invest];
+    let run = -invest;
+    flows.forEach(f => { run += f; cumFlows.push(+run.toFixed(1)); });
+
+    const pvFlows = [0];
+    let runPV = 0;
+    flows.forEach((f, i) => {
+      runPV += f / Math.pow(1 + wacc / 100, i + 1);
+      pvFlows.push(+runPV.toFixed(1));
+    });
+
+    if (simChart) {
+      simChart.data.labels = labels;
+      simChart.data.datasets[0].data = cumFlows;
+      simChart.data.datasets[1].data = pvFlows;
+      simChart.data.datasets[2].data = Array(labels.length).fill(invest);
+      simChart.update('none');
+    } else {
+      const ctx = document.getElementById('simChart').getContext('2d');
+      simChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: document.body.classList.contains('lang-en') ? 'Cumulative CF (€M)' : 'Flujo Acum. (€M)',
+              data: cumFlows,
+              borderColor: 'rgba(192,192,192,0.8)',
+              backgroundColor: 'rgba(192,192,192,0.04)',
+              fill: false, tension: 0.35,
+              pointBackgroundColor: cumFlows.map(v => v >= 0 ? '#81C784' : '#E57373'),
+              pointRadius: 5
+            },
+            {
+              label: document.body.classList.contains('lang-en') ? 'Cumulative PV (€M)' : 'VP Acumulado (€M)',
+              data: pvFlows,
+              borderColor: 'rgba(129,199,132,0.6)',
+              backgroundColor: 'rgba(129,199,132,0.04)',
+              fill: false, tension: 0.35, borderDash: [4, 4],
+              pointBackgroundColor: '#81C784', pointRadius: 3
+            },
+            {
+              label: document.body.classList.contains('lang-en') ? 'Investment (€M)' : 'Inversión (€M)',
+              data: Array(labels.length).fill(invest),
+              borderColor: 'rgba(229,115,115,0.5)',
+              borderDash: [6, 3], fill: false, pointRadius: 0, tension: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } },
+            tooltip: {
+              callbacks: {
+                label: ctx => ctx.dataset.label + ': €' + ctx.parsed.y.toFixed(1) + 'M'
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            y: {
+              ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v + 'M' },
+              grid: { color: 'rgba(255,255,255,0.04)' }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  function setScenario(s) {
+    simScenario = s;
+    ['bear', 'base', 'bull'].forEach(b => {
+      const btn = document.getElementById('btn-' + b);
+      btn.className = 'sim-scenario-btn ' + b + (b === s ? ' active' : '');
+    });
+    updateSim();
+  }
+
+  document.getElementById('stakeSlider').addEventListener('input', updateSim);
+  document.getElementById('waccSlider').addEventListener('input', updateSim);
+  updateSim();
+  // ─────────────────────────────────────────────────────────────
+
+  // ─── ADD-ON MODULES (DPB, MIRR, Risk, Real Options) ─────────
+  const MB_INV_FULL = 3000;
+  const MB_GROWTH_BASE = 12;
+
+  function mbFlowsGrowth(growthPct) {
+    return BASE_FLOWS.map((f, i) => +(f * Math.pow((1 + growthPct / 100) / (1 + MB_GROWTH_BASE / 100), i + 1)).toFixed(1));
+  }
+
+  function mbMIRR(inv, flows, ratePct) {
+    const r = ratePct / 100;
+    const n = flows.length;
+    let fvPos = 0;
+    flows.forEach((f, i) => { if (f > 0) fvPos += f * Math.pow(1 + r, n - (i + 1)); });
+    const pvNeg = inv;
+    return { mirr: (Math.pow(fvPos / pvNeg, 1 / n) - 1) * 100, fvPos, pvNeg };
+  }
+
+  function mbDiscPayback(inv, flows, waccPct) {
+    let cum = -inv;
+    const rows = [];
+    rows.push({ y: 0, cf: -inv, df: 1, pv: -inv, cum });
+    for (let i = 0; i < flows.length; i++) {
+      const df = 1 / Math.pow(1 + waccPct / 100, i + 1);
+      const pv = flows[i] * df;
+      const prev = cum;
+      cum += pv;
+      rows.push({ y: i + 1, cf: flows[i], df, pv, cum, prev });
+      if (cum >= 0) {
+        return { years: i + Math.abs(prev) / pv, rows, crossYear: i + 1, prev, pv };
+      }
+    }
+    return { years: null, rows };
+  }
+
+  function initBreakEven() {
+    const FC = 420, P = 45000 / 1e6, VC = 28000 / 1e6;
+    const BE = Math.round(FC / (P - VC));
+    const slider = document.getElementById('beUnitsSlider');
+    const updateBE = () => {
+      const q = +slider.value;
+      const rev = q * P;
+      const cost = FC + q * VC;
+      const profit = rev - cost;
+      document.getElementById('beUnitsVal').textContent = q.toLocaleString();
+      document.getElementById('beUnitsResult').textContent = (document.body.classList.contains('lang-es') ? 'BE: ' : 'BE: ') + BE.toLocaleString() + (document.body.classList.contains('lang-es') ? ' uds' : ' units');
+      const pl = document.getElementById('beProfitLabel');
+      pl.textContent = (profit >= 0 ? '+' : '') + '€' + profit.toFixed(1) + 'M ' + (document.body.classList.contains('lang-es') ? (profit >= 0 ? 'utilidad' : 'pérdida') : (profit >= 0 ? 'profit' : 'loss'));
+      pl.className = 'be-pl ' + (profit >= 0 ? 'pos' : 'neg');
+    };
+    slider.addEventListener('input', updateBE);
+    updateBE();
+
+    const labels = [];
+    const revData = [], costData = [];
+    for (let q = 0; q <= 60000; q += 2000) {
+      labels.push((q / 1000).toFixed(0) + 'k');
+      revData.push(+(q * P).toFixed(1));
+      costData.push(+(FC + q * VC).toFixed(1));
+    }
+    new Chart(document.getElementById('beChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: document.body.classList.contains('lang-en') ? 'Revenue (€M)' : 'Ingresos (€M)', data: revData, borderColor: 'rgba(129,199,132,0.8)', backgroundColor: 'rgba(129,199,132,0.1)', fill: false, tension: 0 },
+          { label: document.body.classList.contains('lang-en') ? 'Total Cost (€M)' : 'Costo Total (€M)', data: costData, borderColor: 'rgba(229,115,115,0.7)', backgroundColor: 'rgba(229,115,115,0.08)', fill: false, tension: 0 }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } },
+          annotation: {}
+        },
+        scales: {
+          x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 9 }, maxTicksLimit: 12 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v + 'M' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+        }
+      }
+    });
+  }
+
+  function initTornado() {
+    const base = calcNPV(MB_INV_FULL, BASE_FLOWS, MB_WACC_BASE);
+    const sens = [
+      { name: 'WACC', low: calcNPV(MB_INV_FULL, BASE_FLOWS, 11), high: calcNPV(MB_INV_FULL, BASE_FLOWS, 7) },
+      { name: document.body.classList.contains('lang-en') ? 'Rev. Growth' : 'Crec. Ingresos', low: calcNPV(MB_INV_FULL, mbFlowsGrowth(9), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, mbFlowsGrowth(15), MB_WACC_BASE) },
+      { name: document.body.classList.contains('lang-en') ? 'Initial Inv.' : 'Inv. Inicial', low: calcNPV(3600, BASE_FLOWS, MB_WACC_BASE), high: calcNPV(2400, BASE_FLOWS, MB_WACC_BASE) },
+      { name: document.body.classList.contains('lang-en') ? 'Terminal Val.' : 'Valor Terminal', low: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 0.75], MB_WACC_BASE), high: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 1.25], MB_WACC_BASE) },
+      { name: document.body.classList.contains('lang-en') ? 'Op. Margin' : 'Margen Op.', low: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 0.97), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 1.03), MB_WACC_BASE) }
+    ];
+    sens.forEach(s => { s.spread = Math.abs(s.high - s.low); });
+    sens.sort((a, b) => b.spread - a.spread);
+
+    const labels = sens.map(s => s.name);
+    const floatData = sens.map(s => [Math.min(s.low, s.high) / 1000, Math.max(s.low, s.high) / 1000]);
+
+    new Chart(document.getElementById('tornadoChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'NPV Range (€B)',
+          data: floatData,
+          backgroundColor: 'rgba(192,192,192,0.35)',
+          borderColor: 'rgba(192,192,192,0.7)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const s = sens[ctx.dataIndex];
+                return [`Low: €${(Math.min(s.low,s.high)/1000).toFixed(2)}B`, `High: €${(Math.max(s.low,s.high)/1000).toFixed(2)}B`];
+              }
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v.toFixed(1) + 'B' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#909090', font: { family: 'DM Mono', size: 10 } }, grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  function initScenarioTable() {
+    const scenarios = [
+      { key: 'bear', growth: 6, wacc: 10.5 },
+      { key: 'base', growth: 12, wacc: 9 },
+      { key: 'bull', growth: 18, wacc: 7 }
+    ];
+    const tbody = document.getElementById('scenarioTableBody');
+    tbody.innerHTML = '';
+    scenarios.forEach(sc => {
+      const flows = mbFlowsGrowth(sc.growth);
+      const npv = calcNPV(MB_INV_FULL, flows, sc.wacc);
+      const irr = calcIRR(MB_INV_FULL, flows);
+      const pb = calcPayback(MB_INV_FULL, flows);
+      tbody.innerHTML += `<tr class="${sc.key}">
+        <td class="highlight">${sc.key.toUpperCase()}</td>
+        <td>${sc.growth}%</td>
+        <td>${sc.wacc}%</td>
+        <td class="${npv > 0 ? 'pos' : 'neg'}">${fmt(npv)}</td>
+        <td class="pos">${irr.toFixed(1)}%</td>
+        <td>${pb !== null ? pb.toFixed(2) + (document.body.classList.contains('lang-es') ? ' a' : ' y') : '—'}</td>
+      </tr>`;
+    });
+  }
+
+  function initBinomialDelay() {
+    const S = 8603, K = 3000, T = 2, sigma = 0.25, r = 0.045;
+    const steps = 2, dt = T / steps;
+    const u = Math.exp(sigma * Math.sqrt(dt));
+    const d = 1 / u;
+    const p = (Math.exp(r * dt) - d) / (u - d);
+    const disc = Math.exp(-r * dt);
+
+    const S_u = S * u, S_d = S * d;
+    const S_uu = S * u * u, S_ud = S * u * d, S_dd = S * d * d;
+    const pay = v => Math.max(v - K, 0);
+    const C_uu = pay(S_uu), C_ud = pay(S_ud), C_dd = pay(S_dd);
+    const C_u = (p * C_uu + (1 - p) * C_ud) * disc;
+    const C_d = (p * C_ud + (1 - p) * C_dd) * disc;
+    const C0 = (p * C_u + (1 - p) * C_d) * disc;
+    const investNow = S;
+
+    document.getElementById('binomialParams').innerHTML =
+      `u = e^(σ√Δt) = ${u.toFixed(4)} · d = ${d.toFixed(4)} · p = ${p.toFixed(4)} · disc = ${disc.toFixed(4)}`;
+    document.getElementById('binomialTree').innerHTML = `
+      <div class="bin-row"><div class="bin-node root">S₀ €${S.toFixed(0)}M</div></div>
+      <div class="bin-row">
+        <div class="bin-node">Sᵤ €${S_u.toFixed(0)}M<div class="prob">p=${p.toFixed(2)}</div></div>
+        <div class="bin-node">Sᵈ €${S_d.toFixed(0)}M<div class="prob">1-p=${(1-p).toFixed(2)}</div></div>
+      </div>
+      <div class="bin-row">
+        <div class="bin-node">€${S_uu.toFixed(0)}M<br>C=${C_uu.toFixed(0)}M</div>
+        <div class="bin-node">€${S_ud.toFixed(0)}M<br>C=${C_ud.toFixed(0)}M</div>
+        <div class="bin-node">€${S_dd.toFixed(0)}M<br>C=${C_dd.toFixed(0)}M</div>
+      </div>
+      <div class="bin-row">
+        <div class="bin-node root">Opción €${C0.toFixed(0)}M</div>
+        <div class="bin-node">Invertir €${investNow.toFixed(0)}M</div>
+      </div>`;
+
+    const waitValuable = C0 > 0 && C0 > investNow * 0.05;
+    const el = document.getElementById('delayDecision');
+    el.innerHTML = waitValuable
+      ? (document.body.classList.contains('lang-es')
+        ? `Esperar aporta flexibilidad (opción €${C0.toFixed(0)}M). Invertir ahora: NPV €${investNow.toFixed(0)}M.`
+        : `Waiting adds flexibility (option €${C0.toFixed(0)}M). Invest now: NPV €${investNow.toFixed(0)}M.`)
+      : (document.body.classList.contains('lang-es')
+        ? `Invertir ahora es superior: NPV inmediato €${investNow.toFixed(0)}M > valor de espera €${C0.toFixed(0)}M.`
+        : `Invest now dominates: immediate NPV €${investNow.toFixed(0)}M > wait value €${C0.toFixed(0)}M.`);
+  }
+
+  function initEventTree() {
+    const bearFlows = mbFlowsGrowth(6);
+    const bullFlows = mbFlowsGrowth(18);
+    const npvBear = calcNPV(MB_INV_FULL, bearFlows, 10.5);
+    const npvBase = calcNPV(MB_INV_FULL, BASE_FLOWS, 9);
+    const npvBull = calcNPV(MB_INV_FULL, bullFlows, 7);
+    const wait1 = npvBase * 0.92;
+    const wait2 = npvBase * 0.85;
+    const abandon = 1100;
+
+    document.getElementById('et-bear').innerHTML = `Bear<br>€${fmt(npvBear)}`;
+    document.getElementById('et-base').innerHTML = `Base<br>€${fmt(npvBase)}`;
+    document.getElementById('et-bull').innerHTML = `Bull<br>€${fmt(npvBull)}`;
+    document.getElementById('et-wait1').innerHTML = (document.body.classList.contains('lang-es') ? 'Esperar 1a' : 'Wait 1y') + `<br>€${fmt(wait1)}`;
+    document.getElementById('et-wait2').innerHTML = (document.body.classList.contains('lang-es') ? 'Esperar 2a' : 'Wait 2y') + `<br>€${fmt(wait2)}`;
+
+    const evInvest = 0.25 * npvBear + 0.50 * npvBase + 0.25 * npvBull;
+    const evWait = 0.5 * wait1 + 0.3 * wait2 + 0.2 * abandon;
+    document.getElementById('eventTreeEV').textContent =
+      (document.body.classList.contains('lang-es')
+        ? `EV Invertir Ahora = €${fmt(evInvest)} · EV Esperar/Abandonar = €${fmt(evWait)} · Rescate abandono = €${abandon}M`
+        : `EV Invest Now = €${fmt(evInvest)} · EV Wait/Abandon = €${fmt(evWait)} · Abandon salvage = €${abandon}M`);
+
+    const svg = document.getElementById('eventTreeSvg');
+    const box = document.getElementById('eventTreeBox');
+    const links = [[ 'et-invest','et-base' ],[ 'et-invest','et-bear' ],[ 'et-invest','et-bull' ],[ 'et-invest','et-wait1' ],[ 'et-wait1','et-wait2' ],[ 'et-wait2','et-abandon' ]];
+    svg.innerHTML = '';
+    const br = box.getBoundingClientRect();
+    function center(id) {
+      const el = document.getElementById(id);
+      const r = el.getBoundingClientRect();
+      return { x: r.left - br.left + r.width / 2, y: r.top - br.top + r.height / 2 };
+    }
+    links.forEach(([a, b]) => {
+      const p1 = center(a), p2 = center(b);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', p1.x); line.setAttribute('y1', p1.y);
+      line.setAttribute('x2', p2.x); line.setAttribute('y2', p2.y);
+      line.setAttribute('stroke', 'rgba(192,192,192,0.25)');
+      line.setAttribute('stroke-width', '1');
+      svg.appendChild(line);
+    });
+  }
+
+  function initRealOptionsExtra() {
+    const npvBase = calcNPV(MB_INV_FULL, BASE_FLOWS, 9);
+    const bearFlows = mbFlowsGrowth(6);
+    const npvBear = calcNPV(MB_INV_FULL, bearFlows, 10.5);
+    const contractFlows = bearFlows.map(f => f * 0.6);
+    const npvContract = calcNPV(1800, contractFlows, 10.5);
+    const optContract = Math.max(npvContract - npvBear, 0);
+
+    document.getElementById('contractNpvBase').textContent = fmt(npvBear);
+    document.getElementById('contractNpvOpt').textContent = fmt(npvContract);
+    document.getElementById('contractOptionVal').textContent =
+      (document.body.classList.contains('lang-es') ? 'Valor opción contracción: ' : 'Contraction option value: ') + fmt(optContract);
+
+    let cumPV = -MB_INV_FULL;
+    for (let i = 0; i < 3; i++) cumPV += BASE_FLOWS[i] / Math.pow(1.09, i + 1);
+    let contVal = 0;
+    for (let i = 3; i < BASE_FLOWS.length; i++) contVal += BASE_FLOWS[i] / Math.pow(1.09, i + 1 - 3);
+    const abandonPut = Math.max(1100 - contVal, 0);
+    document.getElementById('abandonOptionVal').textContent =
+      (document.body.classList.contains('lang-es') ? 'Valor put abandono: ' : 'Abandonment put value: ') + fmt(abandonPut);
+    document.getElementById('abandonDetail').textContent =
+      (document.body.classList.contains('lang-es')
+        ? `VPN acum. año 3 = €${cumPV.toFixed(0)}M · Continuación = €${contVal.toFixed(0)}M · Trigger -€800M: ${cumPV < -800 ? 'activo' : 'no activo'}`
+        : `Cum. NPV year 3 = €${cumPV.toFixed(0)}M · Continuation = €${contVal.toFixed(0)}M · Trigger -€800M: ${cumPV < -800 ? 'active' : 'not active'}`);
+  }
+
+  initBreakEven();
+  initTornado();
+  initScenarioTable();
+  initBinomialDelay();
+  setTimeout(initEventTree, 400);
+  initRealOptionsExtra();
+  window.addEventListener('resize', () => setTimeout(initEventTree, 100));
+  // ─────────────────────────────────────────────────────────────
+
+  // SCROLL ANIMATIONS
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.kpi-card, .project-card, .formula-card, .risk-card, .chart-box, .addon-block, .ro-panel').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
 </script>
 </body>
 </html>
