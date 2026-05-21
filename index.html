@@ -735,6 +735,62 @@
     line-height: 1.7;
   }
 
+  /* ADD-ON MODULES */
+  .addon-block { margin-top: 60px; }
+  .addon-head {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .addon-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .formula-card.wide { grid-column: 1 / -1; }
+  .mini-table { width: 100%; margin-top: 16px; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 0.68rem; }
+  .mini-table th, .mini-table td { padding: 10px 12px; border-bottom: 1px solid rgba(200,200,200,0.08); text-align: left; }
+  .mini-table th { color: var(--muted); font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; }
+  .scenario-table { width: 100%; margin-top: 20px; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 0.72rem; }
+  .scenario-table th, .scenario-table td { padding: 14px 16px; border-bottom: 1px solid rgba(200,200,200,0.08); text-align: center; }
+  .scenario-table th { color: var(--muted); font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; }
+  .scenario-table tr.bear td { background: rgba(229,115,115,0.08); }
+  .scenario-table tr.base td { background: rgba(200,200,200,0.05); }
+  .scenario-table tr.bull td { background: rgba(129,199,132,0.08); }
+  .be-wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start; }
+  .be-metrics { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .be-metric { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 0.65rem; padding-bottom: 8px; border-bottom: 1px solid rgba(200,200,200,0.07); }
+  .be-metric strong { color: var(--white); }
+  .be-result { margin-top: 18px; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #81C784; }
+  .be-pl { margin-top: 10px; font-family: 'DM Mono', monospace; font-size: 0.65rem; }
+  .be-pl.pos { color: #81C784; }
+  .be-pl.neg { color: #E57373; }
+  .ro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+  .ro-panel { background: var(--ash); border: 1px solid rgba(200,200,200,0.1); padding: 22px; }
+  .ro-panel h4 { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--white); margin-bottom: 12px; }
+  .ro-panel p, .ro-panel li { font-size: 0.82rem; line-height: 1.65; color: var(--silver); }
+  .ro-panel ul { margin-left: 16px; margin-top: 8px; }
+  .ro-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--white); margin-top: 10px; }
+  .ro-val.go { color: #81C784; }
+  .ro-val.warn { color: #FFB74D; }
+  .bin-tree { display: flex; flex-direction: column; align-items: center; gap: 18px; margin: 20px 0; font-family: 'DM Mono', monospace; font-size: 0.62rem; }
+  .bin-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .bin-node { background: var(--smoke); border: 1px solid rgba(200,200,200,0.2); padding: 10px 14px; text-align: center; min-width: 110px; }
+  .bin-node.root { border-color: rgba(200,200,200,0.45); color: var(--white); }
+  .bin-node .prob { color: var(--muted); font-size: 0.55rem; margin-top: 4px; }
+  .event-tree-wrap { overflow-x: auto; margin-top: 16px; }
+  .event-tree { min-width: 720px; height: 280px; position: relative; }
+  .event-tree svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .et-node { position: absolute; transform: translate(-50%, -50%); background: var(--smoke); border: 1px solid rgba(200,200,200,0.2); padding: 8px 12px; font-family: 'DM Mono', monospace; font-size: 0.58rem; text-align: center; white-space: nowrap; }
+  .et-node.dec { border-color: rgba(192,192,192,0.5); color: var(--white); }
+  .et-node.out { color: var(--silver); }
+  .ration-wrap { margin-top: 50px; }
+  .ration-note { margin-top: 20px; font-size: 0.86rem; line-height: 1.7; color: var(--silver); }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
@@ -745,6 +801,7 @@
     .sim-wrap, .sim-bottom { flex-direction: column; }
     .sim-wrap { grid-template-columns: 1fr; }
     .compliance-grid { grid-template-columns: 1fr; }
+    .be-wrap, .ro-grid { grid-template-columns: 1fr; }
     .risk-grid { grid-template-columns: 1fr 1fr; }
     .hero-metrics { flex-wrap: wrap; gap: 32px; }
     #hero { padding: 0 24px 60px; }
@@ -1132,6 +1189,65 @@
       <div class="formula-verdict" data-es>✓ B/C > 1 — PROYECTO EFICIENTE</div>
       <div class="formula-verdict" data-en>✓ B/C > 1 — EFFICIENT PROJECT</div>
     </div>
+
+    <!-- DISCOUNTED PAYBACK -->
+    <div class="formula-card wide">
+      <div class="formula-name" data-es>Período de Recuperación Descontado</div>
+      <div class="formula-name" data-en>Discounted Payback Period</div>
+      <div class="formula-acronym">PRD / DPB — WACC 9%</div>
+      <div class="formula-box">
+        PRD = año previo + (|VP Acum. negativo| / VP flujo siguiente)<br><br>
+        VPₜ = FCₜ / (1 + WACC)ᵗ<br>
+        VP Acum.ₜ = Σ VP₀…ₜ − I₀<br><br>
+        <span data-es>Paso 1: descontar cada flujo al 9%</span><span data-en>Step 1: discount each flow at 9%</span><br>
+        <span data-es>Paso 2: acumular VP hasta cruzar cero</span><span data-en>Step 2: accumulate PV until zero crossing</span><br>
+        <span data-es>Paso 3: interpolar fracción de año</span><span data-en>Step 3: interpolate partial year</span><br><br>
+        <span id="dpbFormulaSteps">—</span>
+      </div>
+      <div class="formula-desc" data-es>El payback descontado mide cuándo el proyecto recupera la inversión en términos de valor presente, penalizando flujos lejanos en el tiempo.</div>
+      <div class="formula-desc" data-en>Discounted payback measures when the project recovers investment in present-value terms, penalizing distant cash flows.</div>
+      <div class="formula-result">
+        <div class="formula-result-label" data-es>Período Descontado</div>
+        <div class="formula-result-label" data-en>Discounted Period</div>
+        <div class="formula-result-value pos" id="dpbResultVal">—</div>
+      </div>
+      <table class="mini-table" id="dpbTable">
+        <thead>
+          <tr>
+            <th data-es>Año</th><th data-en>Year</th>
+            <th data-es>Flujo (€M)</th><th data-en>Flow (€M)</th>
+            <th data-es>Factor</th><th data-en>Factor</th>
+            <th data-es>VP (€M)</th><th data-en>PV (€M)</th>
+            <th data-es>VP Acum. (€M)</th><th data-en>Cum. PV (€M)</th>
+          </tr>
+        </thead>
+        <tbody id="dpbTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- MIRR -->
+    <div class="formula-card wide">
+      <div class="formula-name" data-es>Tasa Interna de Retorno Modificada</div>
+      <div class="formula-name" data-en>Modified Internal Rate of Return</div>
+      <div class="formula-acronym">TIRM / MIRR</div>
+      <div class="formula-box">
+        MIRR = [ FV⁺ / |PV⁻| ]^(1/n) − 1<br><br>
+        FV⁺ = Σ FCₜ⁺ × (1 + r<sub>reinv</sub>)^(n−t)<br>
+        PV⁻ = Σ FCₜ⁻ / (1 + r<sub>fin</sub>)^t<br><br>
+        r<sub>fin</sub> = r<sub>reinv</sub> = WACC = 9% | n = 10 años<br><br>
+        <span id="mirrFormulaSteps">—</span>
+      </div>
+      <div class="formula-desc" data-es>La TIRM corrige la TIR asumiendo reinversión al costo de capital (9%), evitando supuestos implícitos no realistas de reinversión a la TIR.</div>
+      <div class="formula-desc" data-en>MIRR corrects IRR by assuming reinvestment at the cost of capital (9%), avoiding unrealistic implicit reinvestment at IRR.</div>
+      <div class="formula-desc" data-es><strong>Limitación TIR:</strong> la TIR (41%) asume que flujos positivos se reinvierten al 41%, generando conflicto con políticas corporativas de reinversión al WACC.</div>
+      <div class="formula-desc" data-en><strong>IRR limitation:</strong> IRR (41%) assumes positive flows are reinvested at 41%, conflicting with corporate reinvestment policies at WACC.</div>
+      <div class="formula-result">
+        <div class="formula-result-label">MIRR</div>
+        <div class="formula-result-value pos" id="mirrResultVal">—</div>
+      </div>
+      <div class="formula-verdict warn" data-es>TIRM &lt; TIR — reinversión realista al WACC</div>
+      <div class="formula-verdict warn" data-en>MIRR &lt; IRR — realistic reinvestment at WACC</div>
+    </div>
   </div>
 
   <!-- CASHFLOW TABLE -->
@@ -1375,6 +1491,80 @@
       </div>
     </div>
   </div>
+
+  <!-- BREAK-EVEN -->
+  <div class="addon-block" id="breakeven-addon">
+    <div class="addon-head" data-es>PUNTO DE EQUILIBRIO</div>
+    <div class="addon-head" data-en>BREAK-EVEN ANALYSIS</div>
+    <div class="addon-sub" data-es>Costos fijos, variables y volumen de equilibrio — CLA/MMA</div>
+    <div class="addon-sub" data-en>Fixed costs, variable costs and break-even volume — CLA/MMA</div>
+    <div class="be-wrap">
+      <div class="chart-box">
+        <div class="formula-box" style="margin-bottom:0">
+          FC = €420M / año<br>
+          VC = €28,000 / unidad<br>
+          P = €45,000 / unidad<br><br>
+          BE = FC / (P − VC)<br>
+          BE = 420,000,000 / (45,000 − 28,000)<br>
+          BE = 420,000,000 / 17,000<br>
+          BE = <strong>24,706 unidades</strong>
+        </div>
+        <div class="be-metrics">
+          <div class="be-metric"><span data-es>Costos fijos anuales</span><span data-en>Annual fixed costs</span><strong>€420M</strong></div>
+          <div class="be-metric"><span data-es>Costo variable unitario</span><span data-en>Variable cost per unit</span><strong>€28,000</strong></div>
+          <div class="be-metric"><span data-es>Precio unitario</span><span data-en>Price per unit</span><strong>€45,000</strong></div>
+          <div class="be-metric"><span data-es>Margen de contribución</span><span data-en>Contribution margin</span><strong>€17,000</strong></div>
+        </div>
+        <div class="sim-group" style="margin-top:20px">
+          <div class="sim-group-header">
+            <span class="sim-label"><span data-es>Volumen (unidades)</span><span data-en>Volume (units)</span></span>
+            <span class="sim-value" id="beUnitsVal">30,000</span>
+          </div>
+          <input type="range" class="sim-slider" id="beUnitsSlider" min="5000" max="60000" value="30000" step="500">
+          <div class="sim-range-labels"><span>5,000</span><span>60,000</span></div>
+          <div class="be-result" id="beUnitsResult">—</div>
+          <div class="be-pl pos" id="beProfitLabel">—</div>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-label" data-es>Ingresos vs Costo Total (€M)</div>
+        <div class="chart-label" data-en>Revenue vs Total Cost (€M)</div>
+        <canvas id="beChart" height="260"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TORNADO -->
+  <div class="addon-block" id="tornado-addon">
+    <div class="addon-head" data-es>ANÁLISIS TORNADO — SENSIBILIDAD VPN</div>
+    <div class="addon-head" data-en>TORNADO ANALYSIS — NPV SENSITIVITY</div>
+    <div class="addon-sub" data-es>Impacto de ± variación en variables clave sobre el VPN base (€8,603.8M)</div>
+    <div class="addon-sub" data-en>Impact of ± variation in key variables on base NPV (€8,603.8M)</div>
+    <div class="chart-box">
+      <canvas id="tornadoChart" height="280"></canvas>
+    </div>
+  </div>
+
+  <!-- SCENARIO TABLE -->
+  <div class="addon-block" id="scenario-addon">
+    <div class="addon-head" data-es>ANÁLISIS DE ESCENARIOS</div>
+    <div class="addon-head" data-en>SCENARIO ANALYSIS</div>
+    <div class="addon-sub" data-es>Comparación Bear / Base / Bull con crecimiento de ingresos y WACC diferenciados</div>
+    <div class="addon-sub" data-en>Bear / Base / Bull comparison with differentiated revenue growth and WACC</div>
+    <table class="scenario-table" id="scenarioTable">
+      <thead>
+        <tr>
+          <th data-es>Escenario</th><th data-en>Scenario</th>
+          <th data-es>Crec. Ingresos</th><th data-en>Revenue Growth</th>
+          <th>WACC</th>
+          <th>NPV / VPN</th>
+          <th>IRR / TIR</th>
+          <th data-es>Payback</th><th data-en>Payback</th>
+        </tr>
+      </thead>
+      <tbody id="scenarioTableBody"></tbody>
+    </table>
+  </div>
 </section>
 
 <div class="divider"></div>
@@ -1444,14 +1634,72 @@
       <p class="compliance-text" data-en>Discounted break-even occurs between years 3 and 4. Main sensitivities: WACC and cash-flow levels. Simulator scenarios (Bear/Base/Bull) test NPV, IRR and B/C robustness under commercial uncertainty.</p>
     </div>
 
-    <div class="compliance-card">
-      <div class="compliance-head" data-es>Opciones Reales (Crítico)</div>
-      <div class="compliance-head" data-en>Real Options (Critical)</div>
-      <div class="compliance-title" data-es>Esperar, Contraer y Abandonar</div>
-      <div class="compliance-title" data-en>Delay, Contraction and Abandonment</div>
-      <p class="compliance-text" data-es>Opción de esperar: si indicadores de demanda EV o China deterioran, posponer fases de CAPEX protege valor. Opción de contracción: reducir capacidad productiva ante escenario Bear para preservar caja. Opción de abandono: activar salida con valor de rescate si NPV esperado de continuidad es persistentemente negativo.</p>
-      <p class="compliance-text" data-en>Delay option: if EV demand or China indicators deteriorate, postponing CAPEX phases preserves value. Contraction option: reduce production capacity in Bear scenarios to protect cash. Abandonment option: execute exit/salvage if continuation expected NPV remains persistently negative.</p>
-      <div class="compliance-mini">Event tree logic: decision node (invest/wait) -> state node (Bear/Base/Bull) -> option trigger rules.</div>
+    <div class="compliance-card" style="grid-column:1/-1;padding:0;border:none;background:transparent">
+      <div id="real-options-interactive" style="background:var(--charcoal);border:1px solid rgba(200,200,200,0.08);padding:36px 32px">
+        <div class="compliance-head" data-es>Opciones Reales (Crítico) — Cálculo Interactivo</div>
+        <div class="compliance-head" data-en>Real Options (Critical) — Interactive Valuation</div>
+        <div class="compliance-title" data-es>Esperar · Árbol de Eventos · Contracción · Abandono</div>
+        <div class="compliance-title" data-en>Delay · Event Tree · Contraction · Abandonment</div>
+
+        <div class="ro-grid">
+          <!-- a) Delay binomial -->
+          <div class="ro-panel" style="grid-column:1/-1">
+            <h4 data-es>a) Opción de Esperar — Árbol Binomial (2 períodos)</h4>
+            <h4 data-en>a) Option to Delay — Binomial Tree (2 periods)</h4>
+            <p data-es>S=€8,603M · K=€3,000M · T=2 años · σ=25% · r=4.5%</p>
+            <p data-en>S=€8,603M · K=€3,000M · T=2 yrs · σ=25% · r=4.5%</p>
+            <div class="formula-box" style="margin:14px 0" id="binomialParams">—</div>
+            <div class="bin-tree" id="binomialTree">—</div>
+            <div class="ro-val go" id="delayDecision">—</div>
+          </div>
+
+          <!-- b) Event tree -->
+          <div class="ro-panel" style="grid-column:1/-1">
+            <h4 data-es>b) Árbol de Eventos — Rutas de Decisión</h4>
+            <h4 data-en>b) Event Tree — Decision Paths</h4>
+            <div class="event-tree-wrap">
+              <div class="event-tree" id="eventTreeBox">
+                <svg id="eventTreeSvg"></svg>
+                <div class="et-node dec" id="et-invest" style="left:12%;top:50%"><span data-es>Invertir Ahora</span><span data-en>Invest Now</span></div>
+                <div class="et-node out" id="et-bear" style="left:32%;top:22%">Bear</div>
+                <div class="et-node out" id="et-base" style="left:32%;top:50%">Base</div>
+                <div class="et-node out" id="et-bull" style="left:32%;top:78%">Bull</div>
+                <div class="et-node dec" id="et-wait1" style="left:55%;top:35%"><span data-es>Esperar 1 año</span><span data-en>Wait 1 yr</span></div>
+                <div class="et-node dec" id="et-wait2" style="left:55%;top:65%"><span data-es>Esperar 2 años</span><span data-en>Wait 2 yrs</span></div>
+                <div class="et-node dec" id="et-abandon" style="left:78%;top:50%"><span data-es>Abandonar</span><span data-en>Abandon</span><br>€1,100M</div>
+              </div>
+            </div>
+            <p class="compliance-mini" id="eventTreeEV" style="margin-top:12px">—</p>
+          </div>
+
+          <!-- c) Contraction -->
+          <div class="ro-panel">
+            <h4 data-es>c) Opción de Contracción</h4>
+            <h4 data-en>c) Contraction Option</h4>
+            <p data-es>Si adopción EV &lt; 15% en 2027 → escalar MMA -40%</p>
+            <p data-en>If EV adoption &lt; 15% by 2027 → scale MMA down 40%</p>
+            <ul>
+              <li data-es>Ahorro CAPEX: €1,200M</li>
+              <li data-en>CAPEX savings: €1,200M</li>
+              <li data-es>VPN sin opción: <span id="contractNpvBase">—</span></li>
+              <li data-es>VPN con contracción: <span id="contractNpvOpt">—</span></li>
+            </ul>
+            <div class="ro-val go" id="contractOptionVal">—</div>
+          </div>
+
+          <!-- d) Abandonment -->
+          <div class="ro-panel">
+            <h4 data-es>d) Opción de Abandono (Año 3)</h4>
+            <h4 data-en>d) Abandonment Option (Year 3)</h4>
+            <p data-es>Trigger: VPN acumulado &lt; -€800M · Valor de rescate: €1,100M</p>
+            <p data-en>Trigger: cumulative NPV &lt; -€800M · Salvage value: €1,100M</p>
+            <p data-es>Put: max(Rescate − Valor Continuación, 0)</p>
+            <p data-en>Put: max(Salvage − Continuation Value, 0)</p>
+            <div class="ro-val go" id="abandonOptionVal">—</div>
+            <p class="compliance-mini" id="abandonDetail">—</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="compliance-card">
@@ -1628,6 +1876,39 @@
         <div class="summary-metric-value go" data-es>ACEPTAR</div>
         <div class="summary-metric-value go" data-en>ACCEPT</div>
       </div>
+    </div>
+  </div>
+
+  <!-- CAPITAL RATIONING -->
+  <div class="ration-wrap" id="capital-rationing">
+    <div class="addon-head" data-es>RACIONAMIENTO DE CAPITAL</div>
+    <div class="addon-head" data-en>CAPITAL RATIONING</div>
+    <div class="addon-sub" data-es>Ranking por Índice de Rentabilidad (PI = NPV / Inversión) bajo restricción presupuestaria</div>
+    <div class="addon-sub" data-en>Ranking by Profitability Index (PI = NPV / Investment) under budget constraint</div>
+    <table class="cf-table" id="rationTable">
+      <thead>
+        <tr>
+          <th data-es>Proyecto</th><th data-en>Project</th>
+          <th data-es>Inversión</th><th data-en>Investment</th>
+          <th>NPV / VPN</th>
+          <th>IRR / TIR</th>
+          <th>PI</th>
+          <th data-es>Rank</th><th data-en>Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="highlight">CLA/MMA</td><td>€3B</td><td class="pos">€8,604M</td><td class="pos">41%</td><td class="pos">3.87</td><td class="highlight">1</td></tr>
+        <tr><td class="highlight" data-es>Baterías Gigaplant</td><td class="highlight" data-en>Battery Gigaplant</td><td>€5B</td><td class="pos">€6,200M</td><td class="pos">28%</td><td class="pos">2.24</td><td class="highlight">2</td></tr>
+        <tr><td class="highlight">MB.OS Software</td><td>€1.2B</td><td class="pos">€2,100M</td><td class="pos">35%</td><td class="pos">2.75</td><td class="highlight">3</td></tr>
+      </tbody>
+    </table>
+    <div class="ration-note" data-es>
+      <strong>Presupuesto €5B (PI ranking):</strong> seleccionar CLA/MMA (€3B, PI 3.87) + MB.OS (€1.2B, PI 2.75) = €4.2B usados, VPN combinado ≈ €10,704M. Battery Gigaplant queda fuera por restricción, aunque tiene mayor VPN absoluto que MB.OS.<br><br>
+      <strong>Conflicto NPV vs IRR:</strong> MB.OS tiene IRR 35% &gt; Battery 28%, pero Battery tiene mayor NPV (€6.2B vs €2.1B) por escala de inversión. En proyectos mutuamente excluyentes o de distinta escala, NPV domina; IRR puede sobre-rankear proyectos pequeños.
+    </div>
+    <div class="ration-note" data-en>
+      <strong>Budget €5B (PI ranking):</strong> select CLA/MMA (€3B, PI 3.87) + MB.OS (€1.2B, PI 2.75) = €4.2B used, combined NPV ≈ €10,704M. Battery Gigaplant is excluded by constraint despite higher absolute NPV than MB.OS.<br><br>
+      <strong>NPV vs IRR conflict:</strong> MB.OS has IRR 35% &gt; Battery 28%, but Battery has higher NPV (€6.2B vs €2.1B) due to investment scale. For mutually exclusive or different-scale projects, NPV dominates; IRR may over-rank smaller projects.
     </div>
   </div>
 </section>
@@ -2067,6 +2348,318 @@
   updateSim();
   // ─────────────────────────────────────────────────────────────
 
+  // ─── ADD-ON MODULES (DPB, MIRR, Risk, Real Options) ─────────
+  const MB_INV_FULL = 3000;
+  const MB_GROWTH_BASE = 12;
+
+  function mbFlowsGrowth(growthPct) {
+    return BASE_FLOWS.map((f, i) => +(f * Math.pow((1 + growthPct / 100) / (1 + MB_GROWTH_BASE / 100), i + 1)).toFixed(1));
+  }
+
+  function mbMIRR(inv, flows, ratePct) {
+    const r = ratePct / 100;
+    const n = flows.length;
+    let fvPos = 0;
+    flows.forEach((f, i) => { if (f > 0) fvPos += f * Math.pow(1 + r, n - (i + 1)); });
+    const pvNeg = inv;
+    return { mirr: (Math.pow(fvPos / pvNeg, 1 / n) - 1) * 100, fvPos, pvNeg };
+  }
+
+  function mbDiscPayback(inv, flows, waccPct) {
+    let cum = -inv;
+    const rows = [];
+    rows.push({ y: 0, cf: -inv, df: 1, pv: -inv, cum });
+    for (let i = 0; i < flows.length; i++) {
+      const df = 1 / Math.pow(1 + waccPct / 100, i + 1);
+      const pv = flows[i] * df;
+      const prev = cum;
+      cum += pv;
+      rows.push({ y: i + 1, cf: flows[i], df, pv, cum, prev });
+      if (cum >= 0) {
+        return { years: i + Math.abs(prev) / pv, rows, crossYear: i + 1, prev, pv };
+      }
+    }
+    return { years: null, rows };
+  }
+
+  function initDPB() {
+    const wacc = 9;
+    const pb = mbDiscPayback(MB_INV_FULL, BASE_FLOWS, wacc);
+    const tbody = document.getElementById('dpbTableBody');
+    tbody.innerHTML = '';
+    pb.rows.forEach(r => {
+      const cls = r.cum >= 0 ? 'pos' : 'neg';
+      tbody.innerHTML += `<tr><td class="highlight">${r.y}</td><td class="${r.cf < 0 ? 'neg' : 'pos'}">${r.cf.toLocaleString()}</td><td>${r.df.toFixed(3)}</td><td class="pos">${r.pv.toFixed(1)}</td><td class="${cls}">${r.cum.toFixed(1)}</td></tr>`;
+    });
+    const yrs = pb.years;
+    const yInt = Math.floor(yrs);
+    const months = Math.round((yrs - yInt) * 12);
+    document.getElementById('dpbResultVal').textContent = yrs.toFixed(2) + (document.body.classList.contains('lang-es') ? ' años' : ' yrs');
+    document.getElementById('dpbFormulaSteps').innerHTML =
+      `Año ${pb.crossYear - 1}: VP Acum. = €${pb.prev.toFixed(1)}M (negativo)<br>` +
+      `Año ${pb.crossYear}: VP flujo = €${pb.pv.toFixed(1)}M<br>` +
+      `PRD = ${pb.crossYear - 1} + (${Math.abs(pb.prev).toFixed(1)} / ${pb.pv.toFixed(1)}) = <strong>${yrs.toFixed(2)} años</strong> (${yInt} <span data-es>años</span><span data-en>yrs</span> ${months} <span data-es>meses</span><span data-en>mo</span>)`;
+  }
+
+  function initMIRR() {
+    const rate = 9;
+    const m = mbMIRR(MB_INV_FULL, BASE_FLOWS, rate);
+    document.getElementById('mirrResultVal').textContent = m.mirr.toFixed(1) + '%';
+    document.getElementById('mirrFormulaSteps').innerHTML =
+      `FV⁺ = €${m.fvPos.toFixed(1)}M<br>` +
+      `PV⁻ = €${m.pvNeg.toFixed(1)}M<br>` +
+      `MIRR = [${m.fvPos.toFixed(1)} / ${m.pvNeg.toFixed(1)}]^(1/10) − 1<br>` +
+      `MIRR = <strong>${m.mirr.toFixed(1)}%</strong> (vs IRR 41.0%)`;
+  }
+
+  function initBreakEven() {
+    const FC = 420, P = 45000 / 1e6, VC = 28000 / 1e6;
+    const BE = Math.round(FC / (P - VC));
+    const slider = document.getElementById('beUnitsSlider');
+    const updateBE = () => {
+      const q = +slider.value;
+      const rev = q * P;
+      const cost = FC + q * VC;
+      const profit = rev - cost;
+      document.getElementById('beUnitsVal').textContent = q.toLocaleString();
+      document.getElementById('beUnitsResult').textContent = (document.body.classList.contains('lang-es') ? 'BE: ' : 'BE: ') + BE.toLocaleString() + (document.body.classList.contains('lang-es') ? ' uds' : ' units');
+      const pl = document.getElementById('beProfitLabel');
+      pl.textContent = (profit >= 0 ? '+' : '') + '€' + profit.toFixed(1) + 'M ' + (document.body.classList.contains('lang-es') ? (profit >= 0 ? 'utilidad' : 'pérdida') : (profit >= 0 ? 'profit' : 'loss'));
+      pl.className = 'be-pl ' + (profit >= 0 ? 'pos' : 'neg');
+    };
+    slider.addEventListener('input', updateBE);
+    updateBE();
+
+    const labels = [];
+    const revData = [], costData = [];
+    for (let q = 0; q <= 60000; q += 2000) {
+      labels.push((q / 1000).toFixed(0) + 'k');
+      revData.push(+(q * P).toFixed(1));
+      costData.push(+(FC + q * VC).toFixed(1));
+    }
+    new Chart(document.getElementById('beChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: document.body.classList.contains('lang-en') ? 'Revenue (€M)' : 'Ingresos (€M)', data: revData, borderColor: 'rgba(129,199,132,0.8)', backgroundColor: 'rgba(129,199,132,0.1)', fill: false, tension: 0 },
+          { label: document.body.classList.contains('lang-en') ? 'Total Cost (€M)' : 'Costo Total (€M)', data: costData, borderColor: 'rgba(229,115,115,0.7)', backgroundColor: 'rgba(229,115,115,0.08)', fill: false, tension: 0 }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#909090', font: { family: 'DM Mono', size: 10 } } },
+          annotation: {}
+        },
+        scales: {
+          x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 9 }, maxTicksLimit: 12 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v + 'M' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+        }
+      }
+    });
+  }
+
+  function initTornado() {
+    const base = calcNPV(MB_INV_FULL, BASE_FLOWS, MB_WACC_BASE);
+    const sens = [
+      { name: 'WACC', low: calcNPV(MB_INV_FULL, BASE_FLOWS, 11), high: calcNPV(MB_INV_FULL, BASE_FLOWS, 7) },
+      { name: document.body.classList.contains('lang-en') ? 'Rev. Growth' : 'Crec. Ingresos', low: calcNPV(MB_INV_FULL, mbFlowsGrowth(9), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, mbFlowsGrowth(15), MB_WACC_BASE) },
+      { name: document.body.classList.contains('lang-en') ? 'Initial Inv.' : 'Inv. Inicial', low: calcNPV(3600, BASE_FLOWS, MB_WACC_BASE), high: calcNPV(2400, BASE_FLOWS, MB_WACC_BASE) },
+      { name: document.body.classList.contains('lang-en') ? 'Terminal Val.' : 'Valor Terminal', low: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 0.75], MB_WACC_BASE), high: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 1.25], MB_WACC_BASE) },
+      { name: document.body.classList.contains('lang-en') ? 'Op. Margin' : 'Margen Op.', low: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 0.97), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 1.03), MB_WACC_BASE) }
+    ];
+    sens.forEach(s => { s.spread = Math.abs(s.high - s.low); });
+    sens.sort((a, b) => b.spread - a.spread);
+
+    const labels = sens.map(s => s.name);
+    const floatData = sens.map(s => [Math.min(s.low, s.high) / 1000, Math.max(s.low, s.high) / 1000]);
+
+    new Chart(document.getElementById('tornadoChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'NPV Range (€B)',
+          data: floatData,
+          backgroundColor: 'rgba(192,192,192,0.35)',
+          borderColor: 'rgba(192,192,192,0.7)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const s = sens[ctx.dataIndex];
+                return [`Low: €${(Math.min(s.low,s.high)/1000).toFixed(2)}B`, `High: €${(Math.max(s.low,s.high)/1000).toFixed(2)}B`];
+              }
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v.toFixed(1) + 'B' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#909090', font: { family: 'DM Mono', size: 10 } }, grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  function initScenarioTable() {
+    const scenarios = [
+      { key: 'bear', growth: 6, wacc: 10.5 },
+      { key: 'base', growth: 12, wacc: 9 },
+      { key: 'bull', growth: 18, wacc: 7 }
+    ];
+    const tbody = document.getElementById('scenarioTableBody');
+    tbody.innerHTML = '';
+    scenarios.forEach(sc => {
+      const flows = mbFlowsGrowth(sc.growth);
+      const npv = calcNPV(MB_INV_FULL, flows, sc.wacc);
+      const irr = calcIRR(MB_INV_FULL, flows);
+      const pb = calcPayback(MB_INV_FULL, flows);
+      tbody.innerHTML += `<tr class="${sc.key}">
+        <td class="highlight">${sc.key.toUpperCase()}</td>
+        <td>${sc.growth}%</td>
+        <td>${sc.wacc}%</td>
+        <td class="${npv > 0 ? 'pos' : 'neg'}">${fmt(npv)}</td>
+        <td class="pos">${irr.toFixed(1)}%</td>
+        <td>${pb !== null ? pb.toFixed(2) + (document.body.classList.contains('lang-es') ? ' a' : ' y') : '—'}</td>
+      </tr>`;
+    });
+  }
+
+  function initBinomialDelay() {
+    const S = 8603, K = 3000, T = 2, sigma = 0.25, r = 0.045;
+    const steps = 2, dt = T / steps;
+    const u = Math.exp(sigma * Math.sqrt(dt));
+    const d = 1 / u;
+    const p = (Math.exp(r * dt) - d) / (u - d);
+    const disc = Math.exp(-r * dt);
+
+    const S_u = S * u, S_d = S * d;
+    const S_uu = S * u * u, S_ud = S * u * d, S_dd = S * d * d;
+    const pay = v => Math.max(v - K, 0);
+    const C_uu = pay(S_uu), C_ud = pay(S_ud), C_dd = pay(S_dd);
+    const C_u = (p * C_uu + (1 - p) * C_ud) * disc;
+    const C_d = (p * C_ud + (1 - p) * C_dd) * disc;
+    const C0 = (p * C_u + (1 - p) * C_d) * disc;
+    const investNow = S;
+
+    document.getElementById('binomialParams').innerHTML =
+      `u = e^(σ√Δt) = ${u.toFixed(4)} · d = ${d.toFixed(4)} · p = ${p.toFixed(4)} · disc = ${disc.toFixed(4)}`;
+    document.getElementById('binomialTree').innerHTML = `
+      <div class="bin-row"><div class="bin-node root">S₀ €${S.toFixed(0)}M</div></div>
+      <div class="bin-row">
+        <div class="bin-node">Sᵤ €${S_u.toFixed(0)}M<div class="prob">p=${p.toFixed(2)}</div></div>
+        <div class="bin-node">Sᵈ €${S_d.toFixed(0)}M<div class="prob">1-p=${(1-p).toFixed(2)}</div></div>
+      </div>
+      <div class="bin-row">
+        <div class="bin-node">€${S_uu.toFixed(0)}M<br>C=${C_uu.toFixed(0)}M</div>
+        <div class="bin-node">€${S_ud.toFixed(0)}M<br>C=${C_ud.toFixed(0)}M</div>
+        <div class="bin-node">€${S_dd.toFixed(0)}M<br>C=${C_dd.toFixed(0)}M</div>
+      </div>
+      <div class="bin-row">
+        <div class="bin-node root">Opción €${C0.toFixed(0)}M</div>
+        <div class="bin-node">Invertir €${investNow.toFixed(0)}M</div>
+      </div>`;
+
+    const waitValuable = C0 > 0 && C0 > investNow * 0.05;
+    const el = document.getElementById('delayDecision');
+    el.innerHTML = waitValuable
+      ? (document.body.classList.contains('lang-es')
+        ? `Esperar aporta flexibilidad (opción €${C0.toFixed(0)}M). Invertir ahora: NPV €${investNow.toFixed(0)}M.`
+        : `Waiting adds flexibility (option €${C0.toFixed(0)}M). Invest now: NPV €${investNow.toFixed(0)}M.`)
+      : (document.body.classList.contains('lang-es')
+        ? `Invertir ahora es superior: NPV inmediato €${investNow.toFixed(0)}M > valor de espera €${C0.toFixed(0)}M.`
+        : `Invest now dominates: immediate NPV €${investNow.toFixed(0)}M > wait value €${C0.toFixed(0)}M.`);
+  }
+
+  function initEventTree() {
+    const bearFlows = mbFlowsGrowth(6);
+    const bullFlows = mbFlowsGrowth(18);
+    const npvBear = calcNPV(MB_INV_FULL, bearFlows, 10.5);
+    const npvBase = calcNPV(MB_INV_FULL, BASE_FLOWS, 9);
+    const npvBull = calcNPV(MB_INV_FULL, bullFlows, 7);
+    const wait1 = npvBase * 0.92;
+    const wait2 = npvBase * 0.85;
+    const abandon = 1100;
+
+    document.getElementById('et-bear').innerHTML = `Bear<br>€${fmt(npvBear)}`;
+    document.getElementById('et-base').innerHTML = `Base<br>€${fmt(npvBase)}`;
+    document.getElementById('et-bull').innerHTML = `Bull<br>€${fmt(npvBull)}`;
+    document.getElementById('et-wait1').innerHTML = (document.body.classList.contains('lang-es') ? 'Esperar 1a' : 'Wait 1y') + `<br>€${fmt(wait1)}`;
+    document.getElementById('et-wait2').innerHTML = (document.body.classList.contains('lang-es') ? 'Esperar 2a' : 'Wait 2y') + `<br>€${fmt(wait2)}`;
+
+    const evInvest = 0.25 * npvBear + 0.50 * npvBase + 0.25 * npvBull;
+    const evWait = 0.5 * wait1 + 0.3 * wait2 + 0.2 * abandon;
+    document.getElementById('eventTreeEV').textContent =
+      (document.body.classList.contains('lang-es')
+        ? `EV Invertir Ahora = €${fmt(evInvest)} · EV Esperar/Abandonar = €${fmt(evWait)} · Rescate abandono = €${abandon}M`
+        : `EV Invest Now = €${fmt(evInvest)} · EV Wait/Abandon = €${fmt(evWait)} · Abandon salvage = €${abandon}M`);
+
+    const svg = document.getElementById('eventTreeSvg');
+    const box = document.getElementById('eventTreeBox');
+    const links = [[ 'et-invest','et-base' ],[ 'et-invest','et-bear' ],[ 'et-invest','et-bull' ],[ 'et-invest','et-wait1' ],[ 'et-wait1','et-wait2' ],[ 'et-wait2','et-abandon' ]];
+    svg.innerHTML = '';
+    const br = box.getBoundingClientRect();
+    function center(id) {
+      const el = document.getElementById(id);
+      const r = el.getBoundingClientRect();
+      return { x: r.left - br.left + r.width / 2, y: r.top - br.top + r.height / 2 };
+    }
+    links.forEach(([a, b]) => {
+      const p1 = center(a), p2 = center(b);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', p1.x); line.setAttribute('y1', p1.y);
+      line.setAttribute('x2', p2.x); line.setAttribute('y2', p2.y);
+      line.setAttribute('stroke', 'rgba(192,192,192,0.25)');
+      line.setAttribute('stroke-width', '1');
+      svg.appendChild(line);
+    });
+  }
+
+  function initRealOptionsExtra() {
+    const npvBase = calcNPV(MB_INV_FULL, BASE_FLOWS, 9);
+    const bearFlows = mbFlowsGrowth(6);
+    const npvBear = calcNPV(MB_INV_FULL, bearFlows, 10.5);
+    const contractFlows = bearFlows.map(f => f * 0.6);
+    const npvContract = calcNPV(1800, contractFlows, 10.5);
+    const optContract = Math.max(npvContract - npvBear, 0);
+
+    document.getElementById('contractNpvBase').textContent = fmt(npvBear);
+    document.getElementById('contractNpvOpt').textContent = fmt(npvContract);
+    document.getElementById('contractOptionVal').textContent =
+      (document.body.classList.contains('lang-es') ? 'Valor opción contracción: ' : 'Contraction option value: ') + fmt(optContract);
+
+    let cumPV = -MB_INV_FULL;
+    for (let i = 0; i < 3; i++) cumPV += BASE_FLOWS[i] / Math.pow(1.09, i + 1);
+    let contVal = 0;
+    for (let i = 3; i < BASE_FLOWS.length; i++) contVal += BASE_FLOWS[i] / Math.pow(1.09, i + 1 - 3);
+    const abandonPut = Math.max(1100 - contVal, 0);
+    document.getElementById('abandonOptionVal').textContent =
+      (document.body.classList.contains('lang-es') ? 'Valor put abandono: ' : 'Abandonment put value: ') + fmt(abandonPut);
+    document.getElementById('abandonDetail').textContent =
+      (document.body.classList.contains('lang-es')
+        ? `VPN acum. año 3 = €${cumPV.toFixed(0)}M · Continuación = €${contVal.toFixed(0)}M · Trigger -€800M: ${cumPV < -800 ? 'activo' : 'no activo'}`
+        : `Cum. NPV year 3 = €${cumPV.toFixed(0)}M · Continuation = €${contVal.toFixed(0)}M · Trigger -€800M: ${cumPV < -800 ? 'active' : 'not active'}`);
+  }
+
+  initDPB();
+  initMIRR();
+  initBreakEven();
+  initTornado();
+  initScenarioTable();
+  initBinomialDelay();
+  setTimeout(initEventTree, 400);
+  initRealOptionsExtra();
+  window.addEventListener('resize', () => setTimeout(initEventTree, 100));
+  // ─────────────────────────────────────────────────────────────
+
   // SCROLL ANIMATIONS
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -2077,7 +2670,7 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.kpi-card, .project-card, .formula-card, .risk-card, .chart-box').forEach(el => {
+  document.querySelectorAll('.kpi-card, .project-card, .formula-card, .risk-card, .chart-box, .addon-block, .ro-panel').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
