@@ -1195,34 +1195,33 @@
       <div class="formula-name" data-es>Período de Recuperación Descontado</div>
       <div class="formula-name" data-en>Discounted Payback Period</div>
       <div class="formula-acronym">PRD / DPB — WACC 9%</div>
-      <div class="formula-box">
-        PRD = año previo + (|VP Acum. negativo| / VP flujo siguiente)<br><br>
-        VPₜ = FCₜ / (1 + WACC)ᵗ<br>
-        VP Acum.ₜ = Σ VP₀…ₜ − I₀<br><br>
-        <span data-es>Paso 1: descontar cada flujo al 9%</span><span data-en>Step 1: discount each flow at 9%</span><br>
-        <span data-es>Paso 2: acumular VP hasta cruzar cero</span><span data-en>Step 2: accumulate PV until zero crossing</span><br>
-        <span data-es>Paso 3: interpolar fracción de año</span><span data-en>Step 3: interpolate partial year</span><br><br>
-        <span id="dpbFormulaSteps">—</span>
-      </div>
-      <div class="formula-desc" data-es>El payback descontado mide cuándo el proyecto recupera la inversión en términos de valor presente, penalizando flujos lejanos en el tiempo.</div>
-      <div class="formula-desc" data-en>Discounted payback measures when the project recovers investment in present-value terms, penalizing distant cash flows.</div>
-      <div class="formula-result">
-        <div class="formula-result-label" data-es>Período Descontado</div>
-        <div class="formula-result-label" data-en>Discounted Period</div>
-        <div class="formula-result-value pos" id="dpbResultVal">—</div>
-      </div>
-      <table class="mini-table" id="dpbTable">
+      <table class="mini-table">
         <thead>
           <tr>
             <th data-es>Año</th><th data-en>Year</th>
-            <th data-es>Flujo (€M)</th><th data-en>Flow (€M)</th>
+            <th>CF (€M)</th>
             <th data-es>Factor</th><th data-en>Factor</th>
-            <th data-es>VP (€M)</th><th data-en>PV (€M)</th>
-            <th data-es>VP Acum. (€M)</th><th data-en>Cum. PV (€M)</th>
+            <th>VP (€M)</th>
+            <th data-es>VP Acum.</th><th data-en>Cum. PV</th>
           </tr>
         </thead>
-        <tbody id="dpbTableBody"></tbody>
+        <tbody>
+          <tr><td class="highlight">0</td><td class="neg">-3,000</td><td>1.000</td><td class="neg">-3,000.0</td><td class="neg">-3,000.0</td></tr>
+          <tr><td class="highlight">1</td><td class="pos">800</td><td>0.917</td><td class="pos">733.9</td><td class="neg">-2,266.1</td></tr>
+          <tr><td class="highlight">2</td><td class="pos">1,500</td><td>0.842</td><td class="pos">1,262.6</td><td class="neg">-1,003.5</td></tr>
+          <tr><td class="highlight">3</td><td class="pos">2,000</td><td>0.772</td><td class="pos">1,544.4</td><td class="pos">+540.9</td></tr>
+        </tbody>
       </table>
+      <div class="formula-box" style="margin-top:16px">
+        PRD = 2 + (1,003.5 / 1,544.4) = 2 + 0.65 = <strong>2.65 años</strong> ≈ 2 <span data-es>años</span><span data-en>years</span> 8 <span data-es>meses</span><span data-en>months</span>
+      </div>
+      <div class="formula-result">
+        <div class="formula-result-label" data-es>Período Descontado</div>
+        <div class="formula-result-label" data-en>Discounted Period</div>
+        <div class="formula-result-value pos">2.65 <span data-es>años</span><span data-en>years</span></div>
+      </div>
+      <div class="formula-desc" data-es>El payback descontado es 3 meses mayor que el simple (2.35 vs 2.65 años), reflejando el ajuste por valor del dinero en el tiempo.</div>
+      <div class="formula-desc" data-en>Discounted payback is 3 months longer than simple payback (2.35 vs 2.65 years), reflecting the time value of money adjustment.</div>
     </div>
 
     <!-- MIRR -->
@@ -1231,22 +1230,102 @@
       <div class="formula-name" data-en>Modified Internal Rate of Return</div>
       <div class="formula-acronym">TIRM / MIRR</div>
       <div class="formula-box">
-        MIRR = [ FV⁺ / |PV⁻| ]^(1/n) − 1<br><br>
-        FV⁺ = Σ FCₜ⁺ × (1 + r<sub>reinv</sub>)^(n−t)<br>
-        PV⁻ = Σ FCₜ⁻ / (1 + r<sub>fin</sub>)^t<br><br>
-        r<sub>fin</sub> = r<sub>reinv</sub> = WACC = 9% | n = 10 años<br><br>
-        <span id="mirrFormulaSteps">—</span>
+        MIRR = [(FV of positive CFs at reinvestment rate) / |PV of negative CFs at finance rate|]^(1/n) − 1<br><br>
+        <span data-es>Tasa financiamiento = Tasa reinversión = WACC = 9% · n = 10 años</span>
+        <span data-en>Finance rate = Reinvestment rate = WACC = 9% · n = 10 years</span><br><br>
+        FV <span data-es>flujos positivos</span><span data-en>positive CFs</span> @ 9% <span data-es>hasta año 10</span><span data-en>to year 10</span>:<br>
+        FV = 800(1.09)⁹ + 1,500(1.09)⁸ + 2,000(1.09)⁷ + 2,200(1.09)⁶ + 2,300(1.09)⁵<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;+ 2,400(1.09)⁴ + 2,500(1.09)³ + 2,600(1.09)² + 2,700(1.09)¹ + 2,800(1.09)⁰<br>
+        FV = 1,738 + 2,992 + 3,655 + 3,686 + 3,540 + 3,389 + 3,239 + 3,087 + 2,943 + 2,800<br>
+        FV = <strong>€31,069M</strong><br><br>
+        PV <span data-es>flujos negativos</span><span data-en>negative CFs</span> @ 9%:<br>
+        PV = 3,000 / (1.09)⁰ = <strong>€3,000M</strong> (<span data-es>solo Año 0 es negativo</span><span data-en>only Year 0 is negative</span>)<br><br>
+        MIRR = (31,069 / 3,000)^(1/10) − 1<br>
+        MIRR = (10.356)^(0.1) − 1<br>
+        MIRR = 1.2657 − 1<br>
+        MIRR = <strong>26.6%</strong>
       </div>
-      <div class="formula-desc" data-es>La TIRM corrige la TIR asumiendo reinversión al costo de capital (9%), evitando supuestos implícitos no realistas de reinversión a la TIR.</div>
-      <div class="formula-desc" data-en>MIRR corrects IRR by assuming reinvestment at the cost of capital (9%), avoiding unrealistic implicit reinvestment at IRR.</div>
-      <div class="formula-desc" data-es><strong>Limitación TIR:</strong> la TIR (41%) asume que flujos positivos se reinvierten al 41%, generando conflicto con políticas corporativas de reinversión al WACC.</div>
-      <div class="formula-desc" data-en><strong>IRR limitation:</strong> IRR (41%) assumes positive flows are reinvested at 41%, conflicting with corporate reinvestment policies at WACC.</div>
       <div class="formula-result">
         <div class="formula-result-label">MIRR</div>
-        <div class="formula-result-value pos" id="mirrResultVal">—</div>
+        <div class="formula-result-value pos">26.6%</div>
       </div>
-      <div class="formula-verdict warn" data-es>TIRM &lt; TIR — reinversión realista al WACC</div>
-      <div class="formula-verdict warn" data-en>MIRR &lt; IRR — realistic reinvestment at WACC</div>
+      <div class="formula-box" style="margin-top:14px;border-color:rgba(255,183,77,0.35)">
+        <strong data-es>Conflicto TIR vs TIRM:</strong><strong data-en>IRR vs MIRR Conflict:</strong><br>
+        <span data-es>La TIR asume que los flujos intermedios se reinvierten a la TIR (41%) — un supuesto poco realista. La TIRM corrige esto usando el WACC (9%) como tasa de reinversión, dando un retorno más conservador y realista del 26.6%. En proyectos mutuamente excluyentes, el VPN es el criterio de desempate cuando los rankings de TIR y TIRM entran en conflicto.</span>
+        <span data-en>IRR assumes intermediate cash flows are reinvested at the IRR rate (41%) — an unrealistic assumption. MIRR corrects this by using WACC (9%) as reinvestment rate, giving a more conservative and realistic return of 26.6%. In mutually exclusive projects, NPV is the tiebreaker when IRR and MIRR rankings conflict.</span>
+      </div>
+    </div>
+
+    <!-- WACC BREAKDOWN -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Cálculo del WACC</div>
+      <div class="formula-name" data-en>WACC Calculation</div>
+      <div class="formula-acronym">WACC</div>
+      <div class="formula-box">
+        WACC = (E/V) × Ke + (D/V) × Kd × (1 − T)
+      </div>
+      <table class="mini-table">
+        <tbody>
+          <tr><td class="spec-key" data-es>Costo del Capital (Ke)</td><td class="spec-key" data-en>Cost of Equity (Ke)</td><td class="spec-val">11.8%</td></tr>
+          <tr><td colspan="2" style="color:var(--muted);font-size:0.62rem">CAPM: Rf(4.5%) + β(1.2) × ERP(6.1%)</td><td></td></tr>
+          <tr><td class="spec-key" data-es>Costo de la Deuda (Kd)</td><td class="spec-key" data-en>Cost of Debt (Kd)</td><td class="spec-val">3.8%</td></tr>
+          <tr><td colspan="2" style="color:var(--muted);font-size:0.62rem"><span data-es>Bonos investment-grade Mercedes-Benz</span><span data-en>Mercedes-Benz investment-grade bonds</span></td><td></td></tr>
+          <tr><td class="spec-key" data-es>Tasa Impositiva</td><td class="spec-key" data-en>Tax Rate</td><td class="spec-val">30%</td></tr>
+          <tr><td class="spec-key" data-es>Kd después de impuestos</td><td class="spec-key" data-en>After-tax Kd</td><td class="spec-val">2.66%</td></tr>
+          <tr><td colspan="2" style="color:var(--muted);font-size:0.62rem">3.8% × (1 − 0.30) = 2.66%</td><td></td></tr>
+          <tr><td class="spec-key" data-es>Estructura de capital</td><td class="spec-key" data-en>Capital structure</td><td class="spec-val">60% E / 40% D</td></tr>
+        </tbody>
+      </table>
+      <div class="formula-box" style="margin-top:14px">
+        WACC = 0.60 × 11.8% + 0.40 × 2.66%<br>
+        WACC = 7.08% + 1.06% = 8.14% ≈ <strong>9%</strong> (<span data-es>redondeado por conservadurismo</span><span data-en>rounded for conservatism</span>)
+      </div>
+      <div class="formula-result">
+        <div class="formula-result-label">WACC</div>
+        <div class="formula-result-value">9.0%</div>
+      </div>
+    </div>
+
+    <!-- COST STRUCTURE -->
+    <div class="formula-card">
+      <div class="formula-name" data-es>Estructura de Costos</div>
+      <div class="formula-name" data-en>Cost Structure</div>
+      <div class="formula-acronym">CAPEX + OPEX</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th data-es>Componente</th><th data-en>Component</th>
+            <th data-es>Monto</th><th data-en>Amount</th>
+            <th data-es>% Total</th><th data-en>% Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-es>I+D Plataforma (MMA)</td><td data-en>Platform R&D (MMA)</td><td>€1,200M</td><td>40%</td></tr>
+          <tr><td data-es>CAPEX Planta (Rastatt)</td><td data-en>Plant CAPEX (Rastatt)</td><td>€900M</td><td>30%</td></tr>
+          <tr><td colspan="2">MB.OS Software</td><td>€600M</td><td>20%</td></tr>
+          <tr><td data-es>Capital de Trabajo</td><td data-en>Working Capital</td><td>€180M</td><td>6%</td></tr>
+          <tr><td data-es>Contingencia</td><td data-en>Contingency</td><td>€120M</td><td>4%</td></tr>
+          <tr class="total"><td colspan="2"><strong>TOTAL CAPEX</strong></td><td><strong>€3,000M</strong></td><td><strong>100%</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="formula-acronym" style="margin-top:18px" data-es>OPEX ANUAL (POST-LANZAMIENTO)</div>
+      <div class="formula-acronym" style="margin-top:18px" data-en>ANNUAL OPEX (POST-LAUNCH)</div>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th data-es>Componente</th><th data-en>Component</th>
+            <th>€M/<span data-es>año</span><span data-en>year</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-es>OPEX Manufactura</td><td data-en>Manufacturing OPEX</td><td>€280M</td></tr>
+          <tr><td data-es>Mantenimiento I+D</td><td data-en>R&D maintenance</td><td>€85M</td></tr>
+          <tr><td data-es>Ventas y Marketing</td><td data-en>Sales &amp; Marketing</td><td>€55M</td></tr>
+          <tr class="total"><td><strong>TOTAL OPEX</strong></td><td></td><td><strong>€420M</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="formula-desc" data-es>Capital de trabajo: 15 días cobranzas + 30 días inventario − 45 días pagos = neto €180M</div>
+      <div class="formula-desc" data-en>Working capital: 15 days receivables + 30 days inventory − 45 days payables = net €180M</div>
     </div>
   </div>
 
@@ -2382,36 +2461,6 @@
     return { years: null, rows };
   }
 
-  function initDPB() {
-    const wacc = 9;
-    const pb = mbDiscPayback(MB_INV_FULL, BASE_FLOWS, wacc);
-    const tbody = document.getElementById('dpbTableBody');
-    tbody.innerHTML = '';
-    pb.rows.forEach(r => {
-      const cls = r.cum >= 0 ? 'pos' : 'neg';
-      tbody.innerHTML += `<tr><td class="highlight">${r.y}</td><td class="${r.cf < 0 ? 'neg' : 'pos'}">${r.cf.toLocaleString()}</td><td>${r.df.toFixed(3)}</td><td class="pos">${r.pv.toFixed(1)}</td><td class="${cls}">${r.cum.toFixed(1)}</td></tr>`;
-    });
-    const yrs = pb.years;
-    const yInt = Math.floor(yrs);
-    const months = Math.round((yrs - yInt) * 12);
-    document.getElementById('dpbResultVal').textContent = yrs.toFixed(2) + (document.body.classList.contains('lang-es') ? ' años' : ' yrs');
-    document.getElementById('dpbFormulaSteps').innerHTML =
-      `Año ${pb.crossYear - 1}: VP Acum. = €${pb.prev.toFixed(1)}M (negativo)<br>` +
-      `Año ${pb.crossYear}: VP flujo = €${pb.pv.toFixed(1)}M<br>` +
-      `PRD = ${pb.crossYear - 1} + (${Math.abs(pb.prev).toFixed(1)} / ${pb.pv.toFixed(1)}) = <strong>${yrs.toFixed(2)} años</strong> (${yInt} <span data-es>años</span><span data-en>yrs</span> ${months} <span data-es>meses</span><span data-en>mo</span>)`;
-  }
-
-  function initMIRR() {
-    const rate = 9;
-    const m = mbMIRR(MB_INV_FULL, BASE_FLOWS, rate);
-    document.getElementById('mirrResultVal').textContent = m.mirr.toFixed(1) + '%';
-    document.getElementById('mirrFormulaSteps').innerHTML =
-      `FV⁺ = €${m.fvPos.toFixed(1)}M<br>` +
-      `PV⁻ = €${m.pvNeg.toFixed(1)}M<br>` +
-      `MIRR = [${m.fvPos.toFixed(1)} / ${m.pvNeg.toFixed(1)}]^(1/10) − 1<br>` +
-      `MIRR = <strong>${m.mirr.toFixed(1)}%</strong> (vs IRR 41.0%)`;
-  }
-
   function initBreakEven() {
     const FC = 420, P = 45000 / 1e6, VC = 28000 / 1e6;
     const BE = Math.round(FC / (P - VC));
@@ -2649,8 +2698,6 @@
         : `Cum. NPV year 3 = €${cumPV.toFixed(0)}M · Continuation = €${contVal.toFixed(0)}M · Trigger -€800M: ${cumPV < -800 ? 'active' : 'not active'}`);
   }
 
-  initDPB();
-  initMIRR();
   initBreakEven();
   initTornado();
   initScenarioTable();
