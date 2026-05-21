@@ -695,6 +695,46 @@
     display: flex; gap: 40px; margin-top: 40px; align-items: flex-start;
   }
 
+  /* EFPI COMPLIANCE */
+  .compliance-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(200,200,200,0.07);
+    border: 1px solid rgba(200,200,200,0.07);
+    margin-top: 50px;
+  }
+  .compliance-card {
+    background: var(--charcoal);
+    padding: 28px 26px;
+  }
+  .compliance-head {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-bottom: 10px;
+  }
+  .compliance-title {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--white);
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  .compliance-text {
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: var(--silver);
+  }
+  .compliance-mini {
+    margin-top: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
@@ -704,6 +744,7 @@
     .project-grid, .chart-grid, .formula-grid, .conclusion-grid { grid-template-columns: 1fr; }
     .sim-wrap, .sim-bottom { flex-direction: column; }
     .sim-wrap { grid-template-columns: 1fr; }
+    .compliance-grid { grid-template-columns: 1fr; }
     .risk-grid { grid-template-columns: 1fr 1fr; }
     .hero-metrics { flex-wrap: wrap; gap: 32px; }
     #hero { padding: 0 24px 60px; }
@@ -755,6 +796,7 @@
     <a href="#analisis"><span data-es>Análisis</span><span data-en>Analysis</span></a>
     <a href="#simulador"><span data-es>Simulador</span><span data-en>Simulator</span></a>
     <a href="#riesgos"><span data-es>Riesgos</span><span data-en>Risks</span></a>
+    <a href="#efpi"><span data-es>EFPI</span><span data-en>EFPI</span></a>
     <a href="#mapa"><span data-es>Mapa Conceptual</span><span data-en>Concept Map</span></a>
     <a href="#conclusion" class="nav-cta"><span data-es>Conclusión</span><span data-en>Conclusion</span></a>
   </div>
@@ -1331,6 +1373,96 @@
         <span data-es>Impacto: Bajo</span><span data-en>Impact: Low</span>
         <span data-es>Probabilidad: Baja</span><span data-en>Probability: Low</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EFPI COMPLIANCE -->
+<section id="efpi" style="background: var(--charcoal);">
+  <div class="section-tag" data-es>06 — Cobertura Académica EFPI</div>
+  <div class="section-tag" data-en>06 — EFPI Academic Coverage</div>
+  <div class="section-title" data-es>RÚBRICA COMPLETA<br>DEL PROYECTO</div>
+  <div class="section-title" data-en>COMPLETE PROJECT<br>RUBRIC</div>
+  <div class="section-sub" data-es>Esta sección integra explícitamente todos los requerimientos obligatorios: causalidad, transparencia numérica, interpretación gerencial y decisiones bajo incertidumbre.</div>
+  <div class="section-sub" data-en>This section explicitly integrates all mandatory requirements: causal logic, numerical transparency, managerial interpretation, and decisions under uncertainty.</div>
+
+  <div class="compliance-grid">
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Aspectos Generales</div>
+      <div class="compliance-head" data-en>General Aspects</div>
+      <div class="compliance-title" data-es>Independiente vs. Mutuamente Excluyente</div>
+      <div class="compliance-title" data-en>Independent vs. Mutually Exclusive</div>
+      <p class="compliance-text" data-es>El proyecto CLA/MMA se evalúa como independiente frente al portafolio total, pero compite por capital contra alternativas de inversión (software, baterías, nuevos modelos). Decisión base: aceptar si VPN incremental > 0 y ranking superior al costo de oportunidad.</p>
+      <p class="compliance-text" data-en>The CLA/MMA project is evaluated as independent versus the total portfolio, but it competes for capital against alternatives (software, batteries, new models). Base decision: accept if incremental NPV > 0 and ranking is above opportunity cost.</p>
+      <div class="compliance-mini">Capital constraint proxy: max CAPEX allocation €3.0B for this initiative.</div>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Estudio de Mercado</div>
+      <div class="compliance-head" data-en>Market Study</div>
+      <div class="compliance-title" data-es>Oferta, Demanda y Precio</div>
+      <div class="compliance-title" data-en>Supply, Demand and Price</div>
+      <p class="compliance-text" data-es>Supuesto base: segmento compacto de lujo con crecimiento moderado, precio promedio entre $47k–$50k y volumen objetivo >300k unidades/año. Estrés aplicado: escenario Bear (-30% flujos), Base (0%), Bull (+30%).</p>
+      <p class="compliance-text" data-en>Base assumption: premium compact segment with moderate growth, average pricing between $47k–$50k, and target volume >300k units/year. Stress test applied: Bear (-30% flows), Base (0%), Bull (+30%).</p>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Estudio Técnico</div>
+      <div class="compliance-head" data-en>Technical Study</div>
+      <div class="compliance-title" data-es>Tamaño, Ubicación y Organización</div>
+      <div class="compliance-title" data-en>Size, Location and Organization</div>
+      <p class="compliance-text" data-es>Tamaño del proyecto: plataforma modular para 30+ derivados. Ubicación principal: planta Rastatt (Alemania), integrada con cadena europea de alto valor. Estructura organizacional: integración hardware + MB.OS con ejecución cruzada ingeniería/producción.</p>
+      <p class="compliance-text" data-en>Project size: modular platform for 30+ derivative models. Main location: Rastatt plant (Germany), integrated with a high-value European supply chain. Organizational structure: hardware + MB.OS integration through cross-functional engineering/production execution.</p>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Estudio Económico</div>
+      <div class="compliance-head" data-en>Economic Study</div>
+      <div class="compliance-title" data-es>Costos, Capital de Trabajo y Financiamiento</div>
+      <div class="compliance-title" data-en>Costs, Working Capital and Financing</div>
+      <p class="compliance-text" data-es>Estructura base: CAPEX inicial €3,000M + OPEX operativo escalonado. Capital de trabajo modelado en flujos netos anuales (inventario, cuentas por cobrar/pagar). Estructura de financiamiento implícita: costo promedio de capital WACC 9% para validar creación de valor.</p>
+      <p class="compliance-text" data-en>Base structure: €3,000M initial CAPEX + scaled operational OPEX. Working capital is modeled through annual net flows (inventory, receivables/payables). Financing structure is represented through a 9% WACC as the hurdle rate for value creation.</p>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Evaluación Financiera</div>
+      <div class="compliance-head" data-en>Financial Evaluation</div>
+      <div class="compliance-title">Payback, NPV, IRR, MIRR</div>
+      <p class="compliance-text" data-es>Payback simple = 2.35 años. Payback descontado ≈ 3.35 años. NPV = €8,603.8M. IRR = 41.0%. MIRR (financiación 9%, reinversión 9%) ≈ 19.4%, corrigiendo el sesgo de reinversión implícito de la IRR.</p>
+      <p class="compliance-text" data-en>Simple payback = 2.35 years. Discounted payback ≈ 3.35 years. NPV = €8,603.8M. IRR = 41.0%. MIRR (9% finance and reinvest rates) ≈ 19.4%, correcting IRR reinvestment bias.</p>
+      <div class="compliance-mini">Conflict note: in mutually exclusive projects, NPV dominates when IRR ranking differs.</div>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Gestión de Riesgo</div>
+      <div class="compliance-head" data-en>Risk Management</div>
+      <div class="compliance-title" data-es>Break-even, Sensibilidad y Escenarios</div>
+      <div class="compliance-title" data-en>Break-even, Sensitivity and Scenarios</div>
+      <p class="compliance-text" data-es>Break-even de recuperación entre años 3 y 4 en términos descontados. Sensibilidad principal: WACC y nivel de flujos. Escenarios integrados en simulador: Bear/Base/Bull para medir robustez de NPV, IRR y B/C ante incertidumbre comercial.</p>
+      <p class="compliance-text" data-en>Discounted break-even occurs between years 3 and 4. Main sensitivities: WACC and cash-flow levels. Simulator scenarios (Bear/Base/Bull) test NPV, IRR and B/C robustness under commercial uncertainty.</p>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Opciones Reales (Crítico)</div>
+      <div class="compliance-head" data-en>Real Options (Critical)</div>
+      <div class="compliance-title" data-es>Esperar, Contraer y Abandonar</div>
+      <div class="compliance-title" data-en>Delay, Contraction and Abandonment</div>
+      <p class="compliance-text" data-es>Opción de esperar: si indicadores de demanda EV o China deterioran, posponer fases de CAPEX protege valor. Opción de contracción: reducir capacidad productiva ante escenario Bear para preservar caja. Opción de abandono: activar salida con valor de rescate si NPV esperado de continuidad es persistentemente negativo.</p>
+      <p class="compliance-text" data-en>Delay option: if EV demand or China indicators deteriorate, postponing CAPEX phases preserves value. Contraction option: reduce production capacity in Bear scenarios to protect cash. Abandonment option: execute exit/salvage if continuation expected NPV remains persistently negative.</p>
+      <div class="compliance-mini">Event tree logic: decision node (invest/wait) -> state node (Bear/Base/Bull) -> option trigger rules.</div>
+    </div>
+
+    <div class="compliance-card">
+      <div class="compliance-head" data-es>Integración Ejecutiva</div>
+      <div class="compliance-head" data-en>Executive Integration</div>
+      <div class="compliance-title" data-es>Ranking y Racionamiento de Capital</div>
+      <div class="compliance-title" data-en>Ranking and Capital Rationing</div>
+      <p class="compliance-text" data-es>Ranking prioritario por NPV ajustado por riesgo: CLA/MMA se mantiene en nivel alto por creación de valor y recuperación rápida. Bajo restricción de capital, se recomienda aprobar por etapas (stage-gate), liberando CAPEX contra hitos comerciales y tecnológicos trimestrales.</p>
+      <p class="compliance-text" data-en>Priority ranking by risk-adjusted NPV: CLA/MMA remains top-tier due to value creation and fast payback. Under capital rationing, approval should be stage-gated, releasing CAPEX against quarterly commercial and technical milestones.</p>
+      <div class="compliance-mini" data-es>Recomendación final board-level: ACEPTAR con control dinámico de riesgos y opciones reales activas.</div>
+      <div class="compliance-mini" data-en>Final board-level recommendation: ACCEPT with dynamic risk control and active real options governance.</div>
     </div>
   </div>
 </section>
