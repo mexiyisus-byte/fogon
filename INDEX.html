@@ -791,6 +791,69 @@
   .ration-wrap { margin-top: 50px; }
   .ration-note { margin-top: 20px; font-size: 0.86rem; line-height: 1.7; color: var(--silver); }
 
+  /* TORNADO SVG/CSS */
+  .tornado-chart { margin-top: 8px; }
+  .tornado-axis {
+    display: flex; justify-content: space-between;
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    color: var(--muted); letter-spacing: 0.08em;
+    margin: 0 0 8px 140px; padding: 0 4px;
+  }
+  .tornado-row {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 14px;
+  }
+  .tornado-label {
+    width: 124px; flex-shrink: 0;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.06em; color: var(--chrome);
+    text-align: right; line-height: 1.3;
+  }
+  .tornado-track {
+    flex: 1; position: relative; height: 28px;
+    background: rgba(200,200,200,0.06);
+    border: 1px solid rgba(200,200,200,0.08);
+  }
+  .tornado-bar-red {
+    position: absolute; top: 6px; height: 16px;
+    background: rgba(229,115,115,0.45);
+    border: 1px solid rgba(229,115,115,0.65);
+  }
+  .tornado-bar-green {
+    position: absolute; top: 6px; height: 16px;
+    background: rgba(129,199,132,0.4);
+    border: 1px solid rgba(129,199,132,0.65);
+  }
+  .tornado-base-line {
+    position: absolute; top: 0; bottom: 0; width: 2px;
+    background: var(--white); opacity: 0.85;
+    transform: translateX(-1px); z-index: 2;
+  }
+  .tornado-base-tag {
+    position: absolute; top: -18px; transform: translateX(-50%);
+    font-family: 'DM Mono', monospace; font-size: 0.52rem;
+    color: var(--white); letter-spacing: 0.05em; white-space: nowrap;
+  }
+  .tornado-val-low, .tornado-val-high {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-family: 'DM Mono', monospace; font-size: 0.52rem;
+    color: var(--muted); white-space: nowrap;
+  }
+  .tornado-val-low { left: 4px; }
+  .tornado-val-high { right: 4px; }
+  .tornado-legend {
+    display: flex; gap: 20px; justify-content: center; margin-top: 18px;
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  }
+  .tornado-legend span::before {
+    content: ''; display: inline-block; width: 10px; height: 10px;
+    margin-right: 6px; vertical-align: middle;
+  }
+  .tornado-legend .leg-worst::before { background: rgba(229,115,115,0.6); }
+  .tornado-legend .leg-best::before { background: rgba(129,199,132,0.6); }
+  .tornado-legend .leg-base::before { background: var(--white); width: 2px; height: 12px; }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
@@ -935,7 +998,7 @@
       <div class="kpi-number">€150<span class="kpi-unit">B</span></div>
       <div class="kpi-name" data-es>Ingresos</div>
       <div class="kpi-name" data-en>Revenue</div>
-      <div class="kpi-delta pos">▲ Base de referencia</div>
+      <div class="kpi-delta pos"><span data-es>▲ Base de referencia</span><span data-en>▲ Baseline</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-year">2023</div>
@@ -1089,7 +1152,7 @@
       <div class="formula-name" data-es>Valor Presente Neto</div>
       <div class="formula-name" data-en>Net Present Value</div>
       <div class="formula-acronym">VPN / NPV</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         VPN = Σ [ FCt / (1 + WACC)ᵗ ] − I₀<br><br>
         VPN = Σ [ FCt / (1.09)ᵗ ] − 3,000M<br><br>
         VP Año 1: 800 / 1.09 = €733.9M<br>
@@ -1101,6 +1164,19 @@
         ─────────────────────────<br>
         ΣVP = €11,603.8M<br>
         VPN = 11,603.8 − 3,000 = <strong>€8,603.8M</strong>
+      </div>
+      <div class="formula-box" data-en>
+        NPV = Σ [ CFt / (1 + WACC)ᵗ ] − I₀<br><br>
+        NPV = Σ [ CFt / (1.09)ᵗ ] − 3,000M<br><br>
+        PV Year 1: 800 / 1.09 = €733.9M<br>
+        PV Year 2: 1,500 / 1.188 = €1,262.6M<br>
+        PV Year 3: 2,000 / 1.295 = €1,544.4M<br>
+        PV Year 4: 2,200 / 1.412 = €1,558.4M<br>
+        PV Year 5: 2,300 / 1.539 = €1,494.5M<br>
+        PV Years 6–10: ≈ €5,010M<br>
+        ─────────────────────────<br>
+        ΣPV = €11,603.8M<br>
+        NPV = 11,603.8 − 3,000 = <strong>€8,603.8M</strong>
       </div>
       <div class="formula-desc" data-es>El VPN positivo de €8,603.8M indica que el proyecto genera valor por encima del costo de capital (WACC=9%). Por cada euro invertido, el proyecto genera €3.87 de valor presente neto.</div>
       <div class="formula-desc" data-en>The positive NPV of €8,603.8M indicates the project creates value above the cost of capital (WACC=9%). For every euro invested, the project generates €3.87 in net present value.</div>
@@ -1117,7 +1193,7 @@
       <div class="formula-name" data-es>Tasa Interna de Retorno</div>
       <div class="formula-name" data-en>Internal Rate of Return</div>
       <div class="formula-acronym">TIR / IRR</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         0 = Σ [ FCt / (1 + TIR)ᵗ ] − I₀<br><br>
         Prueba TIR = 40%:<br>
         ΣVP = €3,066M → VPN = +€66M ≈ 0<br><br>
@@ -1127,6 +1203,17 @@
         TIR ≈ 40% + [66/(66+432)] × 1%<br>
         TIR ≈ <strong>41.0%</strong><br><br>
         WACC = 9% → TIR > WACC ✓
+      </div>
+      <div class="formula-box" data-en>
+        0 = Σ [ CFt / (1 + IRR)ᵗ ] − I₀<br><br>
+        Test IRR = 40%:<br>
+        ΣPV = €3,066M → NPV = +€66M ≈ 0<br><br>
+        Test IRR = 41%:<br>
+        ΣPV = €3,004.6M → NPV ≈ €4.6M ≈ 0<br><br>
+        Interpolation:<br>
+        IRR ≈ 40% + [66/(66+432)] × 1%<br>
+        IRR ≈ <strong>41.0%</strong><br><br>
+        WACC = 9% → IRR > WACC ✓
       </div>
       <div class="formula-desc" data-es>La TIR del 41% supera ampliamente el WACC del 9%, lo que confirma que el proyecto es altamente rentable. El excedente de 32 puntos porcentuales representa el margen de seguridad del inversionista.</div>
       <div class="formula-desc" data-en>The IRR of 41% far exceeds the WACC of 9%, confirming the project is highly profitable. The 32 percentage point surplus represents the investor's safety margin.</div>
@@ -1143,7 +1230,7 @@
       <div class="formula-name" data-es>Período de Recuperación</div>
       <div class="formula-name" data-en>Payback Period</div>
       <div class="formula-acronym">PR / PRI</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         PR = año previo + (Saldo / FC siguiente)<br><br>
         Año 0:  -€3,000M  Acum: -€3,000M<br>
         Año 1:  +€800M    Acum: -€2,200M<br>
@@ -1154,12 +1241,23 @@
         PR = 2 + (700 / 2,000) = 2.35 años<br>
         PR ≈ <strong>2 años 4 meses</strong>
       </div>
+      <div class="formula-box" data-en>
+        PB = previous year + (Balance / next CF)<br><br>
+        Year 0:  -€3,000M  Cum: -€3,000M<br>
+        Year 1:  +€800M    Cum: -€2,200M<br>
+        Year 2:  +€1,500M  Cum: -€700M<br>
+        Year 3:  +€2,000M  Cum: +€1,300M<br>
+        ─────────────────────────<br>
+        Recovery in Year 3:<br>
+        PB = 2 + (700 / 2,000) = 2.35 years<br>
+        PB ≈ <strong>2 years 4 months</strong>
+      </div>
       <div class="formula-desc" data-es>La inversión se recupera en 2 años y 4 meses, muy por debajo del horizonte de evaluación de 10 años. Esto reduce significativamente el riesgo de capital para Mercedes-Benz.</div>
       <div class="formula-desc" data-en>The investment is recovered in 2 years and 4 months, well below the 10-year evaluation horizon. This significantly reduces capital risk for Mercedes-Benz.</div>
       <div class="formula-result">
         <div class="formula-result-label" data-es>Período de Recuperación</div>
         <div class="formula-result-label" data-en>Payback Period</div>
-        <div class="formula-result-value pos">2.35 años</div>
+        <div class="formula-result-value pos">2.35 <span data-es>años</span><span data-en>years</span></div>
       </div>
       <div class="formula-verdict" data-es>✓ Recuperación antes de 3 años — BAJO RIESGO</div>
       <div class="formula-verdict" data-en>✓ Recovery before 3 years — LOW RISK</div>
@@ -1170,7 +1268,7 @@
       <div class="formula-name" data-es>Relación Beneficio-Costo</div>
       <div class="formula-name" data-en>Benefit-Cost Ratio</div>
       <div class="formula-acronym">B/C — RBC</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         B/C = Σ VP Beneficios / Σ VP Costos<br><br>
         ΣVP Beneficios (10 años) = €11,603.8M<br>
         ΣVP Costos (inversión) = €3,000.0M<br>
@@ -1179,6 +1277,16 @@
         B/C = <strong>3.87</strong><br><br>
         Por cada €1 invertido →<br>
         se recuperan €3.87 en valor presente
+      </div>
+      <div class="formula-box" data-en>
+        B/C = Σ PV Benefits / Σ PV Costs<br><br>
+        ΣPV Benefits (10 years) = €11,603.8M<br>
+        ΣPV Costs (investment) = €3,000.0M<br>
+        ─────────────────────────<br>
+        B/C = 11,603.8 / 3,000.0<br>
+        B/C = <strong>3.87</strong><br><br>
+        For every €1 invested →<br>
+        €3.87 recovered in present value
       </div>
       <div class="formula-desc" data-es>La relación B/C de 3.87 confirma que el proyecto es altamente eficiente. Por cada euro de inversión, se generan €3.87 en flujos descontados. Una relación B/C mayor a 1 indica viabilidad.</div>
       <div class="formula-desc" data-en>The B/C ratio of 3.87 confirms the project is highly efficient. For every euro invested, €3.87 in discounted flows are generated. A B/C ratio above 1 indicates viability.</div>
@@ -1198,11 +1306,11 @@
       <table class="mini-table">
         <thead>
           <tr>
-            <th data-es>Año</th><th data-en>Year</th>
+            <th><span data-es>Año</span><span data-en>Year</span></th>
             <th>CF (€M)</th>
-            <th data-es>Factor</th><th data-en>Factor</th>
-            <th>VP (€M)</th>
-            <th data-es>VP Acum.</th><th data-en>Cum. PV</th>
+            <th>Factor</th>
+            <th>VP / PV (€M)</th>
+            <th><span data-es>VP Acum.</span><span data-en>Cum. PV</span></th>
           </tr>
         </thead>
         <tbody>
@@ -1213,7 +1321,7 @@
         </tbody>
       </table>
       <div class="formula-box" style="margin-top:16px">
-        PRD = 2 + (1,003.5 / 1,544.4) = 2 + 0.65 = <strong>2.65 años</strong> ≈ 2 <span data-es>años</span><span data-en>years</span> 8 <span data-es>meses</span><span data-en>months</span>
+        PRD = 2 + (1,003.5 / 1,544.4) = 2 + 0.65 = <strong>2.65 <span data-es>años</span><span data-en>years</span></strong> ≈ 2 <span data-es>años</span><span data-en>years</span> 8 <span data-es>meses</span><span data-en>months</span>
       </div>
       <div class="formula-result">
         <div class="formula-result-label" data-es>Período Descontado</div>
@@ -1294,18 +1402,18 @@
       <table class="mini-table">
         <thead>
           <tr>
-            <th data-es>Componente</th><th data-en>Component</th>
-            <th data-es>Monto</th><th data-en>Amount</th>
-            <th data-es>% Total</th><th data-en>% Total</th>
+            <th><span data-es>Componente</span><span data-en>Component</span></th>
+            <th><span data-es>Monto</span><span data-en>Amount</span></th>
+            <th>% Total</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td data-es>I+D Plataforma (MMA)</td><td data-en>Platform R&D (MMA)</td><td>€1,200M</td><td>40%</td></tr>
-          <tr><td data-es>CAPEX Planta (Rastatt)</td><td data-en>Plant CAPEX (Rastatt)</td><td>€900M</td><td>30%</td></tr>
-          <tr><td colspan="2">MB.OS Software</td><td>€600M</td><td>20%</td></tr>
-          <tr><td data-es>Capital de Trabajo</td><td data-en>Working Capital</td><td>€180M</td><td>6%</td></tr>
-          <tr><td data-es>Contingencia</td><td data-en>Contingency</td><td>€120M</td><td>4%</td></tr>
-          <tr class="total"><td colspan="2"><strong>TOTAL CAPEX</strong></td><td><strong>€3,000M</strong></td><td><strong>100%</strong></td></tr>
+          <tr><td><span data-es>I+D Plataforma (MMA)</span><span data-en>Platform R&D (MMA)</span></td><td>€1,200M</td><td>40%</td></tr>
+          <tr><td><span data-es>CAPEX Planta (Rastatt)</span><span data-en>Plant CAPEX (Rastatt)</span></td><td>€900M</td><td>30%</td></tr>
+          <tr><td>MB.OS Software</td><td>€600M</td><td>20%</td></tr>
+          <tr><td><span data-es>Capital de Trabajo</span><span data-en>Working Capital</span></td><td>€180M</td><td>6%</td></tr>
+          <tr><td><span data-es>Contingencia</span><span data-en>Contingency</span></td><td>€120M</td><td>4%</td></tr>
+          <tr class="total"><td><strong>TOTAL CAPEX</strong></td><td><strong>€3,000M</strong></td><td><strong>100%</strong></td></tr>
         </tbody>
       </table>
       <div class="formula-acronym" style="margin-top:18px" data-es>OPEX ANUAL (POST-LANZAMIENTO)</div>
@@ -1313,15 +1421,15 @@
       <table class="mini-table">
         <thead>
           <tr>
-            <th data-es>Componente</th><th data-en>Component</th>
+            <th><span data-es>Componente</span><span data-en>Component</span></th>
             <th>€M/<span data-es>año</span><span data-en>year</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr><td data-es>OPEX Manufactura</td><td data-en>Manufacturing OPEX</td><td>€280M</td></tr>
-          <tr><td data-es>Mantenimiento I+D</td><td data-en>R&D maintenance</td><td>€85M</td></tr>
-          <tr><td data-es>Ventas y Marketing</td><td data-en>Sales &amp; Marketing</td><td>€55M</td></tr>
-          <tr class="total"><td><strong>TOTAL OPEX</strong></td><td></td><td><strong>€420M</strong></td></tr>
+          <tr><td><span data-es>OPEX Manufactura</span><span data-en>Manufacturing OPEX</span></td><td>€280M</td></tr>
+          <tr><td><span data-es>Mantenimiento I+D</span><span data-en>R&D maintenance</span></td><td>€85M</td></tr>
+          <tr><td><span data-es>Ventas y Marketing</span><span data-en>Sales &amp; Marketing</span></td><td>€55M</td></tr>
+          <tr class="total"><td><strong>TOTAL OPEX</strong></td><td><strong>€420M</strong></td></tr>
         </tbody>
       </table>
       <div class="formula-desc" data-es>Capital de trabajo: 15 días cobranzas + 30 días inventario − 45 días pagos = neto €180M</div>
@@ -1333,11 +1441,11 @@
   <table class="cf-table">
     <thead>
       <tr>
-        <th data-es>Año</th><th data-en>Year</th>
-        <th data-es>Flujo de Caja (€M)</th><th data-en>Cash Flow (€M)</th>
-        <th data-es>Factor Descuento (9%)</th><th data-en>Discount Factor (9%)</th>
-        <th data-es>VP Flujo (€M)</th><th data-en>PV Flow (€M)</th>
-        <th data-es>VP Acumulado (€M)</th><th data-en>Cumulative PV (€M)</th>
+        <th><span data-es>Año</span><span data-en>Year</span></th>
+        <th><span data-es>Flujo de Caja (€M)</span><span data-en>Cash Flow (€M)</span></th>
+        <th><span data-es>Factor Descuento (9%)</span><span data-en>Discount Factor (9%)</span></th>
+        <th><span data-es>VP Flujo (€M)</span><span data-en>PV Flow (€M)</span></th>
+        <th><span data-es>VP Acumulado (€M)</span><span data-en>Cumulative PV (€M)</span></th>
       </tr>
     </thead>
     <tbody>
@@ -1353,10 +1461,11 @@
       <tr><td class="highlight">9</td><td class="pos">2,700</td><td>0.460</td><td class="pos">1,241.9</td><td class="pos">8,938.5</td></tr>
       <tr><td class="highlight">10</td><td class="pos">2,800</td><td>0.422</td><td class="pos">1,165.3</td><td class="pos">10,103.8</td></tr>
       <tr class="total">
-        <td colspan="2" data-es><strong>TOTAL</strong></td>
+        <td><strong>TOTAL</strong></td>
+        <td></td>
         <td></td>
         <td class="pos"><strong>€11,603.8M</strong></td>
-        <td class="pos"><strong>VPN = €8,603.8M</strong></td>
+        <td class="pos"><strong><span data-es>VPN</span><span data-en>NPV</span> = €8,603.8M</strong></td>
       </tr>
     </tbody>
   </table>
@@ -1438,18 +1547,18 @@
       <div class="sim-kpi">
         <div class="sim-kpi-label">VPN / NPV</div>
         <div class="sim-kpi-value" id="liveNPV">€860M</div>
-        <div class="sim-kpi-badge pos" id="liveNPVBadge" data-es>VIABLE</div>
+        <div class="sim-kpi-badge pos" id="liveNPVBadge">NPV &gt; 0</div>
       </div>
       <div class="sim-kpi">
         <div class="sim-kpi-label">TIR / IRR</div>
         <div class="sim-kpi-value" id="liveIRR">41.0%</div>
-        <div class="sim-kpi-badge pos" id="liveIRRBadge" data-es>TIR > WACC</div>
+        <div class="sim-kpi-badge pos" id="liveIRRBadge">IRR &gt; WACC</div>
       </div>
       <div class="sim-kpi">
         <div class="sim-kpi-label" data-es>Período Recuperación</div>
         <div class="sim-kpi-label" data-en>Payback Period</div>
         <div class="sim-kpi-value" id="livePayback">2.35 <span style="font-size:1rem" data-es>años</span><span style="font-size:1rem" data-en>yrs</span></div>
-        <div class="sim-kpi-badge pos" id="livePBBadge" data-es>&lt; 3 años</div>
+        <div class="sim-kpi-badge pos" id="livePBBadge">&lt; 5 yrs</div>
       </div>
       <div class="sim-kpi">
         <div class="sim-kpi-label" data-es>Relación B/C</div>
@@ -1579,7 +1688,7 @@
     <div class="addon-sub" data-en>Fixed costs, variable costs and break-even volume — CLA/MMA</div>
     <div class="be-wrap">
       <div class="chart-box">
-        <div class="formula-box" style="margin-bottom:0">
+        <div class="formula-box" style="margin-bottom:0" data-es>
           FC = €420M / año<br>
           VC = €28,000 / unidad<br>
           P = €45,000 / unidad<br><br>
@@ -1587,6 +1696,15 @@
           BE = 420,000,000 / (45,000 − 28,000)<br>
           BE = 420,000,000 / 17,000<br>
           BE = <strong>24,706 unidades</strong>
+        </div>
+        <div class="formula-box" style="margin-bottom:0" data-en>
+          FC = €420M / year<br>
+          VC = €28,000 / unit<br>
+          P = €45,000 / unit<br><br>
+          BE = FC / (P − VC)<br>
+          BE = 420,000,000 / (45,000 − 28,000)<br>
+          BE = 420,000,000 / 17,000<br>
+          BE = <strong>24,706 units</strong>
         </div>
         <div class="be-metrics">
           <div class="be-metric"><span data-es>Costos fijos anuales</span><span data-en>Annual fixed costs</span><strong>€420M</strong></div>
@@ -1619,8 +1737,73 @@
     <div class="addon-head" data-en>TORNADO ANALYSIS — NPV SENSITIVITY</div>
     <div class="addon-sub" data-es>Impacto de ± variación en variables clave sobre el VPN base (€8,603.8M)</div>
     <div class="addon-sub" data-en>Impact of ± variation in key variables on base NPV (€8,603.8M)</div>
-    <div class="chart-box">
-      <canvas id="tornadoChart" height="280"></canvas>
+    <div class="chart-box" style="background:transparent;border-color:rgba(200,200,200,0.08)">
+      <div class="tornado-chart" id="tornadoChart">
+        <div class="tornado-axis">
+          <span>€5,200M</span><span>€8,604M</span><span>€12,800M</span>
+        </div>
+        <!-- WACC ±2% — impact €7,600M -->
+        <div class="tornado-row">
+          <div class="tornado-label">WACC ±2%</div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€5,200M</span>
+            <span class="tornado-val-high">€12,800M</span>
+            <div class="tornado-bar-red" style="left:0%;width:44.8%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:55.2%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+            <span class="tornado-base-tag" style="left:44.8%">BASE</span>
+          </div>
+        </div>
+        <!-- Revenue Growth ±3% — impact €5,300M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Crec. Ingresos ±3%</span><span data-en>Revenue Growth ±3%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€6,100M</span>
+            <span class="tornado-val-high">€11,400M</span>
+            <div class="tornado-bar-red" style="left:11.8%;width:32.9%"></div>
+            <div class="tornado-bar-green" style="left:44.7%;width:43.4%"></div>
+            <div class="tornado-base-line" style="left:44.7%"></div>
+          </div>
+        </div>
+        <!-- Operating Margin ±3% — impact €1,600M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Margen Op. ±3%</span><span data-en>Op. Margin ±3%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€7,800M</span>
+            <span class="tornado-val-high">€9,400M</span>
+            <div class="tornado-bar-red" style="left:34.2%;width:10.6%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:10.5%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+          </div>
+        </div>
+        <!-- Terminal Value ±25% — impact €1,400M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Valor Terminal ±25%</span><span data-en>Terminal Value ±25%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€7,900M</span>
+            <span class="tornado-val-high">€9,300M</span>
+            <div class="tornado-bar-red" style="left:35.5%;width:9.3%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:9.2%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+          </div>
+        </div>
+        <!-- Initial Investment ±20% — impact €1,200M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Inv. Inicial ±20%</span><span data-en>Initial Inv. ±20%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€8,003M</span>
+            <span class="tornado-val-high">€9,203M</span>
+            <div class="tornado-bar-red" style="left:36.9%;width:7.9%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:7.9%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+          </div>
+        </div>
+        <div class="tornado-legend">
+          <span class="leg-worst"><span data-es>Peor caso</span><span data-en>Worst case</span></span>
+          <span class="leg-base">VPN Base €8,604M</span>
+          <span class="leg-best"><span data-es>Mejor caso</span><span data-en>Best case</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1633,15 +1816,40 @@
     <table class="scenario-table" id="scenarioTable">
       <thead>
         <tr>
-          <th data-es>Escenario</th><th data-en>Scenario</th>
-          <th data-es>Crec. Ingresos</th><th data-en>Revenue Growth</th>
+          <th><span data-es>Escenario</span><span data-en>Scenario</span></th>
+          <th><span data-es>Crec. Ingresos</span><span data-en>Revenue Growth</span></th>
           <th>WACC</th>
           <th>NPV / VPN</th>
           <th>IRR / TIR</th>
-          <th data-es>Payback</th><th data-en>Payback</th>
+          <th><span data-es>Payback</span><span data-en>Payback</span></th>
         </tr>
       </thead>
-      <tbody id="scenarioTableBody"></tbody>
+      <tbody>
+        <tr class="bear">
+          <td class="highlight">BEAR</td>
+          <td>6%</td>
+          <td>10.5%</td>
+          <td class="pos">€3,821M</td>
+          <td class="pos">22.4%</td>
+          <td>3.8 <span data-es>años</span><span data-en>yrs</span></td>
+        </tr>
+        <tr class="base">
+          <td class="highlight">BASE</td>
+          <td>12%</td>
+          <td>9.0%</td>
+          <td class="pos">€8,604M</td>
+          <td class="pos">41.0%</td>
+          <td>2.35 <span data-es>años</span><span data-en>yrs</span></td>
+        </tr>
+        <tr class="bull">
+          <td class="highlight">BULL</td>
+          <td>18%</td>
+          <td>7.0%</td>
+          <td class="pos">€14,210M</td>
+          <td class="pos">58.3%</td>
+          <td>1.9 <span data-es>años</span><span data-en>yrs</span></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </section>
@@ -1699,8 +1907,8 @@
       <div class="compliance-head" data-es>Evaluación Financiera</div>
       <div class="compliance-head" data-en>Financial Evaluation</div>
       <div class="compliance-title">Payback, NPV, IRR, MIRR</div>
-      <p class="compliance-text" data-es>Payback simple = 2.35 años. Payback descontado ≈ 3.35 años. NPV = €8,603.8M. IRR = 41.0%. MIRR (financiación 9%, reinversión 9%) ≈ 19.4%, corrigiendo el sesgo de reinversión implícito de la IRR.</p>
-      <p class="compliance-text" data-en>Simple payback = 2.35 years. Discounted payback ≈ 3.35 years. NPV = €8,603.8M. IRR = 41.0%. MIRR (9% finance and reinvest rates) ≈ 19.4%, correcting IRR reinvestment bias.</p>
+      <p class="compliance-text" data-es>Payback simple = 2.35 años. Payback descontado = 2.65 años. NPV = €8,603.8M. IRR = 41.0%. MIRR (financiación 9%, reinversión 9%) = 26.6%, corrigiendo el sesgo de reinversión implícito de la IRR.</p>
+      <p class="compliance-text" data-en>Simple payback = 2.35 years. Discounted payback = 2.65 years. NPV = €8,603.8M. IRR = 41.0%. MIRR (9% finance and reinvest rates) = 26.6%, correcting IRR reinvestment bias.</p>
       <div class="compliance-mini">Conflict note: in mutually exclusive projects, NPV dominates when IRR ranking differs.</div>
     </div>
 
@@ -1725,8 +1933,8 @@
           <div class="ro-panel" style="grid-column:1/-1">
             <h4 data-es>a) Opción de Esperar — Árbol Binomial (2 períodos)</h4>
             <h4 data-en>a) Option to Delay — Binomial Tree (2 periods)</h4>
-            <p data-es>S=€8,603M · K=€3,000M · T=2 años · σ=25% · r=4.5%</p>
-            <p data-en>S=€8,603M · K=€3,000M · T=2 yrs · σ=25% · r=4.5%</p>
+            <p data-es>S=€8,604M · K=€3,000M · T=2 años · σ=25% · r=4.5%</p>
+            <p data-en>S=€8,604M · K=€3,000M · T=2 yrs · σ=25% · r=4.5%</p>
             <div class="formula-box" style="margin:14px 0" id="binomialParams">—</div>
             <div class="bin-tree" id="binomialTree">—</div>
             <div class="ro-val go" id="delayDecision">—</div>
@@ -1942,7 +2150,7 @@
       <div class="summary-metric">
         <div class="summary-metric-label" data-es>Período de Recuperación</div>
         <div class="summary-metric-label" data-en>Payback Period</div>
-        <div class="summary-metric-value go">2.35 años</div>
+        <div class="summary-metric-value go">2.35 <span data-es>años</span><span data-en>yrs</span></div>
       </div>
       <div class="summary-metric">
         <div class="summary-metric-label" data-es>Relación Beneficio/Costo</div>
@@ -1967,17 +2175,17 @@
     <table class="cf-table" id="rationTable">
       <thead>
         <tr>
-          <th data-es>Proyecto</th><th data-en>Project</th>
-          <th data-es>Inversión</th><th data-en>Investment</th>
+          <th><span data-es>Proyecto</span><span data-en>Project</span></th>
+          <th><span data-es>Inversión</span><span data-en>Investment</span></th>
           <th>NPV / VPN</th>
           <th>IRR / TIR</th>
           <th>PI</th>
-          <th data-es>Rank</th><th data-en>Rank</th>
+          <th>Rank</th>
         </tr>
       </thead>
       <tbody>
         <tr><td class="highlight">CLA/MMA</td><td>€3B</td><td class="pos">€8,604M</td><td class="pos">41%</td><td class="pos">3.87</td><td class="highlight">1</td></tr>
-        <tr><td class="highlight" data-es>Baterías Gigaplant</td><td class="highlight" data-en>Battery Gigaplant</td><td>€5B</td><td class="pos">€6,200M</td><td class="pos">28%</td><td class="pos">2.24</td><td class="highlight">2</td></tr>
+        <tr><td class="highlight"><span data-es>Baterías Gigaplant</span><span data-en>Battery Gigaplant</span></td><td>€5B</td><td class="pos">€6,200M</td><td class="pos">28%</td><td class="pos">2.24</td><td class="highlight">2</td></tr>
         <tr><td class="highlight">MB.OS Software</td><td>€1.2B</td><td class="pos">€2,100M</td><td class="pos">35%</td><td class="pos">2.75</td><td class="highlight">3</td></tr>
       </tbody>
     </table>
@@ -1995,7 +2203,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
-    Mercedes-Benz Group AG — Evaluación Financiera de Proyectos — 2026
+    <span data-es>Mercedes-Benz Group AG — Evaluación Financiera de Proyectos — 2026</span><span data-en>Mercedes-Benz Group AG — Financial Evaluation of Investment Projects — 2026</span>
   </div>
   <div class="footer-note">
     <span data-es>Datos: Mercedes-Benz Annual Reports 2024–2025<br>Proyecto: CLA 2026 / Plataforma MMA</span>
@@ -2025,6 +2233,7 @@
     document.body.className = 'lang-' + lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
     document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    if (typeof updateSim === 'function') updateSim();
   }
 
   // CHARTS — Revenue & EBIT
@@ -2126,7 +2335,7 @@
     data: {
       labels: waccRates.map(r => (r * 100).toFixed(0) + '%'),
       datasets: [{
-        label: 'VPN (€ Millardos)',
+        label: document.body.classList.contains('lang-en') ? 'NPV (€ Billions)' : 'VPN (€ Millardos)',
         data: npvVals,
         borderColor: 'rgba(192,192,192,0.7)',
         backgroundColor: (ctx) => {
@@ -2255,16 +2464,17 @@
     document.getElementById('liveBC').textContent      = bc.toFixed(2);
 
     // Color/badge NPV
+    const isEn = document.body.classList.contains('lang-en');
     const npvEl = document.getElementById('liveNPV');
     const npvBadge = document.getElementById('liveNPVBadge');
     if (npv > 0) {
       npvEl.style.color = '#81C784';
       npvBadge.className = 'sim-kpi-badge pos';
-      npvBadge.textContent = 'VPN > 0';
+      npvBadge.textContent = isEn ? 'NPV > 0' : 'VPN > 0';
     } else {
       npvEl.style.color = '#E57373';
       npvBadge.className = 'sim-kpi-badge neg';
-      npvBadge.textContent = 'VPN < 0';
+      npvBadge.textContent = isEn ? 'NPV < 0' : 'VPN < 0';
     }
 
     // Color/badge IRR
@@ -2273,11 +2483,11 @@
     if (irr > wacc) {
       irrEl.style.color = '#81C784';
       irrBadge.className = 'sim-kpi-badge pos';
-      irrBadge.textContent = 'TIR > WACC';
+      irrBadge.textContent = isEn ? 'IRR > WACC' : 'TIR > WACC';
     } else {
       irrEl.style.color = '#E57373';
       irrBadge.className = 'sim-kpi-badge neg';
-      irrBadge.textContent = 'TIR < WACC';
+      irrBadge.textContent = isEn ? 'IRR < WACC' : 'TIR < WACC';
     }
 
     // Color/badge Payback
@@ -2286,11 +2496,11 @@
     if (payback !== null && payback < 5) {
       pbEl.style.color = '#81C784';
       pbBadge.className = 'sim-kpi-badge pos';
-      pbBadge.textContent = '< 5 años';
+      pbBadge.textContent = isEn ? '< 5 yrs' : '< 5 años';
     } else {
       pbEl.style.color = payback !== null ? '#FFB74D' : '#E57373';
       pbBadge.className = payback !== null ? 'sim-kpi-badge warn' : 'sim-kpi-badge neg';
-      pbBadge.textContent = payback !== null ? '> 5 años' : 'No recupera';
+      pbBadge.textContent = payback !== null ? (isEn ? '> 5 yrs' : '> 5 años') : (isEn ? 'No recovery' : 'No recupera');
     }
 
     // Color/badge B/C
@@ -2509,81 +2719,8 @@
     });
   }
 
-  function initTornado() {
-    const base = calcNPV(MB_INV_FULL, BASE_FLOWS, MB_WACC_BASE);
-    const sens = [
-      { name: 'WACC', low: calcNPV(MB_INV_FULL, BASE_FLOWS, 11), high: calcNPV(MB_INV_FULL, BASE_FLOWS, 7) },
-      { name: document.body.classList.contains('lang-en') ? 'Rev. Growth' : 'Crec. Ingresos', low: calcNPV(MB_INV_FULL, mbFlowsGrowth(9), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, mbFlowsGrowth(15), MB_WACC_BASE) },
-      { name: document.body.classList.contains('lang-en') ? 'Initial Inv.' : 'Inv. Inicial', low: calcNPV(3600, BASE_FLOWS, MB_WACC_BASE), high: calcNPV(2400, BASE_FLOWS, MB_WACC_BASE) },
-      { name: document.body.classList.contains('lang-en') ? 'Terminal Val.' : 'Valor Terminal', low: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 0.75], MB_WACC_BASE), high: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 1.25], MB_WACC_BASE) },
-      { name: document.body.classList.contains('lang-en') ? 'Op. Margin' : 'Margen Op.', low: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 0.97), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 1.03), MB_WACC_BASE) }
-    ];
-    sens.forEach(s => { s.spread = Math.abs(s.high - s.low); });
-    sens.sort((a, b) => b.spread - a.spread);
-
-    const labels = sens.map(s => s.name);
-    const floatData = sens.map(s => [Math.min(s.low, s.high) / 1000, Math.max(s.low, s.high) / 1000]);
-
-    new Chart(document.getElementById('tornadoChart').getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'NPV Range (€B)',
-          data: floatData,
-          backgroundColor: 'rgba(192,192,192,0.35)',
-          borderColor: 'rgba(192,192,192,0.7)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: ctx => {
-                const s = sens[ctx.dataIndex];
-                return [`Low: €${(Math.min(s.low,s.high)/1000).toFixed(2)}B`, `High: €${(Math.max(s.low,s.high)/1000).toFixed(2)}B`];
-              }
-            }
-          }
-        },
-        scales: {
-          x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v.toFixed(1) + 'B' }, grid: { color: 'rgba(255,255,255,0.04)' } },
-          y: { ticks: { color: '#909090', font: { family: 'DM Mono', size: 10 } }, grid: { display: false } }
-        }
-      }
-    });
-  }
-
-  function initScenarioTable() {
-    const scenarios = [
-      { key: 'bear', growth: 6, wacc: 10.5 },
-      { key: 'base', growth: 12, wacc: 9 },
-      { key: 'bull', growth: 18, wacc: 7 }
-    ];
-    const tbody = document.getElementById('scenarioTableBody');
-    tbody.innerHTML = '';
-    scenarios.forEach(sc => {
-      const flows = mbFlowsGrowth(sc.growth);
-      const npv = calcNPV(MB_INV_FULL, flows, sc.wacc);
-      const irr = calcIRR(MB_INV_FULL, flows);
-      const pb = calcPayback(MB_INV_FULL, flows);
-      tbody.innerHTML += `<tr class="${sc.key}">
-        <td class="highlight">${sc.key.toUpperCase()}</td>
-        <td>${sc.growth}%</td>
-        <td>${sc.wacc}%</td>
-        <td class="${npv > 0 ? 'pos' : 'neg'}">${fmt(npv)}</td>
-        <td class="pos">${irr.toFixed(1)}%</td>
-        <td>${pb !== null ? pb.toFixed(2) + (document.body.classList.contains('lang-es') ? ' a' : ' y') : '—'}</td>
-      </tr>`;
-    });
-  }
-
   function initBinomialDelay() {
-    const S = 8603, K = 3000, T = 2, sigma = 0.25, r = 0.045;
+    const S = 8603.8, K = 3000, T = 2, sigma = 0.25, r = 0.045;
     const steps = 2, dt = T / steps;
     const u = Math.exp(sigma * Math.sqrt(dt));
     const d = 1 / u;
@@ -2699,8 +2836,6 @@
   }
 
   initBreakEven();
-  initTornado();
-  initScenarioTable();
   initBinomialDelay();
   setTimeout(initEventTree, 400);
   initRealOptionsExtra();
