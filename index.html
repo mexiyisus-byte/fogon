@@ -998,7 +998,7 @@
       <div class="kpi-number">€150<span class="kpi-unit">B</span></div>
       <div class="kpi-name" data-es>Ingresos</div>
       <div class="kpi-name" data-en>Revenue</div>
-      <div class="kpi-delta pos">▲ Base de referencia</div>
+      <div class="kpi-delta pos"><span data-es>▲ Base de referencia</span><span data-en>▲ Baseline</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-year">2023</div>
@@ -1152,7 +1152,7 @@
       <div class="formula-name" data-es>Valor Presente Neto</div>
       <div class="formula-name" data-en>Net Present Value</div>
       <div class="formula-acronym">VPN / NPV</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         VPN = Σ [ FCt / (1 + WACC)ᵗ ] − I₀<br><br>
         VPN = Σ [ FCt / (1.09)ᵗ ] − 3,000M<br><br>
         VP Año 1: 800 / 1.09 = €733.9M<br>
@@ -1164,6 +1164,19 @@
         ─────────────────────────<br>
         ΣVP = €11,603.8M<br>
         VPN = 11,603.8 − 3,000 = <strong>€8,603.8M</strong>
+      </div>
+      <div class="formula-box" data-en>
+        NPV = Σ [ CFt / (1 + WACC)ᵗ ] − I₀<br><br>
+        NPV = Σ [ CFt / (1.09)ᵗ ] − 3,000M<br><br>
+        PV Year 1: 800 / 1.09 = €733.9M<br>
+        PV Year 2: 1,500 / 1.188 = €1,262.6M<br>
+        PV Year 3: 2,000 / 1.295 = €1,544.4M<br>
+        PV Year 4: 2,200 / 1.412 = €1,558.4M<br>
+        PV Year 5: 2,300 / 1.539 = €1,494.5M<br>
+        PV Years 6–10: ≈ €5,010M<br>
+        ─────────────────────────<br>
+        ΣPV = €11,603.8M<br>
+        NPV = 11,603.8 − 3,000 = <strong>€8,603.8M</strong>
       </div>
       <div class="formula-desc" data-es>El VPN positivo de €8,603.8M indica que el proyecto genera valor por encima del costo de capital (WACC=9%). Por cada euro invertido, el proyecto genera €3.87 de valor presente neto.</div>
       <div class="formula-desc" data-en>The positive NPV of €8,603.8M indicates the project creates value above the cost of capital (WACC=9%). For every euro invested, the project generates €3.87 in net present value.</div>
@@ -1180,7 +1193,7 @@
       <div class="formula-name" data-es>Tasa Interna de Retorno</div>
       <div class="formula-name" data-en>Internal Rate of Return</div>
       <div class="formula-acronym">TIR / IRR</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         0 = Σ [ FCt / (1 + TIR)ᵗ ] − I₀<br><br>
         Prueba TIR = 40%:<br>
         ΣVP = €3,066M → VPN = +€66M ≈ 0<br><br>
@@ -1190,6 +1203,17 @@
         TIR ≈ 40% + [66/(66+432)] × 1%<br>
         TIR ≈ <strong>41.0%</strong><br><br>
         WACC = 9% → TIR > WACC ✓
+      </div>
+      <div class="formula-box" data-en>
+        0 = Σ [ CFt / (1 + IRR)ᵗ ] − I₀<br><br>
+        Test IRR = 40%:<br>
+        ΣPV = €3,066M → NPV = +€66M ≈ 0<br><br>
+        Test IRR = 41%:<br>
+        ΣPV = €3,004.6M → NPV ≈ €4.6M ≈ 0<br><br>
+        Interpolation:<br>
+        IRR ≈ 40% + [66/(66+432)] × 1%<br>
+        IRR ≈ <strong>41.0%</strong><br><br>
+        WACC = 9% → IRR > WACC ✓
       </div>
       <div class="formula-desc" data-es>La TIR del 41% supera ampliamente el WACC del 9%, lo que confirma que el proyecto es altamente rentable. El excedente de 32 puntos porcentuales representa el margen de seguridad del inversionista.</div>
       <div class="formula-desc" data-en>The IRR of 41% far exceeds the WACC of 9%, confirming the project is highly profitable. The 32 percentage point surplus represents the investor's safety margin.</div>
@@ -1206,7 +1230,7 @@
       <div class="formula-name" data-es>Período de Recuperación</div>
       <div class="formula-name" data-en>Payback Period</div>
       <div class="formula-acronym">PR / PRI</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         PR = año previo + (Saldo / FC siguiente)<br><br>
         Año 0:  -€3,000M  Acum: -€3,000M<br>
         Año 1:  +€800M    Acum: -€2,200M<br>
@@ -1217,12 +1241,23 @@
         PR = 2 + (700 / 2,000) = 2.35 años<br>
         PR ≈ <strong>2 años 4 meses</strong>
       </div>
+      <div class="formula-box" data-en>
+        PB = previous year + (Balance / next CF)<br><br>
+        Year 0:  -€3,000M  Cum: -€3,000M<br>
+        Year 1:  +€800M    Cum: -€2,200M<br>
+        Year 2:  +€1,500M  Cum: -€700M<br>
+        Year 3:  +€2,000M  Cum: +€1,300M<br>
+        ─────────────────────────<br>
+        Recovery in Year 3:<br>
+        PB = 2 + (700 / 2,000) = 2.35 years<br>
+        PB ≈ <strong>2 years 4 months</strong>
+      </div>
       <div class="formula-desc" data-es>La inversión se recupera en 2 años y 4 meses, muy por debajo del horizonte de evaluación de 10 años. Esto reduce significativamente el riesgo de capital para Mercedes-Benz.</div>
       <div class="formula-desc" data-en>The investment is recovered in 2 years and 4 months, well below the 10-year evaluation horizon. This significantly reduces capital risk for Mercedes-Benz.</div>
       <div class="formula-result">
         <div class="formula-result-label" data-es>Período de Recuperación</div>
         <div class="formula-result-label" data-en>Payback Period</div>
-        <div class="formula-result-value pos">2.35 años</div>
+        <div class="formula-result-value pos">2.35 <span data-es>años</span><span data-en>years</span></div>
       </div>
       <div class="formula-verdict" data-es>✓ Recuperación antes de 3 años — BAJO RIESGO</div>
       <div class="formula-verdict" data-en>✓ Recovery before 3 years — LOW RISK</div>
@@ -1233,7 +1268,7 @@
       <div class="formula-name" data-es>Relación Beneficio-Costo</div>
       <div class="formula-name" data-en>Benefit-Cost Ratio</div>
       <div class="formula-acronym">B/C — RBC</div>
-      <div class="formula-box">
+      <div class="formula-box" data-es>
         B/C = Σ VP Beneficios / Σ VP Costos<br><br>
         ΣVP Beneficios (10 años) = €11,603.8M<br>
         ΣVP Costos (inversión) = €3,000.0M<br>
@@ -1242,6 +1277,16 @@
         B/C = <strong>3.87</strong><br><br>
         Por cada €1 invertido →<br>
         se recuperan €3.87 en valor presente
+      </div>
+      <div class="formula-box" data-en>
+        B/C = Σ PV Benefits / Σ PV Costs<br><br>
+        ΣPV Benefits (10 years) = €11,603.8M<br>
+        ΣPV Costs (investment) = €3,000.0M<br>
+        ─────────────────────────<br>
+        B/C = 11,603.8 / 3,000.0<br>
+        B/C = <strong>3.87</strong><br><br>
+        For every €1 invested →<br>
+        €3.87 recovered in present value
       </div>
       <div class="formula-desc" data-es>La relación B/C de 3.87 confirma que el proyecto es altamente eficiente. Por cada euro de inversión, se generan €3.87 en flujos descontados. Una relación B/C mayor a 1 indica viabilidad.</div>
       <div class="formula-desc" data-en>The B/C ratio of 3.87 confirms the project is highly efficient. For every euro invested, €3.87 in discounted flows are generated. A B/C ratio above 1 indicates viability.</div>
@@ -1261,11 +1306,11 @@
       <table class="mini-table">
         <thead>
           <tr>
-            <th data-es>Año</th><th data-en>Year</th>
+            <th><span data-es>Año</span><span data-en>Year</span></th>
             <th>CF (€M)</th>
-            <th data-es>Factor</th><th data-en>Factor</th>
-            <th>VP (€M)</th>
-            <th data-es>VP Acum.</th><th data-en>Cum. PV</th>
+            <th>Factor</th>
+            <th>VP / PV (€M)</th>
+            <th><span data-es>VP Acum.</span><span data-en>Cum. PV</span></th>
           </tr>
         </thead>
         <tbody>
@@ -1276,7 +1321,7 @@
         </tbody>
       </table>
       <div class="formula-box" style="margin-top:16px">
-        PRD = 2 + (1,003.5 / 1,544.4) = 2 + 0.65 = <strong>2.65 años</strong> ≈ 2 <span data-es>años</span><span data-en>years</span> 8 <span data-es>meses</span><span data-en>months</span>
+        PRD = 2 + (1,003.5 / 1,544.4) = 2 + 0.65 = <strong>2.65 <span data-es>años</span><span data-en>years</span></strong> ≈ 2 <span data-es>años</span><span data-en>years</span> 8 <span data-es>meses</span><span data-en>months</span>
       </div>
       <div class="formula-result">
         <div class="formula-result-label" data-es>Período Descontado</div>
@@ -1502,18 +1547,18 @@
       <div class="sim-kpi">
         <div class="sim-kpi-label">VPN / NPV</div>
         <div class="sim-kpi-value" id="liveNPV">€860M</div>
-        <div class="sim-kpi-badge pos" id="liveNPVBadge" data-es>VIABLE</div>
+        <div class="sim-kpi-badge pos" id="liveNPVBadge">NPV &gt; 0</div>
       </div>
       <div class="sim-kpi">
         <div class="sim-kpi-label">TIR / IRR</div>
         <div class="sim-kpi-value" id="liveIRR">41.0%</div>
-        <div class="sim-kpi-badge pos" id="liveIRRBadge" data-es>TIR > WACC</div>
+        <div class="sim-kpi-badge pos" id="liveIRRBadge">IRR &gt; WACC</div>
       </div>
       <div class="sim-kpi">
         <div class="sim-kpi-label" data-es>Período Recuperación</div>
         <div class="sim-kpi-label" data-en>Payback Period</div>
         <div class="sim-kpi-value" id="livePayback">2.35 <span style="font-size:1rem" data-es>años</span><span style="font-size:1rem" data-en>yrs</span></div>
-        <div class="sim-kpi-badge pos" id="livePBBadge" data-es>&lt; 3 años</div>
+        <div class="sim-kpi-badge pos" id="livePBBadge">&lt; 5 yrs</div>
       </div>
       <div class="sim-kpi">
         <div class="sim-kpi-label" data-es>Relación B/C</div>
@@ -1643,7 +1688,7 @@
     <div class="addon-sub" data-en>Fixed costs, variable costs and break-even volume — CLA/MMA</div>
     <div class="be-wrap">
       <div class="chart-box">
-        <div class="formula-box" style="margin-bottom:0">
+        <div class="formula-box" style="margin-bottom:0" data-es>
           FC = €420M / año<br>
           VC = €28,000 / unidad<br>
           P = €45,000 / unidad<br><br>
@@ -1651,6 +1696,15 @@
           BE = 420,000,000 / (45,000 − 28,000)<br>
           BE = 420,000,000 / 17,000<br>
           BE = <strong>24,706 unidades</strong>
+        </div>
+        <div class="formula-box" style="margin-bottom:0" data-en>
+          FC = €420M / year<br>
+          VC = €28,000 / unit<br>
+          P = €45,000 / unit<br><br>
+          BE = FC / (P − VC)<br>
+          BE = 420,000,000 / (45,000 − 28,000)<br>
+          BE = 420,000,000 / 17,000<br>
+          BE = <strong>24,706 units</strong>
         </div>
         <div class="be-metrics">
           <div class="be-metric"><span data-es>Costos fijos anuales</span><span data-en>Annual fixed costs</span><strong>€420M</strong></div>
@@ -2096,7 +2150,7 @@
       <div class="summary-metric">
         <div class="summary-metric-label" data-es>Período de Recuperación</div>
         <div class="summary-metric-label" data-en>Payback Period</div>
-        <div class="summary-metric-value go">2.35 años</div>
+        <div class="summary-metric-value go">2.35 <span data-es>años</span><span data-en>yrs</span></div>
       </div>
       <div class="summary-metric">
         <div class="summary-metric-label" data-es>Relación Beneficio/Costo</div>
@@ -2121,17 +2175,17 @@
     <table class="cf-table" id="rationTable">
       <thead>
         <tr>
-          <th data-es>Proyecto</th><th data-en>Project</th>
-          <th data-es>Inversión</th><th data-en>Investment</th>
+          <th><span data-es>Proyecto</span><span data-en>Project</span></th>
+          <th><span data-es>Inversión</span><span data-en>Investment</span></th>
           <th>NPV / VPN</th>
           <th>IRR / TIR</th>
           <th>PI</th>
-          <th data-es>Rank</th><th data-en>Rank</th>
+          <th>Rank</th>
         </tr>
       </thead>
       <tbody>
         <tr><td class="highlight">CLA/MMA</td><td>€3B</td><td class="pos">€8,604M</td><td class="pos">41%</td><td class="pos">3.87</td><td class="highlight">1</td></tr>
-        <tr><td class="highlight" data-es>Baterías Gigaplant</td><td class="highlight" data-en>Battery Gigaplant</td><td>€5B</td><td class="pos">€6,200M</td><td class="pos">28%</td><td class="pos">2.24</td><td class="highlight">2</td></tr>
+        <tr><td class="highlight"><span data-es>Baterías Gigaplant</span><span data-en>Battery Gigaplant</span></td><td>€5B</td><td class="pos">€6,200M</td><td class="pos">28%</td><td class="pos">2.24</td><td class="highlight">2</td></tr>
         <tr><td class="highlight">MB.OS Software</td><td>€1.2B</td><td class="pos">€2,100M</td><td class="pos">35%</td><td class="pos">2.75</td><td class="highlight">3</td></tr>
       </tbody>
     </table>
@@ -2149,7 +2203,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
-    Mercedes-Benz Group AG — Evaluación Financiera de Proyectos — 2026
+    <span data-es>Mercedes-Benz Group AG — Evaluación Financiera de Proyectos — 2026</span><span data-en>Mercedes-Benz Group AG — Financial Evaluation of Investment Projects — 2026</span>
   </div>
   <div class="footer-note">
     <span data-es>Datos: Mercedes-Benz Annual Reports 2024–2025<br>Proyecto: CLA 2026 / Plataforma MMA</span>
@@ -2179,6 +2233,7 @@
     document.body.className = 'lang-' + lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
     document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    if (typeof updateSim === 'function') updateSim();
   }
 
   // CHARTS — Revenue & EBIT
@@ -2280,7 +2335,7 @@
     data: {
       labels: waccRates.map(r => (r * 100).toFixed(0) + '%'),
       datasets: [{
-        label: 'VPN (€ Millardos)',
+        label: document.body.classList.contains('lang-en') ? 'NPV (€ Billions)' : 'VPN (€ Millardos)',
         data: npvVals,
         borderColor: 'rgba(192,192,192,0.7)',
         backgroundColor: (ctx) => {
@@ -2409,16 +2464,17 @@
     document.getElementById('liveBC').textContent      = bc.toFixed(2);
 
     // Color/badge NPV
+    const isEn = document.body.classList.contains('lang-en');
     const npvEl = document.getElementById('liveNPV');
     const npvBadge = document.getElementById('liveNPVBadge');
     if (npv > 0) {
       npvEl.style.color = '#81C784';
       npvBadge.className = 'sim-kpi-badge pos';
-      npvBadge.textContent = 'VPN > 0';
+      npvBadge.textContent = isEn ? 'NPV > 0' : 'VPN > 0';
     } else {
       npvEl.style.color = '#E57373';
       npvBadge.className = 'sim-kpi-badge neg';
-      npvBadge.textContent = 'VPN < 0';
+      npvBadge.textContent = isEn ? 'NPV < 0' : 'VPN < 0';
     }
 
     // Color/badge IRR
@@ -2427,11 +2483,11 @@
     if (irr > wacc) {
       irrEl.style.color = '#81C784';
       irrBadge.className = 'sim-kpi-badge pos';
-      irrBadge.textContent = 'TIR > WACC';
+      irrBadge.textContent = isEn ? 'IRR > WACC' : 'TIR > WACC';
     } else {
       irrEl.style.color = '#E57373';
       irrBadge.className = 'sim-kpi-badge neg';
-      irrBadge.textContent = 'TIR < WACC';
+      irrBadge.textContent = isEn ? 'IRR < WACC' : 'TIR < WACC';
     }
 
     // Color/badge Payback
@@ -2440,11 +2496,11 @@
     if (payback !== null && payback < 5) {
       pbEl.style.color = '#81C784';
       pbBadge.className = 'sim-kpi-badge pos';
-      pbBadge.textContent = '< 5 años';
+      pbBadge.textContent = isEn ? '< 5 yrs' : '< 5 años';
     } else {
       pbEl.style.color = payback !== null ? '#FFB74D' : '#E57373';
       pbBadge.className = payback !== null ? 'sim-kpi-badge warn' : 'sim-kpi-badge neg';
-      pbBadge.textContent = payback !== null ? '> 5 años' : 'No recupera';
+      pbBadge.textContent = payback !== null ? (isEn ? '> 5 yrs' : '> 5 años') : (isEn ? 'No recovery' : 'No recupera');
     }
 
     // Color/badge B/C
