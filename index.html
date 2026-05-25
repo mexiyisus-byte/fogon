@@ -1782,7 +1782,7 @@
           <td class="highlight">BASE</td>
           <td>12%</td>
           <td>9.0%</td>
-          <td class="pos">€8,603M</td>
+          <td class="pos">€8,604M</td>
           <td class="pos">41.0%</td>
           <td>2.35 <span data-es>años</span><span data-en>yrs</span></td>
         </tr>
@@ -1852,8 +1852,8 @@
       <div class="compliance-head" data-es>Evaluación Financiera</div>
       <div class="compliance-head" data-en>Financial Evaluation</div>
       <div class="compliance-title">Payback, NPV, IRR, MIRR</div>
-      <p class="compliance-text" data-es>Payback simple = 2.35 años. Payback descontado ≈ 3.35 años. NPV = €8,603.8M. IRR = 41.0%. MIRR (financiación 9%, reinversión 9%) ≈ 19.4%, corrigiendo el sesgo de reinversión implícito de la IRR.</p>
-      <p class="compliance-text" data-en>Simple payback = 2.35 years. Discounted payback ≈ 3.35 years. NPV = €8,603.8M. IRR = 41.0%. MIRR (9% finance and reinvest rates) ≈ 19.4%, correcting IRR reinvestment bias.</p>
+      <p class="compliance-text" data-es>Payback simple = 2.35 años. Payback descontado = 2.65 años. NPV = €8,603.8M. IRR = 41.0%. MIRR (financiación 9%, reinversión 9%) = 26.6%, corrigiendo el sesgo de reinversión implícito de la IRR.</p>
+      <p class="compliance-text" data-en>Simple payback = 2.35 years. Discounted payback = 2.65 years. NPV = €8,603.8M. IRR = 41.0%. MIRR (9% finance and reinvest rates) = 26.6%, correcting IRR reinvestment bias.</p>
       <div class="compliance-mini">Conflict note: in mutually exclusive projects, NPV dominates when IRR ranking differs.</div>
     </div>
 
@@ -1878,8 +1878,8 @@
           <div class="ro-panel" style="grid-column:1/-1">
             <h4 data-es>a) Opción de Esperar — Árbol Binomial (2 períodos)</h4>
             <h4 data-en>a) Option to Delay — Binomial Tree (2 periods)</h4>
-            <p data-es>S=€8,603M · K=€3,000M · T=2 años · σ=25% · r=4.5%</p>
-            <p data-en>S=€8,603M · K=€3,000M · T=2 yrs · σ=25% · r=4.5%</p>
+            <p data-es>S=€8,604M · K=€3,000M · T=2 años · σ=25% · r=4.5%</p>
+            <p data-en>S=€8,604M · K=€3,000M · T=2 yrs · σ=25% · r=4.5%</p>
             <div class="formula-box" style="margin:14px 0" id="binomialParams">—</div>
             <div class="bin-tree" id="binomialTree">—</div>
             <div class="ro-val go" id="delayDecision">—</div>
@@ -2663,7 +2663,7 @@
   }
 
   function initBinomialDelay() {
-    const S = 8603, K = 3000, T = 2, sigma = 0.25, r = 0.045;
+    const S = 8603.8, K = 3000, T = 2, sigma = 0.25, r = 0.045;
     const steps = 2, dt = T / steps;
     const u = Math.exp(sigma * Math.sqrt(dt));
     const d = 1 / u;
