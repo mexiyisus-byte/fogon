@@ -791,6 +791,69 @@
   .ration-wrap { margin-top: 50px; }
   .ration-note { margin-top: 20px; font-size: 0.86rem; line-height: 1.7; color: var(--silver); }
 
+  /* TORNADO SVG/CSS */
+  .tornado-chart { margin-top: 8px; }
+  .tornado-axis {
+    display: flex; justify-content: space-between;
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    color: var(--muted); letter-spacing: 0.08em;
+    margin: 0 0 8px 140px; padding: 0 4px;
+  }
+  .tornado-row {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 14px;
+  }
+  .tornado-label {
+    width: 124px; flex-shrink: 0;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.06em; color: var(--chrome);
+    text-align: right; line-height: 1.3;
+  }
+  .tornado-track {
+    flex: 1; position: relative; height: 28px;
+    background: rgba(200,200,200,0.06);
+    border: 1px solid rgba(200,200,200,0.08);
+  }
+  .tornado-bar-red {
+    position: absolute; top: 6px; height: 16px;
+    background: rgba(229,115,115,0.45);
+    border: 1px solid rgba(229,115,115,0.65);
+  }
+  .tornado-bar-green {
+    position: absolute; top: 6px; height: 16px;
+    background: rgba(129,199,132,0.4);
+    border: 1px solid rgba(129,199,132,0.65);
+  }
+  .tornado-base-line {
+    position: absolute; top: 0; bottom: 0; width: 2px;
+    background: var(--white); opacity: 0.85;
+    transform: translateX(-1px); z-index: 2;
+  }
+  .tornado-base-tag {
+    position: absolute; top: -18px; transform: translateX(-50%);
+    font-family: 'DM Mono', monospace; font-size: 0.52rem;
+    color: var(--white); letter-spacing: 0.05em; white-space: nowrap;
+  }
+  .tornado-val-low, .tornado-val-high {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-family: 'DM Mono', monospace; font-size: 0.52rem;
+    color: var(--muted); white-space: nowrap;
+  }
+  .tornado-val-low { left: 4px; }
+  .tornado-val-high { right: 4px; }
+  .tornado-legend {
+    display: flex; gap: 20px; justify-content: center; margin-top: 18px;
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  }
+  .tornado-legend span::before {
+    content: ''; display: inline-block; width: 10px; height: 10px;
+    margin-right: 6px; vertical-align: middle;
+  }
+  .tornado-legend .leg-worst::before { background: rgba(229,115,115,0.6); }
+  .tornado-legend .leg-best::before { background: rgba(129,199,132,0.6); }
+  .tornado-legend .leg-base::before { background: var(--white); width: 2px; height: 12px; }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
@@ -1619,8 +1682,73 @@
     <div class="addon-head" data-en>TORNADO ANALYSIS — NPV SENSITIVITY</div>
     <div class="addon-sub" data-es>Impacto de ± variación en variables clave sobre el VPN base (€8,603.8M)</div>
     <div class="addon-sub" data-en>Impact of ± variation in key variables on base NPV (€8,603.8M)</div>
-    <div class="chart-box">
-      <canvas id="tornadoChart" height="280"></canvas>
+    <div class="chart-box" style="background:transparent;border-color:rgba(200,200,200,0.08)">
+      <div class="tornado-chart" id="tornadoChart">
+        <div class="tornado-axis">
+          <span>€5,200M</span><span>€8,604M</span><span>€12,800M</span>
+        </div>
+        <!-- WACC ±2% — impact €7,600M -->
+        <div class="tornado-row">
+          <div class="tornado-label">WACC ±2%</div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€5,200M</span>
+            <span class="tornado-val-high">€12,800M</span>
+            <div class="tornado-bar-red" style="left:0%;width:44.8%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:55.2%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+            <span class="tornado-base-tag" style="left:44.8%">BASE</span>
+          </div>
+        </div>
+        <!-- Revenue Growth ±3% — impact €5,300M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Crec. Ingresos ±3%</span><span data-en>Revenue Growth ±3%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€6,100M</span>
+            <span class="tornado-val-high">€11,400M</span>
+            <div class="tornado-bar-red" style="left:11.8%;width:32.9%"></div>
+            <div class="tornado-bar-green" style="left:44.7%;width:43.4%"></div>
+            <div class="tornado-base-line" style="left:44.7%"></div>
+          </div>
+        </div>
+        <!-- Operating Margin ±3% — impact €1,600M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Margen Op. ±3%</span><span data-en>Op. Margin ±3%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€7,800M</span>
+            <span class="tornado-val-high">€9,400M</span>
+            <div class="tornado-bar-red" style="left:34.2%;width:10.6%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:10.5%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+          </div>
+        </div>
+        <!-- Terminal Value ±25% — impact €1,400M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Valor Terminal ±25%</span><span data-en>Terminal Value ±25%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€7,900M</span>
+            <span class="tornado-val-high">€9,300M</span>
+            <div class="tornado-bar-red" style="left:35.5%;width:9.3%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:9.2%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+          </div>
+        </div>
+        <!-- Initial Investment ±20% — impact €1,200M -->
+        <div class="tornado-row">
+          <div class="tornado-label"><span data-es>Inv. Inicial ±20%</span><span data-en>Initial Inv. ±20%</span></div>
+          <div class="tornado-track">
+            <span class="tornado-val-low">€8,003M</span>
+            <span class="tornado-val-high">€9,203M</span>
+            <div class="tornado-bar-red" style="left:36.9%;width:7.9%"></div>
+            <div class="tornado-bar-green" style="left:44.8%;width:7.9%"></div>
+            <div class="tornado-base-line" style="left:44.8%"></div>
+          </div>
+        </div>
+        <div class="tornado-legend">
+          <span class="leg-worst"><span data-es>Peor caso</span><span data-en>Worst case</span></span>
+          <span class="leg-base">VPN Base €8,604M</span>
+          <span class="leg-best"><span data-es>Mejor caso</span><span data-en>Best case</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1633,15 +1761,40 @@
     <table class="scenario-table" id="scenarioTable">
       <thead>
         <tr>
-          <th data-es>Escenario</th><th data-en>Scenario</th>
-          <th data-es>Crec. Ingresos</th><th data-en>Revenue Growth</th>
+          <th><span data-es>Escenario</span><span data-en>Scenario</span></th>
+          <th><span data-es>Crec. Ingresos</span><span data-en>Revenue Growth</span></th>
           <th>WACC</th>
           <th>NPV / VPN</th>
           <th>IRR / TIR</th>
-          <th data-es>Payback</th><th data-en>Payback</th>
+          <th><span data-es>Payback</span><span data-en>Payback</span></th>
         </tr>
       </thead>
-      <tbody id="scenarioTableBody"></tbody>
+      <tbody>
+        <tr class="bear">
+          <td class="highlight">BEAR</td>
+          <td>6%</td>
+          <td>10.5%</td>
+          <td class="pos">€3,821M</td>
+          <td class="pos">22.4%</td>
+          <td>3.8 <span data-es>años</span><span data-en>yrs</span></td>
+        </tr>
+        <tr class="base">
+          <td class="highlight">BASE</td>
+          <td>12%</td>
+          <td>9.0%</td>
+          <td class="pos">€8,603M</td>
+          <td class="pos">41.0%</td>
+          <td>2.35 <span data-es>años</span><span data-en>yrs</span></td>
+        </tr>
+        <tr class="bull">
+          <td class="highlight">BULL</td>
+          <td>18%</td>
+          <td>7.0%</td>
+          <td class="pos">€14,210M</td>
+          <td class="pos">58.3%</td>
+          <td>1.9 <span data-es>años</span><span data-en>yrs</span></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </section>
@@ -2509,79 +2662,6 @@
     });
   }
 
-  function initTornado() {
-    const base = calcNPV(MB_INV_FULL, BASE_FLOWS, MB_WACC_BASE);
-    const sens = [
-      { name: 'WACC', low: calcNPV(MB_INV_FULL, BASE_FLOWS, 11), high: calcNPV(MB_INV_FULL, BASE_FLOWS, 7) },
-      { name: document.body.classList.contains('lang-en') ? 'Rev. Growth' : 'Crec. Ingresos', low: calcNPV(MB_INV_FULL, mbFlowsGrowth(9), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, mbFlowsGrowth(15), MB_WACC_BASE) },
-      { name: document.body.classList.contains('lang-en') ? 'Initial Inv.' : 'Inv. Inicial', low: calcNPV(3600, BASE_FLOWS, MB_WACC_BASE), high: calcNPV(2400, BASE_FLOWS, MB_WACC_BASE) },
-      { name: document.body.classList.contains('lang-en') ? 'Terminal Val.' : 'Valor Terminal', low: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 0.75], MB_WACC_BASE), high: calcNPV(MB_INV_FULL, [...BASE_FLOWS.slice(0, 9), BASE_FLOWS[9] * 1.25], MB_WACC_BASE) },
-      { name: document.body.classList.contains('lang-en') ? 'Op. Margin' : 'Margen Op.', low: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 0.97), MB_WACC_BASE), high: calcNPV(MB_INV_FULL, BASE_FLOWS.map(f => f * 1.03), MB_WACC_BASE) }
-    ];
-    sens.forEach(s => { s.spread = Math.abs(s.high - s.low); });
-    sens.sort((a, b) => b.spread - a.spread);
-
-    const labels = sens.map(s => s.name);
-    const floatData = sens.map(s => [Math.min(s.low, s.high) / 1000, Math.max(s.low, s.high) / 1000]);
-
-    new Chart(document.getElementById('tornadoChart').getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'NPV Range (€B)',
-          data: floatData,
-          backgroundColor: 'rgba(192,192,192,0.35)',
-          borderColor: 'rgba(192,192,192,0.7)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: ctx => {
-                const s = sens[ctx.dataIndex];
-                return [`Low: €${(Math.min(s.low,s.high)/1000).toFixed(2)}B`, `High: €${(Math.max(s.low,s.high)/1000).toFixed(2)}B`];
-              }
-            }
-          }
-        },
-        scales: {
-          x: { ticks: { color: '#606060', font: { family: 'DM Mono', size: 10 }, callback: v => '€' + v.toFixed(1) + 'B' }, grid: { color: 'rgba(255,255,255,0.04)' } },
-          y: { ticks: { color: '#909090', font: { family: 'DM Mono', size: 10 } }, grid: { display: false } }
-        }
-      }
-    });
-  }
-
-  function initScenarioTable() {
-    const scenarios = [
-      { key: 'bear', growth: 6, wacc: 10.5 },
-      { key: 'base', growth: 12, wacc: 9 },
-      { key: 'bull', growth: 18, wacc: 7 }
-    ];
-    const tbody = document.getElementById('scenarioTableBody');
-    tbody.innerHTML = '';
-    scenarios.forEach(sc => {
-      const flows = mbFlowsGrowth(sc.growth);
-      const npv = calcNPV(MB_INV_FULL, flows, sc.wacc);
-      const irr = calcIRR(MB_INV_FULL, flows);
-      const pb = calcPayback(MB_INV_FULL, flows);
-      tbody.innerHTML += `<tr class="${sc.key}">
-        <td class="highlight">${sc.key.toUpperCase()}</td>
-        <td>${sc.growth}%</td>
-        <td>${sc.wacc}%</td>
-        <td class="${npv > 0 ? 'pos' : 'neg'}">${fmt(npv)}</td>
-        <td class="pos">${irr.toFixed(1)}%</td>
-        <td>${pb !== null ? pb.toFixed(2) + (document.body.classList.contains('lang-es') ? ' a' : ' y') : '—'}</td>
-      </tr>`;
-    });
-  }
-
   function initBinomialDelay() {
     const S = 8603, K = 3000, T = 2, sigma = 0.25, r = 0.045;
     const steps = 2, dt = T / steps;
@@ -2699,8 +2779,6 @@
   }
 
   initBreakEven();
-  initTornado();
-  initScenarioTable();
   initBinomialDelay();
   setTimeout(initEventTree, 400);
   initRealOptionsExtra();
